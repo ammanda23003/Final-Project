@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Home - Resto Modern</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4CAF50",
+                        "cta": "#FF9800",
+                        "background-light": "#FFFFFF",
+                        "background-secondary": "#F5F5F5",
+                        "text-primary": "#1F2937",
+                        "text-secondary": "#6B7280",
+                    },
+                    fontFamily: {
+                        "display": ["Poppins", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light font-display text-text-primary">
+    <div class="flex h-auto min-h-screen w-full flex-col">
+        <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+            <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary text-4xl">
+                        restaurant_menu
+                    </span>
+                    <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
+                </div>
+                <nav class="hidden items-center gap-8 md:flex">
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_Makanan.html">Menu</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_Favorit_Makanan.html">Favorit</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+                    <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors"
+                        href="cart.html">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                    </a>
+                </nav>
+                <button class="md:hidden">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </header>
+        <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
+            <section class="w-full rounded-xl bg-background-secondary p-8 md:p-12 text-center">
+                <div class="mx-auto max-w-3xl">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">Selamat Datang di Smart
+                        Ordering</h2>
+                    <p class="mt-4 text-base md:text-lg text-text-secondary">Pindai kode QR di meja Anda untuk memulai
+                        pesanan.</p>
+                    <div class="mt-8 mx-auto max-w-lg">
+                        <label class="flex flex-col min-w-40 h-14 w-full">
+                            <div class="flex w-full flex-1 items-stretch rounded-lg h-full shadow-sm">
+                                <div
+                                    class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                                    <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
+                                </div>
+                                <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base font-normal leading-normal"
+                                    placeholder="Masukkan kode meja secara manual" value="" />
+                                <button
+                                    class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-r-lg h-full px-5 bg-cta text-white text-base font-bold leading-normal tracking-wide hover:bg-orange-600 transition-colors">
+                                    <span class="truncate">Mulai Pesan</span>
+                                </button>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </section>
+            <div class="mt-10">
+                <div>
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <h3 class="text-2xl font-bold text-text-primary">Menu</h3>
+                        <div class="w-full sm:max-w-xs">
+                            <label class="flex flex-col min-w-40 h-12 w-full">
+                                <div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-background-secondary">
+                                    <div class="text-text-secondary flex items-center justify-center pl-4">
+                                        <span class="material-symbols-outlined">search</span>
+                                    </div>
+                                    <input
+                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden text-text-primary focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-text-secondary px-2 text-base font-normal leading-normal"
+                                        placeholder="Cari makanan atau minuman" value="" />
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex gap-3 overflow-x-auto pb-2">
+                        <button
+                            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-primary text-white text-sm font-medium">Makanan</button>
+                        <button
+                            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium">Minuman</button>
+                        <button
+                            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium">Paket</button>
+                        <button
+                            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium">Favorit</button>
+                    </div>
+                    <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+                        <div
+                            class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
+                            <img class="h-48 w-full object-cover"
+                                data-alt="A healthy salad with fresh vegetables in a white bowl."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEX8Suup0fHDFyw7-zpHdQWmZ95rjqrvsOOyQeZMRVsQzZkjQpnRHoyslVbvk-kH330saKvnYozXPvzrVFp64iXJp19mfen5sxDRqOfdgB2qcVn-QfRGO_9utnL36liGm8SLxojXgsKpWmA28r_HKhtrCtq__0pWfT1QZuj-e12-k2Fup5IWWyvejqfLogVx4ZKRsE89Ak9RCnA5qFKE69zpuIuCvRIc0B_8tI-UsWrYngA-N-fBuI21sHMaZWscWHGrc1MrhLnoY" />
+                            <div class="flex flex-1 flex-col p-4">
+                                <h4 class="text-lg font-semibold text-text-primary">Salad Segar</h4>
+                                <p class="mt-1 text-sm text-text-secondary">Campuran sayuran segar dengan dressing
+                                    spesial.</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <p class="text-lg font-bold text-text-primary">Rp 35.000</p>
+                                    <button
+                                        class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold">
+                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
+                            <img class="h-48 w-full object-cover"
+                                data-alt="A delicious looking pizza with pepperoni and cheese."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9TwopEAJvn9CfWhiblTQtv5gpbdVIRNhlKS7n8z4Lfc6NImThoP85z8qHE6c5tjAKLpMqu79gwcprDt1MVn4EXZCsDqdP_viJmIk4b0YoQ8q9Iz-JsKy1tbcEpdWYOrOCQ4eTkTIyrHBJO83HAt-IsjKvBN5wuFeKRsS-PAhxXDm-OZ185T9ypmW3kuH4XOcI-Bj_22LGaSy7umV7IhKNocl1LUqw80VWVD4AR3_7-jGvukQx39bL9zAeZdY_2XzgV6wsFmTv-Qw" />
+                            <div class="flex flex-1 flex-col p-4">
+                                <h4 class="text-lg font-semibold text-text-primary">Pizza Pepperoni</h4>
+                                <p class="mt-1 text-sm text-text-secondary">Pizza klasik dengan topping pepperoni dan
+                                    keju mozzarella.</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <p class="text-lg font-bold text-text-primary">Rp 85.000</p>
+                                    <button
+                                        class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold">
+                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
+                            <img class="h-48 w-full object-cover"
+                                data-alt="A stack of fluffy pancakes with syrup and berries."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWD-UBkck_pDwfncxTgb_ywgQkpJ95ErFCtwI2ZRps6B51EZaYDY-CTi5HQzi9S-BOBtkXXiL9nRjtnaFZJJJh2U8KzBqfkSgLkPHSwezPrrIKRtuTmng1BTgurJfHasn_AnBu7bp_tPwzaJcTojw7CIGX9NaCVbQjESipjW7xCV86qhDU3vjzcRq0OaIy509_Dq-c7Lnro2VL2pHo7WbxshL0UuGqz0bKazxv7iwcMs86UQRjcKngpf-PpmbppkdNwESXjYT4I1o" />
+                            <div class="flex flex-1 flex-col p-4">
+                                <h4 class="text-lg font-semibold text-text-primary">Pancake Madu</h4>
+                                <p class="mt-1 text-sm text-text-secondary">Pancake lembut disiram madu dan buah berry
+                                    segar.</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <p class="text-lg font-bold text-text-primary">Rp 45.000</p>
+                                    <button
+                                        class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold">
+                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
+                            <img class="h-48 w-full object-cover"
+                                data-alt="A steaming bowl of ramen with a soft-boiled egg."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUr3KQ5uChaPyzMw3wJCbZuwuHHztPAkb1vt7qfnB43geToNLwG5TmImkMFU6YcC6d1m6wD1N91_xWZRjpQNeEsh8rx0RAxdrMFzpQwtuxOAJLy9EImEFsptm9kmn-2rra-nT8ALv-9CDaPNJdsXOjDuVlB1mwirzzGHvDdRwH-ce6VtS9NCuY1iju08dug0h7JATtB_kI6prjpxtA2KJFLED3W15VOc5OYE6rTcsFTE9Zn6IombNz1-VTCeZWI281lBQTadfLA-I" />
+                            <div class="flex flex-1 flex-col p-4">
+                                <h4 class="text-lg font-semibold text-text-primary">Ramen Kuah Pedas</h4>
+                                <p class="mt-1 text-sm text-text-secondary">Mie ramen dengan kuah kaldu pedas dan
+                                    topping lengkap.</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <p class="text-lg font-bold text-text-primary">Rp 65.000</p>
+                                    <button
+                                        class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold">
+                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
+                            <img class="h-48 w-full object-cover" data-alt="Two beef tacos on a wooden board."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDGxbJqCs_5mH89h1fNt-Hl4oHD3xgbr-qFcdCGnIDOxPmHsi15lBMp4VvpIv9eY1NarDlcuz-dwr6jn6plEKCpEKls72E13CNKB8AGS-BUXQ-FeFt5-ii5D5wDGTfFNLU8CEKgzLsBOpqUsE8dpFH7LTsBA_H9MPJf4jL5FJVeL-DckUke69h7N91sEUsYIFbCYn4cY7wLIv0IddcFrQhP2CWDmT4_v2T5UFOe3qd0uwz0Np7K0A1FudYzZG-Md9jyQ9DUCDubv0" />
+                            <div class="flex flex-1 flex-col p-4">
+                                <h4 class="text-lg font-semibold text-text-primary">Taco Daging Sapi</h4>
+                                <p class="mt-1 text-sm text-text-secondary">Taco renyah diisi dengan daging sapi cincang
+                                    berbumbu.</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <p class="text-lg font-bold text-text-primary">Rp 55.000</p>
+                                    <button
+                                        class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold">
+                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
+                            <img class="h-48 w-full object-cover"
+                                data-alt="A bowl of pasta with creamy carbonara sauce."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-1Po6SeWQ1y6K5n0z7Hn1l66MErNUd6nIHHmVtzw9B6g6M7xDD2WrO8Z4QgVG7t0VHFftBIcFHQ0kjhuHwdqCSTE1C7cV3EQ3Nw_6yry_y6rQTcu26DEVBlwLY6jSoAAk3Jk-TgX1Kagy2TpPM67U2vgy3CR5meox85jVtCMtVvB1VgsDDBqlZn6hNBBRBFeEkb-lcdfAcvyq8ScicxqVYhC40YJ416fqedZ65GRmb09bf5OpxneGCcI7oQfeWdceSIHYSEuGAKQ" />
+                            <div class="flex flex-1 flex-col p-4">
+                                <h4 class="text-lg font-semibold text-text-primary">Spaghetti Carbonara</h4>
+                                <p class="mt-1 text-sm text-text-secondary">Pasta dengan saus carbonara creamy dan
+                                    potongan smoked beef.</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <p class="text-lg font-bold text-text-primary">Rp 75.000</p>
+                                    <button
+                                        class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold">
+                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
+                            <img class="h-48 w-full object-cover" data-alt="A juicy beef burger with fries."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnKiemIDOp47UkA3y-KvbFTgtoInXDNG4IBJtBINJ34a-5raOIVv4xfGp8i_lkSB0NhkAGjoQLM8uXYwDh1snaJ2IRaPZT66mov6Wt0ONBHEXCAZAtLAmdo0u05fgNToz6Sq7M1ETRkE72S8ri4Yv9Igoc7SeqO75dNSDg9Fwm9QIS7HFHTsx4ywnnr0WfdMdaM5Gb8G46DplSUJxz7rpWczBmq5GZFNfUtAriu34LwG-vbfPzaYQFiLM6do3dyMencSmzLjeXCr8" />
+                            <div class="flex flex-1 flex-col p-4">
+                                <h4 class="text-lg font-semibold text-text-primary">Burger Klasik</h4>
+                                <p class="mt-1 text-sm text-text-secondary">Burger daging sapi dengan selada, tomat, dan
+                                    saus spesial.</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <p class="text-lg font-bold text-text-primary">Rp 60.000</p>
+                                    <button
+                                        class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold">
+                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
+                            <img class="h-48 w-full object-cover"
+                                data-alt="A plate of fried rice with a fried egg on top."
+                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3HTY0atfdxw-4lnPVANEqgNqbiKCmEnBFRz2ZG4F3SG5iF4CCz7oyEDQi5ZqH4sKKD8U2dMH4uD5nnGF8mzbV69OkTYKN8d4xTbFIrllFko550ZHw43hfLWN0HMZVWdOa4I6whwvDkvxicD30f6dna_xunCLAc7AgOhCjkQcZdGi33_t3c_7DV8yp7GJ-t_M-JXMM-SCCYQtPa8Ae4Jzr5iovcIJDnSO_oiQINalSnXUmfrFuWGpvMAn6ZtX8-B2dhjB58FR3uk4" />
+                            <div class="flex flex-1 flex-col p-4">
+                                <h4 class="text-lg font-semibold text-text-primary">Nasi Goreng Spesial</h4>
+                                <p class="mt-1 text-sm text-text-secondary">Nasi goreng dengan ayam, udang, dan telur
+                                    mata sapi.</p>
+                                <div class="mt-4 flex items-center justify-between">
+                                    <p class="text-lg font-bold text-text-primary">Rp 50.000</p>
+                                    <button
+                                        class="flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold">
+                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
+                                        <span>Tambah</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section class="mt-16 w-full">
+                <div class="flex flex-col items-center">
+                    <h3 class="text-2xl font-bold text-text-primary">Rekomendasi Menu Spesial</h3>
+                    <p class="mt-2 text-base text-text-secondary">Jangan lewatkan promo dan menu terbaik dari kami!</p>
+                </div>
+                <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="group relative overflow-hidden rounded-xl">
+                        <img alt="Nasi Goreng Spesial"
+                            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3HTY0atfdxw-4lnPVANEqgNqbiKCmEnBFRz2ZG4F3SG5iF4CCz7oyEDQi5ZqH4sKKD8U2dMH4uD5nnGF8mzbV69OkTYKN8d4xTbFIrllFko550ZHw43hfLWN0HMZVWdOa4I6whwvDkvxicD30f6dna_xunCLAc7AgOhCjkQcZdGi33_t3c_7DV8yp7GJ-t_M-JXMM-SCCYQtPa8Ae4Jzr5iovcIJDnSO_oiQINalSnXUmfrFuWGpvMAn6ZtX8-B2dhjB58FR3uk4" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <span class="rounded-full bg-cta px-3 py-1 text-sm font-semibold text-white">Promo</span>
+                            <h4 class="mt-2 text-xl font-bold text-white">Paket Nasi Goreng Komplit</h4>
+                            <p class="mt-1 text-white/90">Nasi Goreng Spesial + Es Teh Manis. Hemat 15%!</p>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-xl">
+                        <img alt="Pizza Meat Lovers"
+                            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLtEhMvTdah4JmPNHGcR_1HQroDQigf9AQdU6TwI8ZFVLNJaAR_clOBlri7qeQf93-HjxVuR6qCjZ_QJUt_34Rfxb61vj5mzhQo1ez7H4ceJjuL16wEGyZh3SfUzAhI_xnIYYKtUbmDxFnwfCY7hArxqHOpUtxEuS_JeyBQUjLlcCCpECthr4LYG4wH3B7r_UcT11OkiH4z3pHCPLV_YEy8zOlu8FDGfeOA6U_npC0bKLezmPoBdHla6bZEd8Li0kdFagy5Y-_00M" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <span class="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">Menu
+                                Baru</span>
+                            <h4 class="mt-2 text-xl font-bold text-white">Pizza Meat Lovers</h4>
+                            <p class="mt-1 text-white/90">Topping melimpah dengan 3 jenis daging pilihan.</p>
+                        </div>
+                    </div>
+                    <div class="group relative overflow-hidden rounded-xl md:col-span-2 lg:col-span-1">
+                        <img alt="Menu Baru"
+                            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnKiemIDOp47UkA3y-KvbFTgtoInXDNG4IBJtBINJ34a-5raOIVv4xfGp8i_lkSB0NhkAGjoQLM8uXYwDh1snaJ2IRaPZT66mov6Wt0ONBHEXCAZAtLAmdo0u05fgNToz6Sq7M1ETRkE72S8ri4Yv9Igoc7SeqO75dNSDg9Fwm9QIS7HFHTsx4ywnnr0WfdMdaM5Gb8G46DplSUJxz7rpWczBmq5GZFNfUtAriu34LwG-vbfPzaYQFiLM6do3dyMencSmzLjeXCr8" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6">
+                            <span
+                                class="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">Terbaru</span>
+                            <h4 class="mt-2 text-xl font-bold text-white">Menu Baru</h4>
+                            <p class="mt-1 text-white/90">Cicipi kreasi terbaru dari chef kami.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="mt-16 w-full">
+                <div class="flex flex-col items-center">
+                    <h3 class="text-2xl font-bold text-text-primary">Ulasan Pelanggan</h3>
+                    <p class="mt-2 text-base text-text-secondary">Apa kata mereka yang sudah mencoba?</p>
+                </div>
+                <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <img alt="Andi" class="h-12 w-12 rounded-full object-cover"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzfjIdWFKad2cqARFjMoJEH_DvlN-aS1Cl6y3K2v1jbuDE4RGy4lmtAZdGEsJ2_xh0N_krFcOODPMVFoV-ZtTqNKPdv1I2aMaIACfOPCyKjrIlnf6cAG7mCJI25W-q3h8iHBJE2oF4GU_URsK4iNB3GKeHcI6p8lPf4yKtLZYoGsuxWaELzmCvDIeRtmpn8v2ab_IPuLdcPKG551_b8hwXQ0EdRstPQ3ByEi0iorbliv2nZHXHHWmuzPIJaEReNcgujQeg_5ESlJc" />
+                                <div>
+                                    <p class="font-semibold text-text-primary">Andi S.</p>
+                                    <p class="text-sm text-text-secondary">2 hari lalu</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-cta">
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-text-secondary">"Makanannya enak-enak, terutama ramennya! Pelayanannya juga
+                            cepat. Pasti akan kembali lagi."</p>
+                    </div>
+                    <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <img alt="Citra" class="h-12 w-12 rounded-full object-cover"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMvB6E47hHKVwe3GtIh8NOdn4LnTwxxrfxH5bDkSDPq7CITXNSj1frLOaRWuNExSzFcsp3vCaZZa0_7qL3KLIZkf-RFAaVQ2gNSLCdFn2iLu3VHjAULXr2qileJrlPT6U-yxpGrtrqrdTiPSxJehFRcsYH8tN34ltEog6pgtYO8-NnzFDyYaClIA7uBWQsEtFf-mHG2LEzVhd0Hi4aLRqxOZ8XC-Krk25e9yPEzQwTMQZvKmdml6Y4QJ0E6aSRBFEslsWqRAeC-pY" />
+                                <div>
+                                    <p class="font-semibold text-text-primary">Citra W.</p>
+                                    <p class="text-sm text-text-secondary">5 hari lalu</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-cta">
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star_half</span>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-text-secondary">"Sistem ordernya canggih dan mudah dipakai. Tidak perlu
+                            antri lagi. Pizzanya a bit pricey tapi worth it."</p>
+                    </div>
+                    <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <img alt="Budi" class="h-12 w-12 rounded-full object-cover"
+                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCprzOoreSRZg1zQkCDrv4XnveVn85Th3rjSsyr0rqAxuLMrqyJoiaw-hVdd_ZVAGCQdupSXYKtb_z2wy5vIXBsrsUspiE0Q4ss4pMnCA8LF0ZR_J3L5yuTDG61BLSl9Jd82e8npu6jUPKwQj8n5Fw4kvoryF6GBNrXGgfu7_jUtgrV2YdZQScEHboP-Tq_UgJAPzaY802Z2Tz_AoGxdHNC3RvicCUfZIlR9qygk6AlLyLn_Ii4kGynG6MN_Z4zTTdX-H-Nm10xqGU" />
+                                <div>
+                                    <p class="font-semibold text-text-primary">Budi P.</p>
+                                    <p class="text-sm text-text-secondary">1 minggu lalu</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1 text-cta">
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                                <span class="material-symbols-outlined text-lg">star</span>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-text-secondary">"Tempatnya nyaman untuk kumpul bareng teman. Banyak pilihan
+                            menu, dari makanan berat sampai cemilan."</p>
+                    </div>
+                </div>
+            </section>
+            <div class="mt-12 w-full text-center">
+                <button
+                    class="flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] h-14 px-6 text-white text-lg font-bold shadow-md hover:bg-orange-600 transition-colors sm:w-auto sm:mx-auto">
+                    <span class="material-symbols-outlined">edit</span>
+                    <!-- <span>Tulis Ulasan</span> -->
+                     <a href="ulasan V1.html">Tulis Ulasan</a>
+                </button>
+            </div>
+            <section class="mt-16 w-full rounded-xl bg-background-secondary p-8 md:p-12">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="lg:col-span-2">
+                        <h3 class="text-2xl font-bold text-text-primary">Informasi Restoran</h3>
+                        <p class="mt-2 text-text-secondary">Kunjungi kami atau hubungi untuk reservasi.</p>
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined mt-1 text-primary">location_on</span>
+                                <div>
+                                    <h4 class="font-semibold text-text-primary">Alamat</h4>
+                                    <p class="text-text-secondary">Jl. Teknologi No. 1, Jakarta, Indonesia, 12345</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined mt-1 text-primary">schedule</span>
+                                <div>
+                                    <h4 class="font-semibold text-text-primary">Jam Buka</h4>
+                                    <p class="text-text-secondary">Senin - Minggu: 10:00 - 22:00</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <span class="material-symbols-outlined mt-1 text-primary">call</span>
+                                <div>
+                                    <h4 class="font-semibold text-text-primary">Kontak</h4>
+                                    <p class="text-text-secondary">(021) 1234-5678</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="h-64 w-full overflow-hidden rounded-lg md:h-full">
+                        <img alt="Lokasi Restoran" class="h-full w-full object-cover"
+                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPSz9Bn9oUP9ZpnO0-Qfc6LMb8QoDoV2NNozBPjG6AvH6JV16uX3LONt_hUemC2nYWcLUf4QaJH0gZ2y5OyiPmdSENltMgpE1tdTPytzE0wivxc1OrmxIm0t4DQ3gdBhdnXYuB2MsLzzm7AZo4JwELrEqVxDjH529h_3ieLnXP2Ui_EkRn324pbZvUwCGZ6OY9mmD2NhA9jX1neKb0Ai-Sueuy6ZDAPX4JEzp-6yXJh9Axa3jPjdT5VZx-14VhkGQqAW58yzTZIAY" />
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="w-full border-t border-gray-200 bg-background-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+                    <div class="text-sm text-text-secondary">
+                        <p class="font-semibold text-text-primary">Resto Modern</p>
+                        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                    </div>
+                    <div class="flex gap-6 text-sm">
+                        <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                        <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+                    </div>
+                    <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
