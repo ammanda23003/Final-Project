@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ - Resto Modern</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ff9900",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#231b0f",
+                        "light-text": "#333333",
+                        "dark-text": "#f8f7f5",
+                        "light-border": "#eadecd",
+                        "dark-border": "#4a3c27"
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-light-text dark:text-dark-text">
+    <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+        <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-[#4CAF50] text-3xl">restaurant_menu</span>
+                </span>
+                <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
+            </div>
+            <nav class="hidden items-center gap-8 md:flex">
+                <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Home.html">Home</a>
+                <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+                <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_Favorit_Makanan.html">Favorit</a>
+                <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+                <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors"
+                    href="cart.html">
+                    <span class="material-symbols-outlined">shopping_cart</span>
+                </a>
+            </nav>
+            <button class="md:hidden">
+                <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-[32px] font-bold leading-tight pb-6">FAQ</h1>
+
+        <div class="space-y-6">
+            <div class="border border-light-border dark:border-dark-border rounded-xl p-4">
+                <h2 class="text-lg font-bold pb-2">1. Apa Itu Smart Ordering System?</h2>
+                <p class="text-base leading-relaxed">Smart Ordering System adalah sistem pemesanan makanan berbasis web
+                    yang memungkinkan pelanggan memesan langsung melalui smartphone tanpa perlu mengunduh aplikasi
+                    tambahan.</p>
+            </div>
+
+            <div class="border border-light-border dark:border-dark-border rounded-xl p-4">
+                <h2 class="text-lg font-bold pb-2">2. Bagaimana Cara Kerja Sistem Ini?</h2>
+                <p class="text-base leading-relaxed">Pelanggan scan QR → melihat menu → memilih makanan → melakukan
+                    pembayaran → pesanan langsung diterima dapur.</p>
+            </div>
+
+            <div class="border border-light-border dark:border-dark-border rounded-xl p-4">
+                <h2 class="text-lg font-bold pb-2">3. Apakah Perlu Mengunduh Aplikasi Untuk Memesan?</h2>
+                <p class="text-base leading-relaxed">Tidak. Pelanggan cukup scan QR atau membuka link yang tersedia di
+                    meja untuk langsung mulai memesan.</p>
+            </div>
+
+            <div class="border border-light-border dark:border-dark-border rounded-xl p-4">
+                <h2 class="text-lg font-bold pb-2">4. Apakah Restoran Ini Masih Menggunakan Kasir?</h2>
+                <p class="text-base leading-relaxed">Bisa iya, bisa tidak. Dengan otomatisasi pesanan dan pembayaran,
+                    beban kasir menjadi jauh lebih ringan.</p>
+            </div>
+        </div>
+    </main>
+    <footer class="w-full border-t border-gray-200 bg-background-secondary">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+                <div class="text-sm text-text-secondary">
+                    <p class="font-semibold text-text-primary">Resto Modern</p>
+                    <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                </div>
+                <div class="flex gap-6 text-sm">
+                    <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                    <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+                </div>
+                <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

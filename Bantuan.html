@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Halaman Bantuan — Resto Modern</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4CAF50",
+            accent: "#FF9800",
+            muted: "#666666",
+            bg: "#f8f7f5"
+          },
+          fontFamily: {
+            display: ["Work Sans", "sans-serif"]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Work Sans', sans-serif; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+  </style>
+</head>
+<body class="bg-bg text-slate-800">
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <header class="sticky top-0 z-10 w-full bg-surface-light dark:bg-surface-dark shadow-sm border-b border-gray-200 dark:border-gray-700">
+            <div class="container mx-auto flex items-center p-4 gap-3">
+                <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
+                <h2 class="text-2xl font-bold tracking-tight flex-1">Resto Modern</h2>
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Home.html">Home</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_Makanan.html">Menu</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_Favorit_Makanan.html">Favorit</a>
+                    <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors" href="cart.html">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                    </a>
+                </nav>
+                <dov class="flex md:hidden w-12 items-center justify-end">
+                    <span class="material-symbols-outlined">menu</span>
+                </dov>
+            </div>
+        </header>
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <h1 class="text-3xl font-bold mb-6">Halaman bantuan</h1>
+            <div class="mb-8">
+                <input type="text" placeholder="Cari pertanyaan atau bantuan..." class="w-full px-4 py-3 rounded-lg border border-slate-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">Pemesanan Menu</h3>
+                    <p class="text-sm text-muted">Cara memesan, memilih menu, menambah catatan pesanan.</p>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">Pembayaran Digital</h3>
+                    <p class="text-sm text-muted">Metode pembayaran, kegagalan pembayaran, e-wallet, virtual account.</p>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">Promo & Diskon</h3>
+                    <p class="text-sm text-muted">Cara menggunakan promo, syarat promo, promo tidak muncul</p>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">QR Code</h3>
+                    <p class="text-sm text-muted">Tidak bisa scan SQ, halaman tidak tampil, error akses.</p>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">Pesanan Masuk ke Dapur</h3>
+                    <p class="text-sm text-muted">Status pesanan, estimasi waktu penyajian</p>
+                </div>
+                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-semibold text-lg mb-2">Sistem & Pengaturan</h3>
+                    <p class="text-sm text-muted">masalah teknis lain seperti loading lama atau error tampilan</p>
+                </div>
+            </div>
+            <div class="mt-12 bg-white rounded-xl border border-slate-200 p-6 text-center shadow-sm">
+                <p class="text-sm text-muted mb-4">Masih butuh bantuan? Tim kami siap membantu Anda langsung di restoran</p>
+                <button class="px-4 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-green-600 transition">Hubungi Staff</button>
+            </div>
+        </main>
+    </div>
+    <footer class="w-full border-t border-gray-200 bg-background-secondary">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gal-4">
+                <div class="text-sm text-text-secondary">
+                    <p class="font-semibold text-text-primary">Resto Modern</p>
+                    <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                </div>
+                <div class="flex gap-6 text-sm">
+                    <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                    <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+                </div>
+                <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

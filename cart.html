@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Keranjang Pesanan - Resto Modern</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4cae4f",
+                        "background-light": "#f6f7f6",
+                        "background-dark": "#151d15",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200">
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+            <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-3">
+                    <a class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors" href="Menu_Makanan.html">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span class="hidden sm:inline text-sm font-semibold">Kembali</span>
+                    </a>
+                    <span class="material-symbols-outlined text-primary text-4xl">
+                        restaurant_menu
+                    </span>
+                    <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
+                </div>
+                <nav class="hidden items-center gap-8 md:flex">
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Home.html">Home</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_Favorit_Makanan.html">Favorit</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+                    <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors"
+                        href="cart.html">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                    </a>
+                </nav>
+                <button class="md:hidden">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </header>
+        <main class="container mx-auto px-4 py-8 md:py-12 flex-grow">
+            <h1 class="text-gray-900 dark:text-white text-3xl md:text-4xl font-bold leading-tight tracking-tight pb-6 md:pb-8">Keranjang Pesanan Anda</h1>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
+                <div class="lg:col-span-2">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-gray-800/50 p-4 rounded-lg shadow-sm justify-between items-start">
+                            <div class="flex items-start gap-4 w-full">
+                                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-[80px] sm:size-[100px] shrink-0" data-alt="Nasi Goreng Spesial" style="background-image: url(Img/Nasi\ Goreng\ Spesial.png);"></div>
+                                <div class="flex flex-1 flex-col justify-center gap-1">
+                                    <p class="text-gray-900 dark:text-white text-lg font-semibold leading-normal">Nasi Goreng Spesial</p>
+                                    <p class="text-primary text-base font-medium leading-normal">Rp 50.000</p>
+                                    <button class="text-red-500 hover:text-red-700 dark:hover:text-red-400 text-sm font-medium leading-normal flex items-center gap-1 mt-1 w-fit">
+                                        <span class="material-symbols-outlined text-base">delete</span> Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="shrink-0 ml-auto sm:ml-0">
+                                <div class="flex items-center gap-2 text-gray-900 dark:text-white">
+                                    <button class="text-lg font-medium leading-normal flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors">-</button>
+                                    <input class="text-base font-medium leading-normal w-8 p-0 text-center bg-transparent focus:outline-none focus:ring-0 border-none" readonly="" type="text" value="2" />
+                                    <button class="text-lg font-medium leading-normal flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-gray-800/50 p-4 rounded-lg shadow-sm justify-between items-start">
+                            <div class="flex items-start gap-4 w-full">
+                                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-[80px] sm:size-[100px] shrink-0" data-alt="Ocean Blue Soda" style="background-image: url(Img/Ocean\ Blue\ Soda.png);"></div>
+                                <div class="flex flex-1 flex-col justify-center gap-1">
+                                    <p class="text-gray-900 dark:text-white text-lg font-semibold leading-normal">Es Teh</p>
+                                    <p class="text-primary text-base font-medium leading-normal">Rp 25.000</p>
+                                    <button class="text-red-500 hover:text-red-700 dark:hover:text-red-400 text-sm font-medium leading-normal flex items-center gap-1 mt-1 w-fit">
+                                        <span class="material-symbols-outlined text-base">delete</span> Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="shrink-0 ml-auto sm:ml-0">
+                                <div class="flex items-center gap-2 text-gray-900 dark:text-white">
+                                    <button class="text-lg font-medium leading-normal flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors">-</button>
+                                    <input class="text-base font-medium leading-normal w-8 p-0 text-center bg-transparent focus:outline-none focus:ring-0 border-none" readonly="" type="text" value="2" />
+                                    <button class="text-lg font-medium leading-normal flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors">+</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col sm:flex-row gap-4 bg-white dark:bg-gray-800/50 p-4 rounded-lg shadow-sm justify-between items-start">
+                            <div class="flex items-start gap-4 w-full">
+                                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-[80px] sm:size-[100px] shrink-0" data-alt="Smoky Beef Pizza" style="background-image: url(Img/pizza\ Meat\ Lovers.png);"></div>
+                                <div class="flex flex-1 flex-col justify-center gap-1">
+                                    <p class="text-gray-900 dark:text-white text-lg font-semibold leading-normal">Pizza Meat Lovers</p>
+                                    <p class="text-primary text-base font-medium leading-normal">Rp 75.000</p>
+                                    <button class="text-red-500 hover:text-red-700 dark:hover:text-red-400 text-sm font-medium leading-normal flex items-center gap-1 mt-1 w-fit">
+                                        <span class="material-symbols-outlined text-base">delete</span> Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="shrink-0 ml-auto sm:ml-0">
+                                <div class="flex items-center gap-2 text-gray-900 dark:text-white">
+                                    <button class="text-lg font-medium leading-normal flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors">-</button>
+                                    <input class="text-base font-medium leading-normal w-8 p-0 text-center bg-transparent focus:outline-none focus:ring-0 border-none" readonly="" type="" value="1">
+                                    <button class="text-lg font-medium leading-normal flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer transition-colors">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="inline-flex items-center gap-2 text-primary font-semibold mt-6 hover:underline" href="Menu_Makanan.html">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        Tambah Menu lain
+                    </a>
+                </div>
+                <div class="lg:col-span-1">
+                    <div class="bg-white dark:bg-gray-800/50 rounded-lg shadow-sm p-6 sticky top-24">
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Ringkasan Pesanan</h3>
+                        <div class="space-y-3 text-gray-600 dark:text-gray-300">
+                            <div class="flex justify-between">
+                                <span>Subtotal</span>
+                                <span>Rp 225.000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Pajak (11%)</span>
+                                <span>Rp 24.750</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Biaya Layanan</span>
+                                <span>Rp 2.500</span>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+                        <div class="flex justify-between items-center text-gray-900 dark:text-white">
+                            <span class="text-lg font-semibold">Total Pembayaran</span>
+                            <span class="text-2xl font-bold text-primary">Rp 252.250</span>
+                        </div>
+                        <button class="w-full mt-6 bg-[#FF9800] hover:bg-orange-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md">
+                            <!-- <a href="Konfirmasi.html"></a> Lanjut ke Pembayaran -->
+                             <a href="Lanjut.html">Lanjut ke Pembayaran</a>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="w-full border-t border-gray-200 bg-background-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+                    <div class="font-sm text-text-secondary">
+                        <p class="font-semibold text-text-primary">Resto Modern</p>
+                        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                    </div>
+                    <div class="flex gap-6 text-sm">
+                        <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                        <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+                    </div>
+                    <p class="text-sm text-text-secondary">© 2025 Smart Ordering System, All rights reserved</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

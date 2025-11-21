@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Menu Minuman - Resto Modern</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4CAF50",
+                        "cta": "#FF9800",
+                        "background-light": "#FFFFFF",
+                        "background-secondary": "#F5F5F5",
+                        "text-primary": "#1F2937",
+                        "text-secondary": "#6B7280",
+                    },
+                    fontFamily: {
+                        "display": ["Poppins", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="bg-background-light font-display text-text-primary">
+    <div class="flex h-auto min-h-screen w-full flex-col">
+        <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+            <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text=primary text-4xl">
+                        restaurant_menu
+                    </span>
+                    <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
+                </div>
+                <nav class="hidden items-center gap-8 md:flex">
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Home.html">Home</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_Favorit_Makanan.html">Favorit</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+                    <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors" href="cart.html">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                    </a>
+                </nav>
+                <button class="md:hidden">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </header>
+        <div class="container mx-auto flex flex-grow flex-col p-4 gap-6">
+            <main class="w-full">
+                <div class="mb-6 space-y-4">
+                    <div class="relative">
+                        <label class="flex flex-col min-w-40 h-12 w-full">
+                            <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+                                <div
+                                    class="text-gray-500 dark:text-gray-400 flex border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                                    <span class="material-symbols-outlined">search</span>
+                                </div>
+                                <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111811] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 h-full placeholder:text-gray-500 dark:placeholder:text-gray-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
+                                    placeholder="Cari makanan favoritmu..." value="" />
+                            </div>
+                        </label>
+                    </div>
+                    <div class="flex gap-3 overflow-x-auto pb-2">
+                        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium"><a href="Menu_Makanan.html">Makanan</a></button>
+                        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-primary text-white text-sm font-medium"><a href="Menu_Minuman.html">Minuman</a></button>
+                        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium"><a href="Menu_Paket.html">Paket</a></button>
+                        <button class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium"><a href="Menu_Snack.html">Snack</a></button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-[repeat(auto-fill,minmax(220px,1fr))] gap-6">
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of iced coffee latte"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAbil34Or4lxQKXgpNkj0uZ20yQV-njcqounGxOE9EqwQIHFBat7x_JqsJfyAbGgwZpKvJeES4u3nsVujl9DnwfJNpl-lWhcXEqxZJl99c3jeQSqlfHRkAQhJ6mr7rUwZ-vZ1lnvAHht7pmDSsA9BQMudAlRhhlymds19k-4SpXE2tkgeHl87gvAxLbTjcdw7_g-cEIEGhlbZ9a7yvi36t2GFDkoAByPzvRqlPkfE4OzJpifBWInkbxVlW2XLBX25cPV9Ev221wBAU");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Es Kopi
+                                Latte</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Kopi espresso dengan susu segar</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                22.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of iced lemon tea"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAuTElOGfA_TKOKiITCq4kEsWC3hTB71Kwh15yVvE_DyILuM9nikShSq7GWehQSKZSGwy4AcPLbUb4sIprJGpdNYV3UUCXlV1t1itxDCd6xc1mzpMhbDW7H7wDWR5orM6Nq89o61BwUcWCgnrs5a4nMcREuB518DSteIBNE78AkcWMZSzWTX_OmqSTcCn7ThV8dhG43m5VZqdABCLZ0ZszeT6nQZxwVNL8bpA3S3Fet3zlN92bVkf2nq6IZahO6wVnZdeDOPPnWQFA");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Es Teh
+                                Lemon</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Teh manis dengan perasan lemon</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                15.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of fresh orange juice"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBQCkhiZGfYLS4Oo0f0P2uvUIQCHLkjnAVaJVP6v3Sx-x-zJ8A8jB02KAh0pHmwYEljRn5bIeGvUTBIHLGo24LUrGoIu7MKVCnEPA-9QxTDCOleWC_YXkBOe1eJzimL7wZVXAGSKK49A57xYvD6RvGLsTgoXC1xxnZw_H8tbl3atEHjklGydDNsSK_P8WBeOXk4StHaDD74Kc1670IgTcUEv5NQd9enNDHDp1vffr2vgTpp86PCD-SRgZOh6gXFpSc19WF_zmscvvs");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Jus Jeruk
+                                Segar</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Perasan buah jeruk asli</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                18.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A cup of hot cappuccino with latte art"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA9zqdmm_QM8DCmiq1efoEb8RO-KGuH8FPnu3tk-L4scq8bZ81FcFzFlsX9FwFLEBwK86P3CqymCsIgur3Uo79cJ-cTz5aDOAbCbp18Yqp_oEf9YfSbAhn_rQYE4c3XOlQlAwxFFsIgRAzFCTMGS7ZFGZsKzoiFa7KCfuyZDbLgQgjzOZFgW9YMAqRIdCsD4h0g3I49wU74TbX5jWnlFJxc44jtenOwxVbbiTP3s6aUitr9_4w3Mn4ZAsTtppLE1iqj8t1G5-oRy3I");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Cappuccino
+                                Panas</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Kopi dengan busa susu tebal</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                20.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A blue ocean soda drink"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdGB7FjZtiqVdwhYPMH1heztN7_vwX6Wsvm0o94f7c5nz9q6LkRNRQ1P7Ag0rxOTqoPv4db7qQ0Z6HAGgLj2Wpo6edQTPBHQY6MMu76VQHgmaolqSjhM5myentXtY188avOO2qPbS9B7O_nEm95-GrrJc6OXmMn1BhcpJtJaWm_r12l-bGNW-Vu9H-ndw0RQxao18e6p8jEfYhelmiDndqND8qFUGxlNr7mqxJh8PJzJWZyf7ulEiT4haCMA5D_gQAqXvoqdMywBY");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Ocean Blue
+                                Soda</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Soda biru dengan sirup leci</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                25.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of avocado juice"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAYLPolV4oMawdrkQfpzV3AzUivEtrO356Lh7GneJLEwxnRnBog3dIo5tGXqckXG7jkojfd3hjV_DJvXEJv8x5NXecB_DD5mQ00XJe1CjBTCzWSxQPz6eUyZjgO62YhM6HSR4OhGyM0HS6Zv7JIjchV6H8_jlMmtzpU1u4qc4NyUj3KgfZsup7eMnUbjV-oKCqs8_FXH7KRKAt-iiywdXxLzyj7uFIucs-4Bql332gQqC3OHswZWflycf79Wo3T6m1vRMuPH9-S_fc");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Jus Alpukat
+                            </p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Jus alpukat kental dengan susu</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                20.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A refreshing virgin mojito mocktail"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBPo9yZp6RPvwSzPv0kwjZQ3oCfI49b8L6-3YxxVDcsNRdZeFY3N6Ux5fqXSDNBaB_Ml1-hFOxXpNFIiYIM6oyzgCrFuOwbdEwu-bAC_9atRSWIfWIpkX6hW05wBM-uUBhIDBbp1rX1uX-9OSVs4RBmwynKspCHWCgCe-UvLnoQi8Fw3iRgX6MTlwniOodVPnKGvQclyOINiqUNerrIaBwLI_uI9wVydus6dCJW1LtrJNzMI5UzCJqQdxbY0P9aZg_6JxXN_09IMNY");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Virgin
+                                Mojito</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Mocktail soda, mint, dan jeruk nipis</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                28.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of iced Thai tea"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC-aZYF2E2NeVHD1Xp3eVZiU64LAQ2qsPuemNx-6hTdrVgFTBFAGJdJZDyRpkXzt_FpycXlw2JXB9TywxjPl9ybQQs-g3vriWHOJhtThbVpiwYXEV6QiZJ9Py7b_kR-oz8erPIV1B5spkvnYY6pCUVIhlx5qEw3FaXzS7kcOoC4ReQ4REZ9jTCoX7f6_9jbN06HMii3VXsJZ71hA_SAGGV3WnV4UMXJqYnX33izF4kUoZ7QK7_9gM6KkR41FIfoA4hfuN_MCrZVnIY");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Es Thai Tea
+                            </p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Teh khas Thailand dengan susu</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                18.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of fresh strawberry juice"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAgIsRVKoa54WZMa2LEcEWPyljnPGaF6BsZa9wF58zHvtgW1ULxM9T2-NX7G6DYC6Kfm0PBP3i5S8M2RdpIAHr3Eju4OLjNQWxgtPj555cyLGDRcIMw7ps1Dt132WHTr-rk5rn6Js0vinFx9rd8TznhcaKS_XDoexhW_ksqmGKHEp2S7D4eQmZkdu-hShyEnultEtnqHxjfiRROw6A88PVxCisUbs6XrYrEobfuQqu2B6XOSWhpo5lKUC76Z7Z2xKUpdPARADwBwUY");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Jus
+                                Stroberi</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Jus dari buah stroberi segar pilihan</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                20.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A cup of hot matcha latte"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCm0GVaGvJJfr3JOff4TlUav71X_B5gC9qG-3q7d_nYudvXjLPurvZPvdRoyO0cU1dD6pDHNQNBIeMxIZgrrnOOAe_cW1xPZUpkN8dwdUvsvhDqRa65N9RR7XNrj_guFdtM85Q52kjYKXO-6ByvsegBtOPEkAkB3-arVT0J94maNkD97jxegUbT6bQOXZgD4HZ4hZL_Bo8c7Eh1IhJfbGh6CYmZxQRE7xGLAvbG2c4E-yMUabMyEBWhXpgp5Rdz1h8rvK8ptmsJ4Ic");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Matcha
+                                Latte</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Bubuk matcha premium dengan susu</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                24.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of mango smoothie"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC9YDVyy5Eo7iDGIqYch2qDTJtWKU-UPmIbAClkRfQheNmMq4Qlkw2agJXjDbPLC2kmzwLZtKUHe1kNbYFmhy9y8SM-BA88LDWek6ES7hmjc27ombNLawdV9SwyfNRqO39e9FvcN7p1C4rK5Hz2nGpKe2Ex3pnl026JYBb8-w_HiIe6QOKYZcQDPi-5_LHDsEQSF-kapJQ-UToc0IIQ5RYlpMpNNjhuewKcDW1aFhEP8Xp4wyGEe4zfq9QfuxVyNSoLifUH231t-xY");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Jus Mangga
+                            </p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Jus mangga manis dan menyegarkan</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                20.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of iced lychee tea"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuADutui8EXgTTsm7eC2fiEZCcaQX9mvyO-Nnkw1RQtNbVMaB2Bc1WuHPdps5DbizoHN4BmH3L1x9-ymMfaMO_dcjqbKG4eTFrLgJ9FoOqXnfcItV7wLQbNtWayJX15PhyDDT_8CB4NkXRlQgJEcPVGj_WrgChUsav6InYPJV-wb7TUgYiLNU2byW1um-zY8JXYeSMYRN1w0_918M8Z-GVjJaIE5toS2sue34ZeasLdebMJvrX7bRW6UT3P5FyIVMBU5G9MzjOJLuCE");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Es Teh Leci
+                            </p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Teh dengan sirup dan buah leci asli</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                18.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of chocolate milkshake"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDjWr9n5HzZuR0rqRcHjbX5re_prQAwKOZD0i11vFLMrg6lI5ARRw8F2Xszu3Av-lNQ_bObgDdribEOgjqmDKBQXtlQHymBdoxpuXeWyO59j4eOKLHyLiCXEuuqtCh_0gy2jjt8BUYlwbWoOheStweW4WrUA1o2oraUhOQmoFxyn7dy_z23TfycylcNzMTEJIKp_wSDUJ74SL1t4o14t4Ut102K_3zUtbuldSl4zhnkLOBqf2MtcBJsNUCaInAvCij1RJekh7XBes4");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Milkshake
+                                Cokelat</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Es krim cokelat diblender dengan susu</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                23.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of red velvet latte"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAjWdUHG77mEimM1DAmgP7yfkgWrbt3u_kcWz2nz8HyneJQtL6aVPJ8qAMnxiMCvoTnsAyuy_LI--US_HZAGHY9QewIguXkOsHeQD-IsT5LUE9f0QW3BG9X0LbNUAVGamNOwAeAbplHW1FPM7JP07Bbs0FO0vdabluWmmIk_x8wGeDAh8L5xDc3UziXUyuf2Aj_08JYHmleLVq-R5drLsHWqM_uO0-ePGEGyNb63xfJz-cGxRCjcJLHSaKIL04p-0Juy9TaqwEE8zI");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Red Velvet
+                                Latte</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Minuman red velvet dengan steamed milk</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                25.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of mineral water"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4TUABMdAdJL_FMDrPZ3YhYYOUnmoJ3VHpjNZZmPwU9MVZpwuNWHOL4J6roju7jYx1e4cNPves-z4CwtheIGfpfd0v0lKU3wjF08bFJmpTUQ9yHJrlaVkjoerWuYB7xFzujy1QMKaXMBLnDmocu0t5w78NEwyC-CXUgAFCv_e9sQFwJbZKv9YJs7q4wl09XQEMP9soxma9EBfURUb5DK48cgEAK6VC30n5oE8axrkB2jYcCZ-GWteCe3cBggEEmoEVIU8VCZtLtrs");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Air Mineral
+                            </p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Air mineral botol dingin</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                8.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm overflow-hidden transition-all hover:shadow-lg">
+                        <div class="w-full bg-center bg-no-repeat aspect-video bg-cover"
+                            data-alt="A glass of strawberry mojito"
+                            style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBsgT0PHlfESJaEEt5c3jjg-pEtcgn4YvryvGxpjpix00UHFBu9nrZqwk8HldFahrXb48e7z5E9QcyKeRl5NGiVK_-n2i2USxMInx8Nfbu9TYvnKabFrqmqouB_j8AUwNIXPI8LaXnfKBkZv8qcUpfTvESwCQkZWkiwPVEytyJVXRpKsE6zigtaNWGHMBUhzUDMW22bXdQeaseBGX0IvlUd9_mOPbeHMB_H-z0DvwZ_0shC3GIGzFIaySz_I2Z43-bXAdnQsWh5dI4");'>
+                        </div>
+                        <div class="p-4 flex flex-col flex-grow">
+                            <p class="text-[#111811] dark:text-white text-base font-semibold leading-normal">Strawberry
+                                Mojito</p>
+                            <p
+                                class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">
+                                Mocktail soda rasa stroberi segar</p>
+                            <p class="text-[#111811] dark:text-gray-100 text-base font-bold leading-normal mt-2">Rp
+                                28.000</p>
+                            <button
+                                class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#F57C00]">
+                                <span class="material-symbols-outlined">add_shopping_cart</span>
+                                Tambah Pesanan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <footer class="w-full border-t border-gray-200 bg-background-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+                    <div class="text-sm text-text-secondary">
+                        <p class="font-semibold text-text-primary">Resto Modern</p>
+                        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                    </div>
+                    <div class="flex gap-6 text-sm">
+                        <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                        <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+                    </div>
+                    <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

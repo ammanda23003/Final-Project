@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tulis Ulasan - Resto Modern</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4CAF50",
+            "background-light": "#f8f7f5",
+            "background-dark": "#231b0f",
+            "light-text": "#333333",
+            "dark-text": "#f8f7f5",
+            "light-border": "#eadecd",
+            "dark-border": "#4a3c27"
+          },
+          fontFamily: {
+            "display": ["Work Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-light-text dark:text-dark-text">
+    <header class="sticky top-0 z-10 w-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-light-border dark:border-dark-border">
+      <div class="container mx-auto flex items-center justify-between px-4 py-4">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[#4CAF50] text-3xl">restaurant_menu</span>
+          <h2 class="text-xl font-bold tracking-tight">Resto Modern</h2>
+        </div>
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="Home.html" class="text-sm font-bold text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Home</a>
+          <a href="Menu_Makanan.html" class="text-sm font-bold text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Menu</a>
+          <a href="#" class="text-sm font-bold text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Favorit</a>
+          <a href="#" class="text-sm font-bold text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Promo</a>
+          <a href="#" class="text-sm font-bold text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Bantuan</a>
+          <button class="relative h-10 w-10 flex items-center justify-center rounded-full text-light-text dark:text-dark-text">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <!-- <span class="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center rounded-full bg-primary text-xs font-bold text-white">3</span> -->
+          </button>
+        </nav>
+      </div>
+    </header>
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+      <h1 class="text-[32px] font-bold leading-tight pb-6">Tulis Ulasan Anda</h1>
+      <form class="space-y-8">
+        <div>
+          <label class="block text-base font-medium pb-2">Nama Anda</label>
+          <input type="text" placeholder="Masukkan Nama Anda" class="w-full rounded-lg border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark p-4 text-base placeholder:text-light-text/50 dark:placeholder:text-dark-text/50 focus:outline-none focus:ring-2 focus:ring-primary/50"/>
+        </div>
+        <div>
+          <p class="text-base font-medium pb-3">Beri Peringkat Anda</p>
+          <div class="flex gap-2 text-4xl">
+            <span class="material-symbols-outlined text-primary cursor-pointer">star</span>
+            <span class="material-symbols-outlined text-primary cursor-pointer">star</span>
+            <span class="material-symbols-outlined text-primary cursor-pointer">star</span>
+            <span class="material-symbols-outlined text-light-border dark:text-dark-border cursor-pointer">star</span>
+            <spam class="material-symbols-outlined text-light-border dark:text-dark-border cursor-pointer">star</spam>
+          </div>
+        </div>
+        <div>
+          <label class="block text-base font-medium pb-2">Detail Ulasan</label>
+          <textarea rows="5" placeholder="Bagikan pengalaman Anda di sini... Apa yang Anda suka atau tidak suka?" class="w-full rounded-lg border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark p-4 text-base placeholder:text-light-text/50 dark:placeholder:text-dark-text/50 resize-y focus:outline-none focus:ring-2 focus:ring-primary/50"></textarea>        
+        </div>
+        <div>
+          <p class="text-base font-medium pb-3">Tambahkan Foto (Opsional)</p>
+          <div class="flex items-center gap-4">
+            <div class="h-20 w-20 flex items-center justify-center rounded-full bg-light-border/50 dark:bg-dark-border/50">
+              <span class="material-symbols-outlined text-light-text/60 dark:text-dark-text/60 text-3xl">add_a_photo</span>
+            </div>
+            <button type="button" class="px-4 py-2 text-sm font-medium rounded-lg border border-light-border dark:border-dark-border text-light-text dark:text-dark-text bg-background-light dark:bg-background-dark hover:bg-light-border/30 dark:hover:bg-dark-border/30 transition-colors">
+              Upload Foto
+            </button>
+          </div>
+        </div>
+        <div>
+          <p class="text-base font-medium pb-3">Pilih Tag Yang Relevan (Opsional)</p>
+          <div class="flex flex-wrap gap-3">
+            <button type="button" class="px-4 py-2 text-sm font-medium rounded-full border border-primary/5- text-primary bg-primary/10 hover:bg-primary/20 transition-colors">Rasa Enak</button>
+            <button type="button" class="px-4 py-2 text-sm font-medium rounded-full border border-light-border dark:border-dark-border text-light-text/80 dark:text-dark-text/80 bg-background-light dark:bg-background-dark hover:bg-light-border/30 dark:hover:bg-dark-border/30 transition-colors">Pelayanan Cepat</button>
+            <button type="button" class="px-4 py-2 text-sm font-medium rounded-full border border-light-border dark:border-dark-border text-light-text/80 dark:text-dark-text/80 bg-background-light dark:bg-background-dark hover:bg-light-border/30 dark:hover:bg-dark-border/30 transition-colors">Hraga Terjangkau</button>
+            <button type="button" class="px-4 py-2 text-sm font-medium rounded-full border border-light-border dark:border-dark-border text-light-text/80 dark:text-dark-text/80 bg-background-light dark:bg-background-dark hover:bg-light-border/30 dark:hover:bg-dark-border/30 transition-colors">Tempat Nyaman</button>
+          </div>
+        </div>
+        <div class="pt-4">
+          <button type="submit" class="w-full sm:w-auto px-8 py-3 bg-[#FF9800] text-white text-base font-bold rounded-lg hover:bg-orang-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300">
+            Kirim Ulasan
+          </button>
+        </div>
+      </form>
+    </main>
+    <footer class="w-full border-t border-gray-200 bg-background-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+                    <div class="font-sm text-text-secondary">
+                        <p class="font-semibold text-text-primary">Resto Modern</p>
+                        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                    </div>
+                    <div class="flex gap-6 text-sm">
+                        <a class="text-text-secondary hover:text-primary" href="#">Bantuan</a>
+                        <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+                    </div>
+                    <p class="text-sm text-text-secondary">© 2025 Smart Ordering System, All rights reserved</p>
+                </div>
+            </div>
+        </footer>
+</body>
+</html>

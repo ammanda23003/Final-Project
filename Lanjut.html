@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Data Diri Pelanggan &amp; Ringkasan Pesanan - Resto Modern</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4CAF50",
+                        "secondary": "#FF9800",
+                        "background-light": "#f6f7f6",
+                        "background-dark": "#151d15",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200">
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <header
+            class="sticky top-0 z-10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center h-16 justify-between">
+                    <div class="flex items-center gap-4">
+                        <a class="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors"
+                            href="cart.html">
+                            <span class="material-symbols-outlined">arrow_back</span>
+                            <span class="hidden sm:inline text-sm font-semibold">Kembali</span>
+                        </a>
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-3xl">restaurant_menu</span>
+                            <h2 class="text-gray-900 dark:text-white text-xl font-bold leading-tight tracking-tight">
+                                Restoran Nusantara</h2>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <button class="md:hidden">
+                            <span class="material-symbols-outlined text-gray-800 dark:text-gray-200">menu</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-4 py-8 md:py-12 flex-grow">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 xl:gap-12">
+                <div class="lg:col-span-3">
+                    <div class="bg-white dark:bg-gray-800/50 rounded-lg shadow-sm p-6 md:p-8">
+                        <h1
+                            class="text-gray-900 dark:text-white text-2xl md:text-3xl font-bold leading-tight tracking-tight mb-6">
+                            Data Diri Pelanggan</h1>
+                        <form class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                    for="nama-lengkap">Nama Lengkap</label>
+                                <input
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm"
+                                    id="nama-lengkap" name="nama-lengkap" placeholder="Masukkan nama lengkap Anda"
+                                    type="text" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                    for="email">Email</label>
+                                <input
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm"
+                                    id="email" name="email" placeholder="contoh@email.com" type="email" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+                                    for="nomor-telepon">Nomor Telepon</label>
+                                <input
+                                    class="block w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-primary focus:ring-primary dark:bg-gray-700 dark:text-white sm:text-sm"
+                                    id="nomor-telepon" name="nomor-telepon" placeholder="081234567890" type="tel" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <div class="bg-white dark:bg-gray-800/50 rounded-lg shadow-sm p-6 sticky top-24">
+                        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Ringkasan Pesanan Anda</h2>
+                        <div class="space-y-4 max-h-64 overflow-y-auto pr-2 mb-4">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-md size-16 shrink-0"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBGv0ckuRBrZ51VHbuoJ4hrsoGzE-zXVofxw7OwO4dAuREI2qjuehktxAoWT0w1GCvNQWa5CtWkTOzLKs3yroVrd6YXNUNl7fzk7ka7UyjJ40GjyEEwRdX82zJyJcyTI1K40w8OU2LAwMgqNdaDW9uuecbHQkMFR1uU1oYktNPpJgFSTkCyYQVoGA8-cVUTYXIfk8a2R1L_E_yV88Jgp_HhSd7lRGd5ipxtET7NRYiu8OezKdlwVnoeUuloH5qrE7kc3ZsuFqkpTtU");'>
+                                </div>
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-gray-800 dark:text-white">Sate Ayam</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">1 x Rp 25.000</p>
+                                </div>
+                                <p class="font-medium text-gray-700 dark:text-gray-300">Rp 25.000</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-md size-16 shrink-0"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAzf_bwiDNAfXqLX6fSPcGhj30oHZC8435wjB4dH3_xREt_J0JmtXv7aceW4uLwlUDbfBqaPSZfpcGRzWgMeUTLWRvsvys7BW6wNEp3cGM3pzwvCP2Tje9a1uE4IJ5OkwpMyYnOQWV_kmutIpvEPm_dW6N280KnrsRmDH67qbJ_hMHCIjoZfsd3O9f1nHIG-0dX-mMxIYkDnCmmZMLKtezHbdcjljX94LVe-Mo2KyYpIsFov2QYYF138xW9XBfJhl9Q_xqEDdpPnJE");'>
+                                </div>
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-gray-800 dark:text-white">Nasi Goreng Spesial</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">2 x Rp 35.000</p>
+                                </div>
+                                <p class="font-medium text-gray-700 dark:text-gray-300">Rp 70.000</p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-md size-16 shrink-0"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDTOstkEmg3SqncI89icWvVM_XGmbxeRuUvUabUf287EjkUSXqbn_P9Eo0c-mZG4htizZ7Hmvi_2DyJNPGzBgJSSxdqpC9_bs1a07knapwQIct7i7kN8x9GZdA7pdh0xukUtEhhi40WDv9y13HT7LawS1t0MupOYOX_eTHkABcHaNNLlt1t4PcfQ2wlJVBSgeB_CRawbakXvLCdt7cszzVaMYxtx1BLD7l_RktyyoG8ZdvpAuAPuNtkNWHPRsydWmlk7aNVWz02ze4");'>
+                                </div>
+                                <div class="flex-grow">
+                                    <p class="font-semibold text-gray-800 dark:text-white">Es Teh Manis</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">1 x Rp 8.000</p>
+                                </div>
+                                <p class="font-medium text-gray-700 dark:text-gray-300">Rp 8.000</p>
+                            </div>
+                        </div>
+                        <div
+                            class="border-t border-gray-200 dark:border-gray-700 pt-4 space-y-2 text-sm text-gray-600 dark:text-gray-300">
+                            <div class="flex justify-between">
+                                <span>Subtotal</span>
+                                <span>Rp 103.000</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Pajak (10%)</span>
+                                <span>Rp 10.300</span>
+                            </div>
+                        </div>
+                        <div class="border-t border-gray-200 dark:border-gray-700 my-4"></div>
+                        <div class="flex justify-between items-center text-gray-900 dark:text-white">
+                            <span class="text-lg font-semibold">Total</span>
+                            <span class="text-2xl font-bold text-primary">Rp 113.300</span>
+                        </div>
+                        <button
+                            class="w-full mt-6 bg-[#FF9800] hover:bg-orange-500 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-md">
+                            <a href="Pembayaran.html">Lanjutkan ke Pembayaran</a> 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="w-full border-t border-gray-200 bg-background-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gal-4">
+                    <div class="text-sm text-text-secondary">
+                        <p class="font-semibold text-text-primary">Resto Modern</p>
+                        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                    </div>
+                    <div class="flex gap-6 text-sm">
+                        <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                        <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+                    </div>
+                    <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+
+</html>

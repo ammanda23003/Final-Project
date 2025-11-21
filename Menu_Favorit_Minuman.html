@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Favorit - Resto Modern</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4CAF50",
+            "accent": "#FF9800",
+            "background-light": "#F5F5F5",
+            "background-dark": "#1e1e1e",
+            "surface-light": "#FFFFFF",
+            "surface-dark": "#2c2c2c",
+            "text-light": "#333333",
+            "text-dark": "#F5F5F5"
+          },
+          fontFamily: {
+            "display": ["Poppins", "sans-serif"]
+          },
+          borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+        },
+      },
+    }
+  </script>
+  <style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-light dark:text-text-dark">
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <header class="sticky top-0 z-10 w-full bg-surface-light dark:bg-surface-dark shadow-sm border-b border-gray-200 dark:border-gray-700">
+            <div class="container mx-auto flex items-center p-4 gap-3">
+                <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
+                <h2 class="text-2xl font-bold tracking-tight flex-1">Resto Modern</h2>
+                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Home.html">Home</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_Makanan.html">Menu</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+                    <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors" href="cart.html">
+                        <span class="material-symbols-outlined text-base">shopping_cart</span>
+                    </a>
+                </nav>
+                <div class="flex md:hidden w-12 items-center justify-end">
+                    <span class="material-symbols-outlined">Menu</span>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-4 py-8 flex-grow">
+            <h1 class="text-3xl font-bold tracking-tight text-left pb-4">Menu Favorit</h1>
+            <div class="py-3">
+                <label class="flex flex-col min-w-40 h-12 w-full max-w-lg">
+                    <div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-surface-light dark:bg-surface-dark border border-gray-300 dark:border-gray-600 focus-within:ring-2 focus-within:ring-primary">
+                        <div class="text-text-light/60 dark:text-text-dark/60 flex items-center justify-center pl-4">
+                            <span class="material-symbols-outlined text-2xl">search</span>
+                        </div>
+                        <input class="form-input flex w-full win-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light dark:text-text-dark focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-text-light/60 dark:placeholder:text-text-dark/60 px-4 pl-2 text-base font-normal leading-normal" placeholder="Cari menu favorit..." value=""/>
+                    </div>
+                </label>
+            </div>
+            <div class="flex gap-3 py-3 overflow-x-auto">
+                <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-300 dark:border-gray-600 px-4 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <p class="text-sm font-medium">Semua</p>
+                </button>
+                <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-300 dark:border-gray-600 px-4 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <p class="text-sm font-medium"><a href="Menu_Favorit_Makanan.html">Makanan</a></p>
+                </button>
+                <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary text-white px-4">
+                    <p class="text-sm font-medium"><a href="Menu_Favorit_Minuman.html">Minuman</a></p>
+                </button>
+                <button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-300 dark:border-gray-600 px-4 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    <p class="text-sm font-medium">Paketan</p>
+                </button>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 py-6">
+                <div class="flex flex-col bg-surface-light dark:bg-surface-dark rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="relative">
+                        <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover" data-alt="Lemon Tea" style="background-image: url(Img/Es\ Teh\ Lemon.png);"></div>
+                        <button class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/80 dark:bg-black/50 rounded-full text-red-500 hover:bg-white dark:hover:bg-black/70">
+                            <span class="material-symbols-outlined text-xl">favorite</span>
+                        </button>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <p class="text-lg font-semibold leading-normal flex-grow">Es Teh Lemon</p>
+                        <p class="text-text-light/80 dark:text-text-dark/80 text-sm font-normal leading-normal mt-1">Teh manis dingin dengan perasan lemo segar.</p>
+                        <p class="text-text-light dark:text-text-dark text-base font-semibold leading-normal mt-2">Rp 15.000</p>
+                        <button class="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-accent text-white h-10 text-sm font-bold transition-transform duration-300 hover:scale-105">
+                            <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                            <span>Tambah Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-surface-light dark:bg-surface-dark rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="relative">
+                        <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover" data-alt="Es Kopi Latte" style="background-image: url(Img/Es\ Kopi\ Latte.png);"></div>
+                        <button class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/80 dark:bg-black/50 rounded-full text-red-500 hover:bg-white dark:hover:bg-black/70">
+                            <span class="material-symbols-outlined text-xl">favorite</span>
+                        </button>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <p class="text-lg font-semibold leading-normal flex-grow">Es Kopi Latte</p>
+                        <p class="text-text-light/80 dark:text-text-dark/80 text-sm font-normal leading-normal mt-1">Kopi espresso dengan susu segar.</p>
+                        <p class="text-text-light dark:text-text-dark text-base font-semibold leading-normal mt-2">Rp 22.000</p>
+                        <button class="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-accent text-white h-10 text-sm font-bold transition-transform duration-300 hover:scale-105">
+                            <span class="material-symbols-outlined text-xl">add_shopping_cart</span>
+                            <span>Tambah Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-surface-light dark:bg-surface-dark rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="relative">
+                        <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover" data-alt="Ocean Blue Soda" style="background-image: url(Img/Ocean\ Blue\ Soda.png);"></div>
+                        <button class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/80 dark:bg-black/50 rounded-full text-red-500 hover:bg-white dark:hover:bg-black/70">
+                            <span class="material-symbols-outlined text-xl">favorite</span>
+                        </button>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <p class="text-lg font-semibold leading-normal flex-grow">Ocean Blue Soda</p>
+                        <p class="text-text-light/80 dark:text-text-dark/80 text-sm font-normal leading-normal mt-1">Soda biru dengan tambahan sirup leci yang segar.</p>
+                        <p class="text-text-light dark:text-text-dark text-base font-semibold leading-normal mt-2">Rp 25.000</p>
+                        <bitton class="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-accent text-white h-10 text-sm font-bold transition-transform duration-300 hover:scale-105">
+                            <spcan class="material-symbols-outlined text-xl">add_shopping_Cart</spcan>
+                            <span>Tambah Pesanan</span>
+                        </bitton>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-surface-light dark:bg-surface-dark rounded-lg shadow-md overflow-hidden transtiion-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="relative">
+                        <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover" data-alt="Matcha Latte" style="background-image: url(Img/Matcha\ Latte.png);"></div>
+                        <button class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/80 dark:bg-black/50 rounded-full text-red-500 hover:bg-white dark:hover:bg-black/70">
+                            <span class="material-symbols-outlined text-xl">favorite</span>
+                        </button>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <p class="text-lg font-semibold leading-normal flex-grow">Matcha Latte</p>
+                        <p class="text-text-light/80 dark:text-text-dark/80 text-sm font-normal leading-normal mt-1">Minuman dengan bubuk matcha premium dan susu segar.</p>
+                        <p class="text-text-light dark:text-text-dark text-base font-semibold leading-normal mt-2">Rp 24.000</p>
+                        <button class="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-accent text-white h10 text-sm font-bold transtiion-transform duration-300 hover:scale-105">
+                            <span class="material-symbols-outlined text-xl">add_shopping_Cart</span>
+                            <span>Tambah Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-surface-light dark:bg-surface-dark rounded-lg shadow-md overflow-hidden transtiion-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="relative">
+                        <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover" data-alt="Cappuccino Panas" style="background-image: url(Img/Cappuccino\ Panas.png);"></div>
+                        <button class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/80 dark:bg-black/50 rounded-full text-red-500 hover:bg-white dark:hover:bg-black/70">
+                            <span class="material-symbols-outlined text-xl">favorite</span>
+                        </button>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <p class="text-lg font-semibold leading-normal flex-grow">Cappuccino Panas</p>
+                        <p class="text-text-light/80 dark:text-text-dark/80 text-sm font-normal leading-normal mt-1">Kopi dengan bisa sisi yang tebal</p>
+                        <p class="text-text-light dark:text-text-dark text-base font-semibold leading-normal mt-2">Rp 20.000</p>
+                        <button class="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-accent text-white h10 text-sm font-bold transtiion-transform duration-300 hover:scale-105">
+                            <span class="material-symbols-outlined text-xl">add_shopping_Cart</span>
+                            <span>Tambah Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex flex-col bg-surface-light dark:bg-surface-dark rounded-lg shadow-md overflow-hidden transtiion-all duration-300 hover:shadow-xl hover:-translate-y-1">
+                    <div class="relative">
+                        <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover" data-alt="Jus Alpukat" style="background-image: url(Img/Jus\ Alpukat.png);"></div>
+                        <button class="absolute top-2 right-2 flex items-center justify-center size-8 bg-white/80 dark:bg-black/50 rounded-full text-red-500 hover:bg-white dark:hover:bg-black/70">
+                            <span class="material-symbols-outlined text-xl">favorite</span>
+                        </button>
+                    </div>
+                    <div class="p-4 flex flex-col flex-grow">
+                        <p class="text-lg font-semibold leading-normal flex-grow">Jus Alpukat</p>
+                        <p class="text-text-light/80 dark:text-text-dark/80 text-sm font-normal leading-normal mt-1">Jus alpukat kental dengan susu</p>
+                        <p class="text-text-light dark:text-text-dark text-base font-semibold leading-normal mt-2">Rp 20.000</p>
+                        <button class="mt-4 w-full flex items-center justify-center gap-2 rounded-lg bg-accent text-white h10 text-sm font-bold transtiion-transform duration-300 hover:scale-105">
+                            <span class="material-symbols-outlined text-xl">add_shopping_Cart</span>
+                            <span>Tambah Pesanan</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="w-full border-t border-gray-200 bg-background-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gal-4">
+                    <div class="text-sm text-text-secondary">
+                        <p class="font-semibold text-text-primary">Resto Modern</p>
+                        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                    </div>
+                    <div class="flex gap-6 text-sm">
+                        <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                        <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+                    </div>
+                    <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved</p>
+                </div>
+            </div>
+        </footer>
+    </div>    
+</body>
+</html>

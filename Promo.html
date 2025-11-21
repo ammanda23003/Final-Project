@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Promo & Diskon — Resto Modern</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+    body { min-height: max(884px, 100dvh); }
+  </style>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4CAF50",
+            secondary: "#FF9800",
+            "background-light": "#f8f7f5",
+            "background-dark": "#231b0f",
+            "light-text": "#333333",
+            "dark-text": "#f8f7f5",
+            "light-border": "#eadecd",
+            "dark-border": "#4a3c27",
+          },
+          fontFamily: { display: ["Work Sans", "sans-serif"] },
+          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
+          boxShadow: {
+            card: "0 6px 18px rgba(0,0,0,0.08)",
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-background-light font-display text-light-text">
+  <!-- Header -->
+  <header class="sticky top-0 z-20 w-full bg-background-light/85 backdrop-blur-sm border-b border-light-border">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[#4CAF50] text-[28px] leading-none">restaurant_menu</span>
+          <h2 class="text-[18px] font-bold tracking-tight">Resto Modern</h2>
+        </div>
+        <nav class="hidden md:flex items-center gap-6">
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Home.html">Home</a>
+          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Menu_Makanan.html">Menu</a>
+          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Menu_Favorit_Makanan.html">Favorit</a>
+          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="#">Bantuan</a>
+          <button class="relative h-10 w-10 flex items-center justify-center rounded-full text-light-text">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <!-- <span class="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center rounded-full bg-primary text-xs font-bold text-white">3</span> -->
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Title -->
+    <h1 class="text-[28px] sm:text-[32px] font-bold leading-tight pb-4">Promo & Diskon</h1>
+
+    <!-- Hero banner (exact layered style) -->
+    <section class="relative rounded-xl overflow-hidden mb-8">
+      <div class="w-full h-[220px] sm:h-[280px] lg:h-[320px]">
+        <img src="Img/Pizza Peperoni.png" alt="Promo Pizza Hari Ini"
+             class="w-full h-full object-cover" />
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/45 via-black/35 to-transparent"></div>
+      <div class="absolute inset-0 flex items-center">
+        <div class="px-5 sm:px-8">
+          <div class="text-white">
+            <p class="text-[14px] sm:text-[16px] font-semibold opacity-95">Promo penawaran hari ini</p>
+            <p class="text-[34px] sm:text-[40px] font-extrabold text-yellow-300 leading-tight mt-1">20% OFF</p>
+            <button
+              class="mt-3 sm:mt-4 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] sm:text-[14px] font-bold hover:bg-orange-500 transition-colors">
+              <a href="Promo_Pizza.html">Lihat Detail</a> 
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Promo cards -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Card 1 -->
+      <article class="rounded-xl border border-light-border bg-white overflow-hidden shadow-card">
+        <div class="w-full aspect-[4/3]">
+          <img src="Img/Promo Coffe.png" alt="Buy 1 Get 1 Coffee" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-4">
+          <h3 class="text-[16px] font-bold">Buy 1 Get 1 Coffee</h3>
+          <button
+            class="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] font-bold hover:bg-orange-500 transition-colors">
+            Lihat Promo
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 2 -->
+      <article class="rounded-xl border border-light-border bg-white overflow-hidden shadow-card">
+        <div class="w-full aspect-[4/3]">
+          <img src="Img/Promo Burger.png" alt="Diskon 50% Paket Burger" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-4">
+          <h3 class="text-[16px] font-bold">Diskon 50% Paket Burger</h3>
+          <button
+            class="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] font-bold hover:bg-orange-500 transition-colors">
+            Lihat Promo
+          </button>
+        </div>
+      </article>
+
+      <!-- Card 3 -->
+      <article class="rounded-xl border border-light-border bg-white overflow-hidden shadow-card">
+        <div class="w-full aspect-[4/3]">
+          <img src="Img/Promo Ramen.png" alt="Free Ocha Ramen Day" class="w-full h-full object-cover" />
+        </div>
+        <div class="p-4">
+          <h3 class="text-[16px] font-bold">Free Ocha Ramen Day</h3>
+          <button
+            class="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] font-bold hover:bg-orange-500 transition-colors">
+            Lihat Promo
+          </button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-10 border-t border-light-border">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 text-sm text-light-text/75">
+      <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
+        <div>
+          <p class="font-semibold text-light-text">Resto Modern</p>
+          <p>Jl. Raya Modern No. 104, Surabaya, Indonesia</p>
+        </div>
+        <div class="flex gap-6">
+          <a class="hover:text-primary" href="#">Bantuan</a>
+          <a class="hover:text-primary" href="#">FAQ</a>
+        </div>
+        <p>© 2023 Smart Ordering System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

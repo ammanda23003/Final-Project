@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Checkout - Resto Modern</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&amp;display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ff9800",
+                        "accent": "#4CAF50",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#231b0f",
+                        "text-light": "#1d160c",
+                        "text-dark": "#f8f7f5",
+                        "subtext-light": "#757575",
+                        "subtext-dark": "#a1a1aa",
+                        "border-light": "#e5e7eb",
+                        "border-dark": "#404040",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px",
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+    <style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <header class="sticky top-0 z-10 w-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-border-light dark:border-border-dark">
+            <div class="container mx-auto">
+                <div class="flex items-center p-4">
+                    <button class="text-text-light dark:text-text-dark flex size-10 items-center justify-center shrink-0 rounded-full hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                        <span class="material-symbols-outlined text-base">arrow_back</span>
+                    </button>
+                    <h1 class="text-xl font-bold leading-tight tracking-tight flex-1 text-center pr-10">Checkout</h1>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto p-4 md:p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
+                <div class="lg:col-span-2 order-2 lg:order-1">
+                    <div class="sticky top-28">
+                        <h2 class="text-2xl font-bold leading-tight tracking-tight mb-4">Ringkasan Pesanan</h2>
+                        <div class="bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-border-light dark:border-border-dark p-6">
+                            <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2 mb-6">
+                                <div class="flex items-center gap-4">
+                                    <img class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16" data-alt="Nasi Goreng Spesial dengan telur mata sapi" src="Img/Nasi Goreng Spesial.png"/>
+                                    <div class="flex-grow">
+                                        <p class="font-medium leading-normal line-clamp-1">Nasi Goreng Spesial</p>
+                                        <p class="text-sm text-subtext-light dark:text-subtext-dark leading-normal line-clamp-2">1 x Rp 50.000</p>
+                                    </div>
+                                    <div class="shrink-0">
+                                        <p class="font-medium leading-normal">Rp 100.000</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <img class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16" data-alt="Ocean Blue Soda" src="Img/Ocean Blue Soda.png"/>
+                                    <div class="flex-grow">
+                                        <p class="font-medium leading-normal line-clamp-1">Ocean Blue Soda</p>
+                                        <p class="text-sm text-subtext-light dark:text-subtext-dark leading-normal line-clamp-2">2 X 25.000</p>
+                                    </div>
+                                    <div class="shrink-0">
+                                        <p class="font-medium leading-normal">Rp 50.000</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <img class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-16" data-alt="A delicious meat Pizza" src="Img/pizza Meat Lovers.png"/>
+                                    <div class="flex-grow">
+                                        <p class="font-medium leading-normal line-clamp-1">Pizza Meat Lovers</p>
+                                        <p class="text-sm text-subtext-light dark:text-subtext-dark leading-normal line-clamp-2">1 X Rp 75.000</p>
+                                    </div>
+                                    <div class="shrink-0">
+                                        <p class="font-medium leading-normal">Rp 75.000</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-t border-border-light dark:border-border-dark pt-6 space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <p class="text-subtext-light dark:text-subtext-dark">Subtotal</p>
+                                    <p>Rp. 225.000</p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p class="text-subtext-light dark:text-subtext-dark">Pajak (11%)</p>
+                                    <p>Rp 24.750</p>
+                                </div>
+                                <div class="flex justify-between">
+                                    <p class="text-subtext-light dark:text-subtext-dark">Layanan</p>
+                                    <p>Rp 2.500</p>
+                                </div>
+                                <div class="flex justify-between text-accent">
+                                    <p>Diskon</p>
+                                    <p>Rp 0</p>
+                                </div>
+                                <div class="flex justify-between font-bold text-base pt-4">
+                                    <p>Total Pembayaran</p>
+                                    <p>Rp 252.250</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-3 order-1 lg:order-2">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-bold leading-tight mb-3">Punya Kode Promo?</h3>
+                        <div class="flex gap-2">
+                            <input class="flex-grow block w-full rounded-md border-border-light dark:border-border-dark shadow-sm focus:border-primary focus:ring-primary sm:text-sm bg-white dark:bg-zinc-800 text-text-light dark:text-text-dark placeholder:text-subtext-light dark:placeholder:text-subtext-dark"
+                                   placeholder="Masukkan Kode promo" type="text"/>
+                            <button class="inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold text-white bg-primary hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-background-dark transition-colors">Apply</button>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <h2 class="text-2xl font-bold leading-tight tracking-tight">Pilih Metode Pembayaran</h2>
+                        <span class="material-symbols-outlined text-accent text-3xl">lock</span>
+                    </div>
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-bold mb-3">Virtual Account</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <button class="flex items-center p-4 border rounded-lg hover:border-primary dark:hover:border-primary transition-colors bg-white dark:bg-zinc-800 border-border-light dark:border-border-dark">
+                                    <img class="h-6 mr-4" data-alt="BCA Logo" src="Img/VA BCA.png"/>
+                                    <span>BCA Virtual Account</span>
+                                </button>
+                                <button class="flex items-center p-4 border rounded-lg hover:border-primary dark:hover:border-primary transition-colors bg-white dark:bg-zinc-800 border-border-light dark:border-border-dark">
+                                    <img class="h-6 mr-4" data-alt="Mandiri Logo" src="Img/Mandiri VA.png">
+                                    <span>Mandiri Virutal Account</span>
+                                </button>
+                                <button class="flex items-center p-4 border rounded-lg hover:border-primary dark:hover:border-primary transition-colors bg-white dark:bg-zinc-800 border-border-light dark:border-border-dark">
+                                    <img class="h-6 mr-4" data-alt="BRI Logo" src="Img/BRI VA.png">
+                                    <span>BRI Virtual Account</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold mb-3">E-Wallet</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <button class="flex items-center p-4 border-2 border-primary rounded-lg transition-colors bg-primary/5 dark:bg-primary/10">
+                                    <img class="h-5 mr-4" data-alt="OVO Logo" src="Img/Icon Ovo.png"/>
+                                    <span>OVO</span>
+                                    <span class="material-symbols-outlined ml-auto text-primary">check_circle</span>
+                                </button>
+                                <button class="flex items-center p-4 border rounded-lg hover:border-primary dark:hover:border-primary transition-colors bg-white dark:bg-zinc-800 border-border-light dark:border-border-dark">
+                                    <img class="h-5 mr-4" data-alt="GoPay Logo" src="Img/Icon Gopay.png"/>
+                                    <span>GoPay</span>
+                                </button>
+                                <button class="flex items-center p-4 border rounded-lg hover:border-primary dark:hover:border-primary transition-colors bg-white dark:bg-zinc-800 border-border-light dark:border-border-dark">
+                                    <img class="h-5 mr-4" data-alt="Dana Logo" src="Img/Icon Dana.png">
+                                    <span>Dana</span>
+                                </button>
+                                <button class="flex items-center p-4 border rounded-lg hover:border-primary dark:hover:border-primary transition-colors bg-white dark:bg-zinc-800 border-border-light dark:border-border-dark">
+                                    <img class="h-5 mr-4" data-alt="LinkAja Logo" src="Img/Icon LinkAja.png">
+                                    <span>LinkAja</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-12">
+                        <button class="w-full inline-flex items-center justify-center rounded-lg px-6 py-4 text-base font-bold text-white bg-primary hover:bg-primary/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-background-dark transition-colors shadow-lg">
+                            <a href="Konfirmasi_Pesanan.html">Konfirmasi Pembayaran</a> 
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer class="w-full border-t border-gray-200 bg-background-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+                    <div class="text-sm text-text-secondary">
+                        <p class="font-semibold text-text-primary">Resto Modern</p>
+                        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+                    </div>
+                    <div class="flex gap-6 text-sm">
+                        <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                        <a class="text-text-secondary hover:text-primary" href="FAQ">FAQ</a>
+                    </div>
+                    <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

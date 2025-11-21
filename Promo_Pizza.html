@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Detail Promo — Resto Modern</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body { min-height: max(884px, 100dvh); }
+  </style>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#FF9800",           /* accent (orange) */
+            "success": "#4CAF50",           /* green for fork icon */
+            "background-light": "#FFFFFF",
+            "background-dark": "#1a1a1a",
+            "surface-light": "#f8f7f5",
+            "surface-dark": "#231b0f",
+            "text-light": "#333333",
+            "text-dark": "#f0f0f0",
+            "border-light": "#E0E0E0",
+            "border-dark": "#3a3a3a",
+          },
+          fontFamily: { "display": ["Work Sans", "sans-serif"] },
+          borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+          boxShadow: {
+            card: "0 10px 30px rgba(16,24,40,0.06)"
+          }
+        },
+      },
+    }
+  </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
+    <div class="relative flex h-auto min-h-screen w-full flex-col overflow-x-hidden">
+        <header class="sticky top-0 z-10 flex h-16 w-full items-center justify-between border-b border-border-light dark:border-border-dark bg-background-light/80 dark:bg-background-dark/80 px-4 backdrop-blur-sm">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-2xl" style="color: #4CAF50;">restaurant_menu</span>
+              <span class="text-base sm:text-lg font-bold">Resto Modern</span>
+            </div>
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+              <a href="Home.html" class="hover:text-success transition">Home</a>
+              <a href="Menu_Makanan.html" class="hover:text-success transition">Menu</a>
+              <a href="Menu_Favorit_Makanan.html" class="hover:text-success transition">Favorit</a>
+              <a href="Bantuan.html" class="hover:text-success transition">Bantuan</a>
+              <button class="relative flex size-10 shrink-0 items-center justify-center rounded-full text-text-light dark:text-text-dark border border-border-light dark:border-border-dark">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <!-- <span class="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-success text-white text-[10px] font-bold flex items-center justify-center">3</span> -->
+              </button>
+            </nav>
+        </header>
+        <main class="w-full max-w-6xl mx-auto flex-grow px-4 py-8">
+          <h1 class="text-3xl font-bold tracking-tight mb-6">Detail Promo</h1>
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <section class="lg:col-span-2">
+              <div class="relative rounded-xl overflow-hidden shadow-card border border-border-light dark:border-border-dark">
+                <img src="Img/Pizza Peperoni.png" alt="Promo Pizza" class="w-full h-[260px] sm:h-[340px] object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent felx items-center">
+                  <div class="p-6 sm:p-10 text-white max-w-lg">
+                    <p class="text-sm sm:text-base font-medium">Promo penawaran hari ini</p>
+                    <h2 class="mt-2 text-4xl sm:text--5xl font-extrabold text-yellow-300 leading-tight">20% OFF</h2>
+                    <button id="usePromoBtn" class="mt-5 inline-flex h-10 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-semibold text-white hover:bg-orange-600 transition">
+                      <span>Gunakan promo</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <aside class="space-y-6">
+              <div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5 shadow-sm">
+                <h3 class="text-lg font-bold">Diskon 20% Semua Menu Pizza</h3>
+                <p class="mt-2 text-sm text-text-light/70 dark:text-text-dark/70">Peridoe : <span class="font-semibold text-text-light dark:text-text-dark">10 - 28 November 2025</span></p>
+              </div>
+              <div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5 shadow-sm">
+                <h4 class="font-semibold mb-3">Syarat & Ketentuan</h4>
+                <ul class="text-sm space-y-2 list-disc list-inside text-text-light/80 dark:text-text-dark/80">
+                  <li>Berlaku untuk pemesanan via Smart Ordering</li>
+                  <li>Tidak dapat digabungkan dengan promo lain</li>
+                  <li>Berlaku sesuai periode promo</li>
+                </ul>
+              </div>
+              <div class="rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-5 shadow-sm">
+                <h4 class="font-semibold mb-3">Cara Menggunakan Promo</h4>
+                <ol class="text-sm list-decimal list-inside space-y-2 text-text-light/80 dark:text-text-dark/80">
+                  <li>Pilih menu favorit Anda</li>
+                  <li>Masukkan kode promo / otomatis terpasang</li>
+                  <li>Lanjutkan pembayaran</li>
+                </ol>
+              </div>
+            </aside>
+          </div>
+          <div class="mt-10 rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-6 text-center shadow-sm">
+            <p class="tex-sm text-text-light/75 dark:text-text-dark/75">Promo ini berlaku selama periode yang ditentukan dan tidak dapat digabungkan dengan promo lain.</p>
+          </div>
+        </main>
+        <footer class="w-full border-t border-border-light dark:border-border-dark">
+          <dov class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+              <div class="text-sm text-text-light/80 dark:text-text-dark/80">
+                <p class="font-semibold text-text-light dark:text-text-dark">Resto Modern</p>
+                <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+              </div>
+              <div class="flex gap-6 text-sm">
+                <a class="text-text-light/80 dark:text-text-dark/80 hover:text-success" href="Bantuan.html">Bantuan</a>
+                <a class="text-text-light/8- dark:text-text-dark/80 hover:text-success" href="FAQ.html">FAQ</a>
+              </div>
+              <p class="text-sm text-text-light/80 dark:text-text-dark/80">© 2025 Smart Ordering System. All rights reserved</p>
+            </div>
+          </dov>
+        </footer>
+    </div>
+
+    <div id="promoModal" class="fixed inset-0 z-50 hidden items-center justify-center px-4">
+      <div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+      <div class="relative bg-background-light dark:bg-background-dark rounded-xl shadow-2xl max-w-sm w-full overflow-hidden border border-border-light dark:border-border-dark">
+        <div class="p-6 text-center">
+          <div class="mx-auto mb-4 w-16 h-16 rounded-full bg-success/10 text-success flex items-center justify-center">
+            <span class="material-symbols-outlined !text-4xl">check_circle</span>
+          </div>
+          <h3 class="text-lg font-bold mb-2">Promo berhaisl Diterapkan</h3>
+          <p class="text-sm text-text-light/80 dark:text-text-dark/80 mb-4">
+            Silahkan untuk semua menu pizza telah aktid pada pesanan Anda. Silahkan lanjutkan ke pembayaran
+          </p>
+          <div class="flex gap-3 justify-center">
+            <button id="continueBtn" class="px-4 py-2 rounded-lg bg-success text-white font-semibold hover:bg-[#43A047] transition">Lanjutkan Pemesanan</button>
+            <button id="closeBtn" class="px-4 py-2 rounded-lg border-border-light dark:border-border-dark bg-transparent text-text-light dark:text-text-dark hover:bg-black/5 dark:hover:bg-white/5 transition">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+    const usePromoBtn = document.getElementById('usePromoBtn');
+    const promoModal = document.getElementById('promoModal');
+    const closeBtn = document.getElementById('closeBtn');
+    const continueBtn = document.getElementById('continueBtn');
+
+    function openModal() {
+      promoModal.classList.remove('hidden');
+      promoModal.classList.add('flex');
+    }
+    function closeModal() {
+      promoModal.classList.add('hidden');
+      promoModal.classList.remove('flex');
+    }
+
+    usePromoBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    continueBtn.addEventListener('click', () => {
+      // Integrate navigation to checkout here
+      closeModal();
+      alert('Lanjut ke pembayaran (implementasi sesuai aplikasi Anda).');
+    });
+
+    // close on backdrop click
+    promoModal.addEventListener('click', (e) => {
+      if (e.target === promoModal) closeModal();
+    });
+
+    // esc to close
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !promoModal.classList.contains('hidden')) closeModal();
+    });
+  </script>
+</body>
+</html>

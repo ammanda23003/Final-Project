@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu Paket - Resto Modern</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4CAF50",
+            "secondary": "#FF9800",
+            "background-light": "#f8f7f5",
+            "background-dark": "#231b0f",
+            "light-text": "#333333",
+            "dark-text": "#f8f7f5",
+            "light-border": "#eadecd",
+            "dark-border": "#4a3c27"
+          },
+          fontFamily: {
+            "display": ["Work Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display text-light-text dark:text-dark-text">
+  <header class="sticky top-0 z-10 w-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-sm border-b border-light-border dark:border-dark-border">
+    <div class="container mx-auto flex items-center justify-between px-4 py-4">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[#4CAF50] text-3xl">restaurant_menu</span>
+        <h2 class="text-xl font-bold tracking-tight">Resto Modern</h2>
+      </div>
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="Home.html" class="text-sm font-bold border-b-2 border-primary pb-1">Home</a>
+        <a href="Promo.html" class="text-sm font-bold text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Promo</a>
+        <a href="Menu_Favorit_Makanan.html" class="text-sm font-bold text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Favorit</a>
+        <a href="Bantuan.html" class="text-sm font-bold text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Bantuan</a>
+        <button class="relative h-10 w-10 flex items-center justify-center rounded-full text-light-text dark:text-dark-text">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <!-- <span class="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center rounded-full bg-primary text-xs font-bold text-white">3</span> -->
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold leading-tight pb-6">Menu Paket</h1>
+
+    <!-- Kategori -->
+    <div class="flex gap-3 overflow-x-auto pb-4">
+      <button class="px-4 py-2 rounded-full border border-light-border dark:border-dark-border text-light-text/70 dark:text-dark-text/70 hover:bg-primary/10 hover:text-light-text dark:hover:text-dark-text text-sm font-bold"><a href="Menu_Makanan.html">Makanan</a></button>
+      <button class="px-4 py-2 rounded-full border border-light-border dark:border-dark-border text-light-text/70 dark:text-dark-text/70 hover:bg-primary/10 hover:text-light-text dark:hover:text-dark-text text-sm font-bold"><a href="Menu_Minuman.html">Minuman</a></button>
+      <button class="px-4 py-2 rounded-full bg-primary text-white text-sm font-bold"><a href="Menu_Paket.html">Paket</a></button>
+      <button class="px-4 py-2 rounded-full border border-light-border dark:border-dark-border text-light-text/70 dark:text-dark-text/70 hover:bg-primary/10 hover:text-light-text dark:hover:text-dark-text text-sm font-bold"><a href="Menu_Snack.html">Snack</a></button>
+    </div>
+
+    <!-- Daftar Paket -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <!-- Contoh item paket -->
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Paket\ Hemat1.jpg');"></div>
+            <p class="text-base font-semibold">Paket Hemat 1</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Burger Sapi Klasik, Kentang Goreng.</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 80.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+          <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Paket\ Lengkap1.jpg');"></div>
+            <p class="text-base font-semibold">Paket Lengkap 1</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Burger Sapi Klasik, Kentang Goreng, Nugget.</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 100.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('img/Hampers.jpg');"></div>
+            <p class="text-base font-semibold">Hampers</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">kentang krispy, jus mix berry, jus mangga</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 150.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Paket\ Beduaan\ Aja.png');"></div>
+            <p class="text-base font-semibold">Paket Berduaan Aja</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Nasi putih 2, Ayam grill 2, dan 2 jus jeruk</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 120.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Paket\ Hemat\ Sehat.jpg');"></div>
+            <p class="text-base font-semibold">Paket Hemat Sehat</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Paket salad sayur 3</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 100.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Paket\ Lengkap\ 2.jpg');"></div>
+            <p class="text-base font-semibold">Paket Lengkap 1</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Pizza Pepperoni, Burger Daging Klasik, Kentang Goreng</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 160.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Paket\ Ricebowl\ Harian.jpg');"></div>
+            <p class="text-base font-semibold">Paket Ricebowl Harian</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">3 Ricebowl dengan berbagai menu tergantung hari</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 90.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Paket\ Nyemil\ Bareng.jpg');"></div>
+            <p class="text-base font-semibold">Paket Nyemil Bareng</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">10 Kentang Goreng, 9 Es Teh Lemon</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 430.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Modern\ Lite\ Meal.png');"></div>
+            <p class="text-base font-semibold">Modern Lite Meal</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">chicken salad, cream soup, garlic bread, minuman lemon</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 34.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Duo\ Pizza\ &\ Pasta.png');"></div>
+            <p class="text-base font-semibold">Duo Pizza & Pasta</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Pizza personal dan pasta plus garlic bread</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 72.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Texas\ Grill\ Platter.png');"></div>
+            <p class="text-base font-semibold">Texas Grill Platter</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">BBQ chicken, sosis panggang, garlic bread, dan mashed potato.</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 68.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Urban\ Steak\ Combo.png');"></div>
+            <p class="text-base font-semibold">Urban Steak Combo</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Steak juicy dengan side fries & grilled veggies plus minuman</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 210.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Pasta\ Lovers\ Combo.png');"></div>
+            <p class="text-base font-semibold">Pasta Lovers Combo</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Pasta pilihan (Aglio/Carbonara/Bologness)+ garlic bread</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 59.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Sushi\ Platter.png');"></div>
+            <p class="text-base font-semibold">Sushi Platter</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Pilihan menu sushi & sashimi dalam satu set lengkap</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 129.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Snack\ Attack\ Platter.png');"></div>
+            <p class="text-base font-semibold">Snack Attack Platter</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Mozza stick, wings, nachos, onion rings, lengkap dengan dip sauce.</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 45.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+        <div class="flex flex-col gap-2 border border-light-border dark:border-dark-border rounded-xl p-3 bg-white dark:bg-background-dark hover:shadow-md transition-shadow">
+            <div class="aspect-square bg-center bg-cover rounded-lg" style="background-image: url('Img/Sweet\ Combo\ Set.png');"></div>
+            <p class="text-base font-semibold">Sweet Combo Set</p>
+            <p class="text-gray-600 dark:text-gray-300 text-sm font-normal leading-normal mt-1 flex-grow">Pancake/waffle dengan ice cream dan syrup</p>
+            <p class="text-sm text-light-text/70 dark:text-dark-text/70">Rp 38.000</p>
+            <button class="mt-2 px-4 py-2 bg-secondary text-white text-sm font-bold rounded-lg hover:bg-orange-500 transition-colors">
+                <span class="material-symbols-outlined text-base">shopping_cart</span>
+                <span>Tambah Pesanan</span>
+            </button>
+        </div>
+    </div>
+  </main>
+
+<footer class="w-full border-t border-gray-200 bg-background-secondary">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gal-4">
+            <div class="text-sm text-text-secondary">
+                <p class="font-semibold text-text-primary">Resto Modern</p>
+                <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+            </div>
+            <div class="flex gap-6 text-sm">
+                <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+                <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+            </div>
+            <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved</p>
+        </div>
+    </div>
+</footer>
+</body>
+
+</html>
