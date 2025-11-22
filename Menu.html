@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Menu Makanan - Resto Modern</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4CAF50",
+            cta: "#FF9800",
+            "background-light": "#FFFFFF",
+            "background-secondary": "#F5F5F5",
+            "text-primary": "#1F2937",
+            "text-secondary": "#6B7280"
+          },
+          fontFamily: { display: ["Poppins", "sans-serif"] }
+        }
+      }
+    };
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    body { min-height: 100vh; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-background-light font-display text-text-primary">
+  <div class="flex flex-col flex-1">
+    <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+      <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
+          <h1 class="text-2xl font-bold">Resto Modern</h1>
+        </div>
+
+        <nav class="hidden md:flex items-center gap-8">
+          <a class="text-base font-medium hover:text-primary" href="Menu_Makanan.html">Menu</a>
+          <a class="text-base font-medium hover:text-primary" href="Promo.html">Promo</a>
+          <a class="text-base font-medium hover:text-primary" href="Menu_Favorit_Makanan.html">Favorit</a>
+          <a class="text-base font-medium hover:text-primary" href="Bantuan.html">Bantuan</a>
+          <a aria-label="Keranjang Belanja" class="hover:text-primary" href="cart.html">
+            <span class="material-symbols-outlined">shopping_cart</span>
+          </a>
+        </nav>
+
+        <button id="menu-toggle" class="md:hidden p-2 rounded-md" aria-label="Buka menu">
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+
+        <nav id="mobile-menu" class="hidden absolute right-4 top-full mt-2 w-56 rounded-xl border bg-white shadow-lg overflow-hidden md:hidden">
+          <ul class="flex flex-col py-2">
+            <li><a class="block px-4 py-2 hover:bg-gray-100" href="Menu_Makanan.html">Menu</a></li>
+            <li><a class="block px-4 py-2 hover:bg-gray-100" href="Promo.html">Promo</a></li>
+            <li><a class="block px-4 py-2 hover:bg-gray-100" href="Menu_Favorit_Makanan.html">Favorit</a></li>
+            <li><a class="block px-4 py-2 hover:bg-gray-100" href="Bantuan.html">Bantuan</a></li>
+            <li><a class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100" href="cart.html"><span class="material-symbols-outlined">shopping_cart</span>Keranjang</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-grow container mx-auto p-4 gap-6">
+      <section class="mb-6">
+        <div class="space-y-4">
+          <div class="relative">
+            <label class="flex">
+              <div class="flex items-center justify-center pl-3 pr-3 rounded-l-lg bg-white border border-r-0 border-gray-300 text-gray-500">
+                <span class="material-symbols-outlined">search</span>
+              </div>
+              <input id="search" class="flex-1 min-w-0 px-4 py-3 rounded-r-lg border border-gray-300 focus:outline-0" placeholder="Cari makanan favoritmu..." />
+            </label>
+          </div>
+
+          <div class="flex gap-3 overflow-x-auto pb-2">
+            <button id="cat-all" class="flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-primary text-white text-sm font-medium">Semua</button>
+            <button data-cat="makanan" class="cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium">Makanan</button>
+            <button data-cat="minuman" class="cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium">Minuman</button>
+            <button data-cat="paket" class="cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium">Paket</button>
+            <button data-cat="snack" class="cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium">Snack</button>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div id="cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <!-- cards generated by JS -->
+        </div>
+      </section>
+    </main>
+
+    <footer class="w-full border-t border-gray-200 bg-background-secondary">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between text-center md:text-left gap-2 md:gap-4">
+          <div class="text-xs md:text-sm text-text-secondary">
+            <p class="font-semibold text-text-primary">Resto Modern</p>
+            <p class="mt-1">Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+          </div>
+          <div class="flex gap-4 text-xs md:text-sm mt-2 md:mt-0">
+            <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+            <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+          </div>
+          <p class="text-xs md:text-sm text-text-secondary mt-2 md:mt-0">© 2025 Smart Ordering System</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ------- Data source (edit/add items here) -------
+    const MENU_DATA = {
+      "nasi-goreng-spesial": {
+        id: "nasi-goreng-spesial",
+        title: "Nasi Goreng Spesial",
+        price: 50000,
+        img: "Img/Nasi Goreng Spesial.png",
+        desc: "Nasi Goreng spesial dengan suwiran ayam, udang, dan telur mata sapi",
+        category: "makanan"
+      },
+      "mie-ayam-bakso": {
+        id: "mie-ayam-bakso",
+        title: "Mie Ayam Bakso",
+        price: 35000,
+        img: "Img/Mie Ayam Bakso.png",
+        desc: "Mie ayam klasik dengan bakso sapi",
+        category: "makanan"
+      },
+      "ayam-bakar-madu": {
+        id: "ayam-bakar-madu",
+        title: "Ayam Bakar Madu",
+        price: 55000,
+        img: "Img/Ayam Bakar Madu.png",
+        desc: "Ayam bakar bumbu madu, disajikan dengan nasi",
+        category: "makanan"
+      },
+      "spaghetti-bolognese": {
+        id: "spaghetti-bolognese",
+        title: "Spaghetti Bolognese",
+        price: 60000,
+        img: "Img/Spaghetti Bolognese.png",
+        desc: "Pasta dengan saus daging sapi cincang",
+        category: "makanan"
+      },
+      "soto-betawi": {
+        id: "soto-betawi",
+        title: "Soto Betawi",
+        price: 50000,
+        img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD96V97JyASva6yotQPRLYFzpnL14o3y-ntpgfRgjp0gKLSG7V6mNiwlJoAxcgVV27cLUgJEvV8wmnjoAHmNodUFiF6GRNwUmThc4gFsddVljhYk7muaOFvLFVHsQZ1q21f37vFFtDd2pGy8YG85lQWP1qgTKe0IIeFXuDCTNHu1xBublSmnkMtsdxhVF9DJjN61mk38XU3MX4bhrm4EFNf5QI3ND73kf6WaaxVqDMNnlDYLRXlQAStkB8uti2PrOgYfvxwTKLBwpA",
+        desc: "Soto khas Jakarta dengan santan dan daging sapi",
+        category: "makanan"
+      },
+      "cumi-goreng-tepung": {
+        id: "cumi-goreng-tepung",
+        title: "Cumi Goreng Tepung",
+        price: 48000,
+        img: "https://lh3.googleusercontent.com/aida-public/AB6AXuCWoYRVv_0Wv1Cgv_5XdYhtuUTpyK4x6Vt_xAL_NF5w5TVYngRvn_9M24TFmfkVYuuIS2UFyR9n-dx_14ZeG9EZcW_NTyrNMgTMyp9Xlybj764aLFs9P6qu75cs87Owj3Bb7_WJCM1600B-oJHTXnAjriUVlV2fXbNmseDso23SjK15jVcM6c29XYoscBKeY1ssJWq54d20uyXYcSYJ_XPKeM7v_aeZAJAcftuMiTI2j5nQmQA-KA2mFsa8Tnjsbt7_onmH1-mAdVo",
+        desc: "Cumi renyah disajikan dengan saus tartar",
+        category: "makanan"
+      },
+      "rendang": {
+        id: "rendang",
+        title: "Rendang Daging Sapi",
+        price: 65000,
+        img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDuhwFiXPyE3t8qQfio-su6b7mP49zOWn6doktm3oFYkJZVJfMTW617TbRKbbHJMCjmTrKnH735TXfJF-zb_Z6RiubEdEA26FK8ufjujJYkoXhQ5wvtxmQL9VNJhv_fyHbBrZp8CBUs3uBYf5cNo88Xt16MP37rVoubNNQV8JBcHunF_XAP1yTraiCmHx4otRD3kP-rNIhjHpXP1GN-0CA719STsbwsGmMjepOlz4Ny1WMVNQo2aSNwJ1wgLMMO-aXhV7juz-cZe6M",
+        desc: "Daging sapi empuk dengan bumbu rendang kaya rasa",
+        category: "makanan"
+      },
+      "gado-gado": {
+        id: "gado-gado",
+        title: "Gado Gado",
+        price: 30000,
+        img: "Img/gadogado.png",
+        desc: "Salad Sayuran dengan tambahan tahu, tempe, dan lontong, disiram saus kacang pedas manis, dan krupuk",
+        category: "makanan"
+      },
+      "salad-sayur": {
+        id: "salad-sayur",
+        title: "Salad Sayur",
+        price: 45000,
+        img: "https://lh3.googleusercontent.com/aida-public/AB6AXuDWGvv6y8e8azcgYr-oKMb0bHDsq_JKfpKbIcB-SLogfYng1WB1biRPP9ZG47DVp_emhb7AHadmwXipraGU4yvj0AgN7W1waApg6trbChjV90tB4CM-bRGiEXJUTGGlMLxjUZ6bfVDyUs1d-BRRFc9Unc3JuRBmzAA6CpHDHOiG6QGQYYet_PutjUGCH_JtFDk3KTWnunP4r_OLBQRb4wmmrUtRJjPUJfG8n95rfnbpT1bM6ZLNNEFyc09tmiyg5C-osLiChkXsfSc",
+        desc: "Salad sayuran segar dengan saus pilihan",
+        category: "makanan"
+      },
+      "pizza-pepperoni": {
+        id: "pizza-pepperoni",
+        title: "Pizza Pepperoni",
+        price: 85000,
+        img: "https://lh3.googleusercontent.com/aida-public/AB6AXuA9TwopEAJvn9CfWhiblTQtv5gpbdVIRNhlKS7n8z4Lfc6NImThoP85z8qHE6c5tjAKLpMqu79gwcprDt1MVn4EXZCsDqdP_viJmIk4b0YoQ8q9Iz-JsKy1tbcEpdWYOrOCQ4eTkTIyrHBJO83HAt-IsjKvBN5wuFeKRsS-PAhxXDm-OZ185T9ypmW3kuH4XOcI-Bj_22LGaSy7umV7IhKNocl1LUqw80VWVD4AR3_7-jGvukQx39bL9zAeZdY_2XzgV6wsFmTv-Qw",
+        desc: "Pizza dengan saus tomat, keju, dan pepperoni",
+        category: "makanan"
+      },
+      "pancake-madu": {
+        id: "pancake-madu",
+        title: "Pancake Madu",
+        price: 40000,
+        img: "https://lh3.googleusercontent.com/aida-public/AB6AXuB8IHLGMsVgQKmTi94G9OWfp4XUXyWQkwHPTI7S1K-t5AoruwXxCNvjW9qX_zDZbFixY5I6d6K7znda-US9nOkma37ZEjA4EiEFrkcrvWXXSbNqoeFKtnQBe-k7-QiFjDtkriP0r2zQyriN2sEOm36I9jNgSdwbRwuR8egdpW79ecSDlJ1rL6mM5-dxyNp09fMfwoEU7BJiGJhGyD2oV_ORwl-FZviLShsPXeJBqSLlloy8aL-dBRlJdtymN3c9CM7OAyLMyFpjMXM",
+        desc: "Pancake lembut disiram madu dan buah",
+        category: "makanan"
+      },
+      "ramen-kuah-pedas": {
+        id: "ramen-kuah-pedas",
+        title: "Ramen Pedas",
+        price: 65000,
+        img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAL5C2XWfQYJGKbrkPQBwAiIGwKCqyP6Lx1F0tx9E0jeAn-WR3Bc6jxBi-gY6AADI4OwLEcve7cEyO9ruD10iMVRbPGVs898WCXqGnGn2YxA3rKy0NNIqXFMZJ7xQ1rg_UQcLJKsKKIzEy5EzsQADKQuo3PVNICJ1uLZU2xkTEUYC3XTPyScJFaz4up3XTAcKJBd6OqhI9OszHJIAqDJX3e87t158yIOWucxohFy-LFHtYfg9fiOj_WIjabEZPXlcd_JKnLCce8cGM",
+        desc: "Mi ramen dengan kuah pedas dan topping lengkap",
+        category: "makanan"
+      },
+      "es-kopi-latte": {
+        id: "es-kopi-latte",
+        title: "Es Kopi Latte",
+        price: 22000,
+        img: "Img/Es Kopi Latte.png",
+        desc: "Kopi espresso dengan susu segar",
+        category: "minuman"
+      },
+      "es-teh-lemon": {
+        id: "es-teh-lemon",
+        title: "Es Teh Lemon",
+        price: 15000,
+        img: "Img/Es Teh Lemon.png",
+        desc: "Teh main dengan perasan lemon segar",
+        category: "minuman"
+      }
+      
+    };
+
+    // ------- Helpers -------
+    function formatRp(n) {
+      return 'Rp' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    }
+
+    function safeUrl(u) {
+      if (!u) return '';
+      try { return encodeURI(u.replace(/\\/g, '').trim()); } catch { return u; }
+    }
+
+    // ------- Render cards from MENU_DATA -------
+    const cardsEl = document.getElementById('cards');
+
+    function renderCards(filter = { q: '', category: 'all' }) {
+      const q = (filter.q || '').trim().toLowerCase();
+      const cat = filter.category || 'all';
+      cardsEl.innerHTML = '';
+
+      const items = Object.values(MENU_DATA).filter(item => {
+        if (cat !== 'all' && item.category !== cat) return false;
+        if (!q) return true;
+        const hay = (item.title + ' ' + (item.desc || '')).toLowerCase();
+        return hay.includes(q);
+      });
+
+      if (items.length === 0) {
+        cardsEl.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Tidak ada item ditemukan</div>';
+        return;
+      }
+
+      items.forEach(item => {
+        const url = safeUrl(item.img) || '';
+        const article = document.createElement('article');
+        article.className = 'group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition flex flex-col';
+        article.innerHTML = `
+          <a href="menu_detail.html?id=${encodeURIComponent(item.id)}" class="block flex flex-col h-full">
+            <div class="w-full aspect-[16/9] bg-center bg-cover" style="background-image:url('${url}')"></div>
+            <div class="p-4 flex flex-col flex-1">
+              <h4 class="text-lg font-semibold text-text-primary">${item.title}</h4>
+              <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
+
+              <div class="mt-auto flex items-center justify-between gap-3">
+                <p class="text-lg font-bold text-text-primary whitespace-nowrap">${formatRp(item.price)}</p>
+                <button class="add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]" type="button">
+                  <span class="material-symbols-outlined">add_shopping_cart</span>
+                  Tambah
+                </button>
+              </div>
+            </div>
+          </a>
+        `;
+        cardsEl.appendChild(article);
+      });
+
+      // attach add btn handlers
+      cardsEl.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const card = btn.closest('article');
+          const title = card?.querySelector('h4')?.textContent?.trim() || 'Item';
+          const priceText = card?.querySelector('.text-lg.font-bold')?.textContent || '';
+          const price = parseInt((priceText||'').replace(/\D/g,'')) || 0;
+          const id = card?.querySelector('a')?.getAttribute('href')?.split('id=')[1] || title.toLowerCase().replace(/\s+/g,'-');
+          const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+          cart.push({ id, title, price, qty: 1 });
+          localStorage.setItem('cart', JSON.stringify(cart));
+          const toast = document.createElement('div');
+          toast.textContent = `${title} ditambahkan ke keranjang`;
+          toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
+          document.body.appendChild(toast);
+          setTimeout(()=>toast.remove(), 1400);
+        });
+      });
+    }
+
+    // initial render (all)
+    renderCards({ q: '', category: 'all' });
+
+    // ------- Search -------
+    const searchInput = document.getElementById('search');
+    let lastQ = '';
+    if (searchInput) {
+      searchInput.addEventListener('input', () => {
+        lastQ = searchInput.value;
+        renderCards({ q: lastQ, category: currentCategory });
+      });
+    }
+
+    // ------- Category filter (with active styling) -------
+    let currentCategory = 'all';
+    const catAllBtn = document.getElementById('cat-all');
+    const catBtns = Array.from(document.querySelectorAll('.cat-btn'));
+
+    function setActiveCategoryButton(cat) {
+      // reset all to default
+      catAllBtn.classList.remove('bg-primary','text-white');
+      catAllBtn.classList.add('bg-background-secondary','text-text-primary');
+
+      catBtns.forEach(b => {
+        b.classList.remove('bg-primary','text-white');
+        b.classList.add('bg-background-secondary','text-text-primary');
+      });
+
+      // activate selected
+      if (cat === 'all') {
+        catAllBtn.classList.add('bg-primary','text-white');
+        catAllBtn.classList.remove('bg-background-secondary','text-text-primary');
+      } else {
+        const match = catBtns.find(b => (b.dataset?.cat || '') === cat);
+        if (match) {
+          match.classList.add('bg-primary','text-white');
+          match.classList.remove('bg-background-secondary','text-text-primary');
+        }
+      }
+    }
+
+    // attach handlers using the new helper
+    catAllBtn.addEventListener('click', () => {
+      currentCategory = 'all';
+      setActiveCategoryButton(currentCategory);
+      renderCards({ q: lastQ, category: currentCategory });
+    });
+
+    catBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.cat || 'all';
+        currentCategory = cat;
+        setActiveCategoryButton(currentCategory);
+        renderCards({ q: lastQ, category: currentCategory });
+      });
+    });
+
+    // initialize active state
+    setActiveCategoryButton(currentCategory);
+
+    // ------- Mobile menu toggle -------
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      mobileMenu.classList.toggle('hidden');
+    });
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
+
+    // encode background-image urls that contain spaces (fallback)
+    function encodeBackgroundImages() {
+      document.querySelectorAll('[style]').forEach(el => {
+        const s = el.getAttribute('style') || '';
+        const m = s.match(/background-image:\s*url\(["']?(.*?)["']?\)/);
+        if (m) {
+          try {
+            const raw = m[1].replace(/\\/g, '');
+            const encoded = encodeURI(raw);
+            el.setAttribute('style', s.replace(m[0], `background-image: url("${encoded}")`));
+          } catch {}
+        }
+      });
+    }
+    // run after a tick (cards generated)
+    setTimeout(encodeBackgroundImages, 80);
+
+    // expose MENU_DATA globally for quick editing from console (optional)
+    window.MENU_DATA = MENU_DATA;
+  </script>
+</body>
+</html>
