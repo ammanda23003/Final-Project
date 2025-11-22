@@ -227,25 +227,36 @@
       return 'Rp' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
 
-    // stronger safeUrl: remove backslashes, trim, replace spaces with %20 then encode
+    // safeUrl: decode if already encoded, then encode once
     function safeUrl(u) {
       if (!u) return '';
       try {
-        const cleaned = u.replace(/\\/g, '').trim().replace(/\s+/g, '%20');
+        let cleaned = u.replace(/\\/g, '').trim();
+
+        // if it's double-encoded (contains %25), or appears encoded, try to decode once
+        try {
+          const maybeDecoded = decodeURIComponent(cleaned);
+          if (maybeDecoded !== cleaned) cleaned = maybeDecoded;
+        } catch (e) {
+          // not decodable - ignore
+        }
+
         return encodeURI(cleaned);
       } catch {
         return u;
       }
     }
 
-    // encode background-image URLs if necessary (keeps behavior safe)
+    // fallback encoder for any inline style background-image entries:
+    // decode first then encode (prevents double-encoding)
     function encodeBackgroundImages() {
       document.querySelectorAll('[style]').forEach(el => {
         const s = el.getAttribute('style') || '';
         const m = s.match(/background-image:\s*url\(["']?(.*?)["']?\)/);
         if (m) {
           try {
-            const raw = m[1].replace(/\\/g, '');
+            let raw = m[1].replace(/\\/g, '');
+            try { raw = decodeURIComponent(raw); } catch {}
             const encoded = encodeURI(raw);
             el.setAttribute('style', s.replace(m[0], `background-image: url("${encoded}")`));
           } catch {}
@@ -274,12 +285,12 @@
       }
 
       items.forEach(item => {
-        const url = safeUrl(item.img) || '';
         const article = document.createElement('article');
         article.className = 'group overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition flex flex-col';
+        // build innerHTML without background style
         article.innerHTML = `
           <a href="menu_detail.html?id=${encodeURIComponent(item.id)}" class="block flex flex-col h-full">
-            <div class="w-full aspect-[16/9] bg-center bg-cover" style="background-image:url('${url}')"></div>
+            <div class="w-full aspect-[16/9] bg-center bg-cover cover-placeholder"></div>
             <div class="p-4 flex flex-col flex-1">
               <h4 class="text-lg font-semibold text-text-primary">${item.title}</h4>
               <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
@@ -295,9 +306,18 @@
           </a>
         `;
         cardsEl.appendChild(article);
+
+        // set background via DOM API using safeUrl to avoid double-encoding & race
+        const cover = article.querySelector('.cover-placeholder');
+        if (cover) {
+          const url = safeUrl(item.img || '');
+          // use style API (browser will handle it reliably)
+          cover.style.backgroundImage = `url("${url}")`;
+        }
       });
 
-      // ensure background urls are encoded AFTER nodes are in DOM
+      // fallback: ensure any lingering style urls are normalized
+      // (kept as safe fallback; safeUrl + DOM API should prevent need for this)
       encodeBackgroundImages();
 
       // attach add btn handlers
@@ -395,9 +415,6 @@
       }
     });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
-
-    // run encodeBackgroundImages once more after a short tick (safe fallback)
-    setTimeout(encodeBackgroundImages, 120);
 
     // expose MENU_DATA globally for quick editing from console (optional)
     window.MENU_DATA = MENU_DATA;
