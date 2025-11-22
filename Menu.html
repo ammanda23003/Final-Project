@@ -237,9 +237,15 @@
     }
 
     function safeUrl(u) {
-      if (!u) return '';
-      try { return encodeURI(u.replace(/\\/g, '').trim()); } catch { return u; }
-    }
+        if (!u) return '';
+        try {
+          // hapus backslash, trim, lalu ganti spasi beruntun jadi satu %20
+          const cleaned = u.replace(/\\/g, '').trim().replace(/\s+/g, '%20');
+          return encodeURI(cleaned);
+        } catch {
+          return u;
+        }
+      }
 
     // ------- Render cards from MENU_DATA -------
     const cardsEl = document.getElementById('cards');
