@@ -42,7 +42,7 @@
         </div>
 
         <nav class="hidden md:flex items-center gap-8">
-          <a class="text-base font-medium hover:text-primary" href="index.html">Home</a>
+          <a class="text-base font-medium hover:text-primary" href="Menu_Makanan.html">Menu</a>
           <a class="text-base font-medium hover:text-primary" href="Promo.html">Promo</a>
           <a class="text-base font-medium hover:text-primary" href="Menu_Favorit_Makanan.html">Favorit</a>
           <a class="text-base font-medium hover:text-primary" href="Bantuan.html">Bantuan</a>
@@ -57,7 +57,7 @@
 
         <nav id="mobile-menu" class="hidden absolute right-4 top-full mt-2 w-56 rounded-xl border bg-white shadow-lg overflow-hidden md:hidden">
           <ul class="flex flex-col py-2">
-            <li><a class="block px-4 py-2 hover:bg-gray-100" href="index.html">Home</a></li>
+            <li><a class="block px-4 py-2 hover:bg-gray-100" href="Menu_Makanan.html">Menu</a></li>
             <li><a class="block px-4 py-2 hover:bg-gray-100" href="Promo.html">Promo</a></li>
             <li><a class="block px-4 py-2 hover:bg-gray-100" href="Menu_Favorit_Makanan.html">Favorit</a></li>
             <li><a class="block px-4 py-2 hover:bg-gray-100" href="Bantuan.html">Bantuan</a></li>
@@ -219,16 +219,7 @@
         img: "Img/Es Kopi Latte.png",
         desc: "Kopi espresso dengan susu segar",
         category: "minuman"
-      },
-      "es-teh-lemon": {
-        id: "es-teh-lemon",
-        title: "Es Teh Lemon",
-        price: 15000,
-        img: "Img/Es Teh Lemon.png",
-        desc: "Teh main dengan perasan lemon segar",
-        category: "minuman"
       }
-      
     };
 
     // ------- Helpers -------
@@ -236,16 +227,31 @@
       return 'Rp' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
     }
 
+    // stronger safeUrl: remove backslashes, trim, replace spaces with %20 then encode
     function safeUrl(u) {
-        if (!u) return '';
-        try {
-          // hapus backslash, trim, lalu ganti spasi beruntun jadi satu %20
-          const cleaned = u.replace(/\\/g, '').trim().replace(/\s+/g, '%20');
-          return encodeURI(cleaned);
-        } catch {
-          return u;
-        }
+      if (!u) return '';
+      try {
+        const cleaned = u.replace(/\\/g, '').trim().replace(/\s+/g, '%20');
+        return encodeURI(cleaned);
+      } catch {
+        return u;
       }
+    }
+
+    // encode background-image URLs if necessary (keeps behavior safe)
+    function encodeBackgroundImages() {
+      document.querySelectorAll('[style]').forEach(el => {
+        const s = el.getAttribute('style') || '';
+        const m = s.match(/background-image:\s*url\(["']?(.*?)["']?\)/);
+        if (m) {
+          try {
+            const raw = m[1].replace(/\\/g, '');
+            const encoded = encodeURI(raw);
+            el.setAttribute('style', s.replace(m[0], `background-image: url("${encoded}")`));
+          } catch {}
+        }
+      });
+    }
 
     // ------- Render cards from MENU_DATA -------
     const cardsEl = document.getElementById('cards');
@@ -290,6 +296,9 @@
         `;
         cardsEl.appendChild(article);
       });
+
+      // ensure background urls are encoded AFTER nodes are in DOM
+      encodeBackgroundImages();
 
       // attach add btn handlers
       cardsEl.querySelectorAll('.add-btn').forEach(btn => {
@@ -387,22 +396,8 @@
     });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
 
-    // encode background-image urls that contain spaces (fallback)
-    function encodeBackgroundImages() {
-      document.querySelectorAll('[style]').forEach(el => {
-        const s = el.getAttribute('style') || '';
-        const m = s.match(/background-image:\s*url\(["']?(.*?)["']?\)/);
-        if (m) {
-          try {
-            const raw = m[1].replace(/\\/g, '');
-            const encoded = encodeURI(raw);
-            el.setAttribute('style', s.replace(m[0], `background-image: url("${encoded}")`));
-          } catch {}
-        }
-      });
-    }
-    // run after a tick (cards generated)
-    setTimeout(encodeBackgroundImages, 80);
+    // run encodeBackgroundImages once more after a short tick (safe fallback)
+    setTimeout(encodeBackgroundImages, 120);
 
     // expose MENU_DATA globally for quick editing from console (optional)
     window.MENU_DATA = MENU_DATA;
