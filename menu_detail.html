@@ -98,7 +98,9 @@
                 img: "Img/Ramen.png",
                 desc: "Mie Ramen dengan kuah kaldu gurih dan pedas di tambah dengan toping lengkap,",
                 sauces: [],
-                additions: []
+                additions: [{key: "udang-panggang", label:"Udang Panggang", price: 6000},{key: "nori", label:"Nori", price: 1500},
+                    {key: "extra-ramen-noodles", label:"Extra Ramen Noodles", price: 1500},
+                ]
             },
 
             "nasi-goreng-spesial": {
@@ -108,7 +110,9 @@
                 img: "Img/Nasi Goreng Spesial.png",
                 desc: "Nasi Goreng spesial dengan suwiran ayam, udang, dan telur mata sapi",
                 sauces: [],
-                additions: []
+                additions: [{key: "telur-orak-arik", label:"Telur Orak-arik", price: 3500}, {key: "cumi-goreng", label:"Cumi Goreng", price: 5000},
+                    {key: "kulit-crispy", label:"Kulit Crispy", price: 3500},
+                ]
             },
 
             "spaghetti-carbonara": {
@@ -117,8 +121,12 @@
                 price: 75000,
                 img: "Img/Spaghetti Carbonara.png",
                 desc: "Pasta dengan saur carbonara creamy dan potongan smoked beef yang lezat",
-                sauces: [],
-                additions: []
+                sauces: [{key: "classic-carbonara-sauce", label: "Classic Carbonara Sauce", print: 0},{key: "creamy-alfredo-style", label: "Creamy Alfredo Style", print: 0},
+                    {key: "spicy-carbonara", label: "Spicy Carbonara", print: 0},
+                 ],
+                additions: [{key: "smoked-becon", label:"Smoked Becon", price: 5000}, {key: "sauteed-mushrooms", label:"Sauteed Mushrooms", price: 3000},
+                    {key: "grilled-chicken-slices", label:"Grilled Chicken Slices", price: 7000},{key: "chicken-black-pepper-extra", label:"Chicken Black Papper Extra", price: 6000},
+                ]
             },
 
             "burger-klasik": {
@@ -127,8 +135,10 @@
                 price: 60000,
                 img: "Img/Classic Burger.png",
                 desc: "Burger daging sapi dengan tambahan selada, keju dan saur mayo yang lezat",
-                sauces: [],
-                additions: []
+                sauces: [{ key: "Extra-Mayo", label: "Extra-Mayo", price: 0 }, { key: "mustard", label: "mustard", price: 0 }],
+                additions: [{ key: "extra-cheese", label: "Extra Cheese", price: 10000 }, { key: "double-patty", label: "Double Patty", price: 15000 },
+                    { key: "Extra-Melt-cheese", label: "Extra Melt Cheese", price: 5000 }
+                ]
             }
         };
 
