@@ -135,7 +135,7 @@
                 title: "Burger Klasik",
                 price: 60000,
                 img: "Img/Classic Burger.png",
-                desc: "Burger daging sapi dengan tambahan selada, keju dan saur mayo yang lezat",
+                desc: "Burger daging sapi dengan tambahan selada, keju dan sayur mayo yang lezat",
                 sauces: [{ key: "Extra-Mayo", label: "Extra-Mayo", price: 0 }, { key: "mustard", label: "mustard", price: 0 }],
                 additions: [{ key: "extra-cheese", label: "Extra Cheese", price: 10000 }, { key: "double-patty", label: "Double Patty", price: 15000 },
                     { key: "Extra-Melt-cheese", label: "Extra Melt Cheese", price: 5000 }
@@ -232,6 +232,60 @@
                 sauces: [],
                 additions: []
             },
+            "sop-buntut":{
+                id: "sop-buntut",
+                title: "Sob Buntut",
+                price: 55000,
+                img: "Img/Sop Buntut.png",
+                desc: "Sop buntut sapi dengan tambahan wortel dan kentang",
+                sauces:[],
+                additions: []
+            },
+            "ayam-penyet":{
+                id: "ayam-penyet",
+                title: "Ayam Penyet",
+                price: 25000,
+                img: "Img/ayampenyet.png",
+                desc: "Ayam Goreng penyet yang lezat dengan tambahan sambel terasi pedas",
+                sauces: [],
+                additions: []
+            },
+            "ikan-bakar-jimbaran": {
+                id: "ikan-bakar-jimbaran",
+                title: "Ikan Bakar Jimbaran",
+                price: 55000,
+                img: "Img/ikanbakarjimbaran.png",
+                desc: "Ikan bakar lezat dengan kombinasi bumbu khas bali",
+                sauces: [],
+                additions: []
+            },
+            "tomyumgoong": {
+                id: "tomyumgoong",
+                title: "Tom Yum Goong",
+                price: 42000,
+                img: "Img/tomyumgoong.png",
+                desc: "Sup asam pedas khas Thailand dengan tambahan udang",
+                sauces: [],
+                additions: []
+            },
+            "beef-teriyaki": {
+                id: "beef-teriyaki",
+                title: "Beef Teriyaki",
+                price: 25000,
+                img: "Img/beefteriyaki.png",
+                desc: "Irisan daging sapi lezat dengan kombinasi saus teriyaki manis",
+                sauces: [],
+                additions: []
+            },
+            "taco-daging-sapi": {
+                id: "taco-daging-sapi",
+                title: "Taco Daging Sapi",
+                price: 20000,
+                img: "Img/tacodagingsapi.png",
+                desc: "Taco dengan isian daging sapi cincang pedas dan lezat",
+                sauces: [],
+                additions: []
+            },
             // menu minuman
             "es-kopi-latte": {
                 id: "es-kopi-latte",
@@ -321,7 +375,7 @@
 
             <!-- Pilihan Saus (radio) -->
             <div class="mt-6">
-              <h4 class="font-medium text-text-primary">Pilihan Saus</h4>
+              <h4 class="font-medium text-text-primary">Pilihan Topping</h4>
               <div id="sauce-options" class="mt-2 space-y-2">
                 ${item.sauces.map((s, idx) => `
                   <label class="flex items-center gap-3">
