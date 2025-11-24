@@ -5,45 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Data Diri Pelanggan & Ringkasan Pesanan - Resto Modern</title>
 
-  <!-- Tailwind config must come BEFORE the script so config is applied -->
+  <!-- Tailwind config before CDN -->
   <script>
     window.tailwind = window.tailwind || {};
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
-          colors: {
-            primary: "#4CAF50",
-            secondary: "#FF9800",
-            "background-light": "#f6f7f6",
-            "background-dark": "#151d15"
-          },
+          colors: { primary: "#4CAF50", secondary: "#FF9800", "background-light": "#f6f7f6" },
           fontFamily: { display: ["Work Sans","sans-serif"] }
         }
       }
     };
   </script>
 
-  <!-- Load Tailwind synchronously to ensure classes are available immediately -->
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-  <!-- Load MENU_DATA before main script -->
+  <!-- Optional: MENU_DATA (scripts/data.js) -->
   <script src="scripts/data.js" defer></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" crossorigin href="https://fonts.gstatic.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-
-  <style>
-    /* minimal helpers only */
-    html,body{height:100%}
-    .size-16{width:64px;height:64px}
-  </style>
+  <style> html,body{height:100%} </style>
 </head>
 
 <body class="font-display bg-background-light text-gray-900">
   <div class="min-h-screen flex flex-col">
-    <!-- header omitted for brevity (same as before) -->
+    <!-- Header -->
     <header class="sticky top-0 z-20 bg-background-light/90 backdrop-blur-sm border-b border-gray-200">
       <div class="container mx-auto px-4">
         <div class="flex items-center h-16">
@@ -96,7 +86,7 @@
 
             <div id="summary-compact" class="space-y-3 mb-4">
               <div id="compact-first-item" class="flex items-center gap-3">
-                <div class="w-16 h-16 rounded-md bg-gray-100 flex-shrink-0 overflow-hidden">
+                <div id="compact-img-wrap" class="w-16 h-16 rounded-md bg-gray-100 flex-shrink-0 overflow-hidden">
                   <img id="compact-img" src="Img/placeholder.png" alt="" class="w-full h-full object-cover" loading="lazy" decoding="async"/>
                 </div>
                 <div class="flex-1 min-w-0">
@@ -151,19 +141,18 @@
     </footer>
   </div>
 
+  <!-- Script utama: dedupe kuat, urutan sesuai cart, gambar disembunyikan saat kosong -->
   <script>
   (function(){
     'use strict';
 
-    // Fallback placeholder as tiny SVG data URI to avoid 404 spam
+    const TAX_RATE = 0.11;
+    const SERVICE_FEE = 2500;
+
     const PLACEHOLDER_DATA_URI = 'data:image/svg+xml;utf8,' + encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
-         <rect width="100%" height="100%" fill="#f3f4f6"/>
-         <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="sans-serif" font-size="18">No image</text>
-       </svg>`
+      `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="120" viewBox="0 0 200 120"><rect width="100%" height="100%" fill="#f3f4f6"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="sans-serif" font-size="14">No image</text></svg>`
     );
 
-    // Safe helpers
     const byId = id => document.getElementById(id);
     const safeParse = key => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
     const formatRp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
@@ -173,6 +162,7 @@
     const compactQtyEl = byId('compact-qty');
     const compactLineEl = byId('compact-line');
     const compactImgEl = byId('compact-img');
+    const compactImgWrap = byId('compact-img-wrap');
     const expandBtn = byId('expand-cart');
 
     const cartFullEl = byId('cart-full');
@@ -187,22 +177,135 @@
     const inputPhone = byId('nomor-telepon');
     const inputNote = byId('catatan');
 
-    // Ensure any image fallback uses data-uri
+    // normalize helper
+    function normalizeString(s){
+      if (!s) return '';
+      try {
+        return String(s)
+          .normalize('NFKD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/[^\w\s-]/g, '')
+          .replace(/[_\s]+/g, ' ')
+          .trim()
+          .toLowerCase();
+      } catch { return String(s).trim().replace(/\s+/g,' ').toLowerCase(); }
+    }
+
+    // build lookups from MENU_DATA if present
+    function buildMenuLookups(){
+      const byIdMap = new Map();
+      const byTitleMap = new Map();
+      try {
+        if (!window.MENU_DATA || !Array.isArray(window.MENU_DATA)) return { byIdMap, byTitleMap };
+        for (const m of window.MENU_DATA){
+          if (m.id) byIdMap.set(normalizeString(String(m.id)), m);
+          if (m.title) byTitleMap.set(normalizeString(String(m.title)), m);
+        }
+      } catch {}
+      return { byIdMap, byTitleMap };
+    }
+    const MENU_LOOKUPS = buildMenuLookups();
+
+    // Strong canonical resolution (prefer MENU_DATA.id when possible)
+    function canonicalIdForEntry(it){
+      if (!it) return '__unknown__';
+
+      // if string id or title
+      if (typeof it === 'string') {
+        const s = normalizeString(it);
+        if (MENU_LOOKUPS.byIdMap.has(s)) return s;                     // exact id
+        if (MENU_LOOKUPS.byTitleMap.has(s)) {                          // title match -> use menu.id
+          const menu = MENU_LOOKUPS.byTitleMap.get(s);
+          return normalizeString(String(menu.id || s));
+        }
+        return s;                                                       // fallback: normalized string
+      }
+
+      // object with explicit id
+      if (it.id || it.productId) {
+        const idNorm = normalizeString(String(it.id || it.productId));
+        if (MENU_LOOKUPS.byIdMap.has(idNorm)) return idNorm;           // known id
+        return idNorm;                                                 // unknown id but stable
+      }
+
+      // object with title only
+      if (it.title || it.name) {
+        const t = normalizeString(String(it.title || it.name));
+        if (MENU_LOOKUPS.byTitleMap.has(t)) {
+          const menu = MENU_LOOKUPS.byTitleMap.get(t);
+          return normalizeString(String(menu.id || t));
+        }
+        return t;
+      }
+
+      return '__unknown__';
+    }
+
+    // read cart and merge duplicates, preserving first-seen order from raw cart
+    function readCartNormalized(){
+      const raw = safeParse('cart') || [];
+      const input = Array.isArray(raw) && raw.length && typeof raw[0] === 'string' ? raw.map(id => ({ id, qty: 1 })) : raw;
+      if (!Array.isArray(input)) return [];
+
+      const map = new Map();
+      const order = [];
+
+      for (const it of input){
+        if (!it) continue;
+        const qty = parseInt(it.qty,10) || 1;
+        if (!Number.isFinite(qty) || qty <= 0) continue;
+
+        const canonical = canonicalIdForEntry(it);
+
+        // find menu data by canonical id or title
+        let menu = null;
+        if (MENU_LOOKUPS.byIdMap.has(canonical)) menu = MENU_LOOKUPS.byIdMap.get(canonical);
+        else if (MENU_LOOKUPS.byTitleMap.has(canonical)) menu = MENU_LOOKUPS.byTitleMap.get(canonical);
+
+        // prefer MENU_DATA values when available
+        const title = (menu && menu.title) || it.title || it.name || (menu && menu.id) || 'Item';
+        const price = (menu && Number(menu.price)) || Number(it.price) || 0;
+        const img = (menu && menu.img) || it.img || it.image || null;
+
+        if (map.has(canonical)) {
+          const cur = map.get(canonical);
+          cur.qty += qty;
+          if ((!cur.img || cur.img === null) && img) cur.img = img;
+          if ((!cur.price || cur.price === 0) && price) cur.price = price;
+          if ((!cur.title || cur.title === 'Item') && title) cur.title = title;
+        } else {
+          map.set(canonical, { id: canonical, title, price, img, qty });
+          order.push(canonical);
+        }
+      }
+
+      const result = [];
+      for (const key of order) {
+        const v = map.get(key);
+        if (v) result.push(v);
+      }
+
+      return result;
+    }
+
+    function safeSetText(el, txt){
+      if (!el) return;
+      try { el.textContent = txt; } catch(e){}
+    }
+
     function safeSetImage(imgEl, src, alt){
       if (!imgEl) return;
       try {
-        imgEl.onerror = null;
-        // set a short timeout in case src is missing to avoid repeated 404 spikes
         if (!src) { imgEl.src = PLACEHOLDER_DATA_URI; imgEl.alt = alt || ''; return; }
+        imgEl.onerror = null;
         imgEl.src = src;
         imgEl.alt = alt || '';
         imgEl.onerror = function(){
-          // if remote missing, fallback to MENU_DATA img or placeholder data-uri
-          if (window.MENU_DATA && window.MENU_DATA.length){
-            const fallback = window.MENU_DATA[0] && window.MENU_DATA[0].img;
+          try {
+            const fallback = (window.MENU_DATA && window.MENU_DATA[0] && window.MENU_DATA[0].img) || null;
             imgEl.onerror = null;
             imgEl.src = fallback || PLACEHOLDER_DATA_URI;
-          } else {
+          } catch {
             imgEl.onerror = null;
             imgEl.src = PLACEHOLDER_DATA_URI;
           }
@@ -210,96 +313,63 @@
       } catch(e){ if (imgEl) imgEl.src = PLACEHOLDER_DATA_URI; }
     }
 
-    // find menu item in global data if available
-    function findMenuItemById(id){
-      try {
-        if (!window.MENU_DATA || !Array.isArray(window.MENU_DATA)) return null;
-        return window.MENU_DATA.find(m => String(m.id) === String(id)) || null;
-      } catch { return null; }
+    function updateTotalsFromCart(cart){
+      let subtotal = 0;
+      cart.forEach(i => subtotal += i.price * i.qty);
+      const tax = Math.round(subtotal * TAX_RATE);
+      const total = subtotal + tax + SERVICE_FEE;
+      safeSetText(subtotalEl, formatRp(subtotal));
+      safeSetText(taxEl, formatRp(tax));
+      safeSetText(serviceFeeEl, formatRp(SERVICE_FEE));
+      safeSetText(totalEl, formatRp(total));
     }
 
-    // normalize and merge cart with MENU_DATA when possible
-    function readCartNormalized(){
-      const raw = safeParse('cart') || [];
-      // support simple arrays of ids
-      const input = Array.isArray(raw) && raw.length && typeof raw[0] === 'string' ? raw.map(id => ({ id, qty: 1 })) : raw;
-      if (!Array.isArray(input)) return [];
-      const map = new Map();
-      for (const it of input){
-        if (!it) continue;
-        let id = it.id || it.productId || null;
-        let qty = Number(it.qty) || 1;
-        if (!id && typeof it === 'string') { id = it; qty = 1; }
-        const menu = id ? findMenuItemById(id) : null;
-        const title = (menu && menu.title) || it.title || it.name || 'Item';
-        const price = (menu && Number(menu.price)) || Number(it.price) || 0;
-        const img = (menu && menu.img) || it.img || it.image || null;
-        const key = id || title;
-        if (map.has(key)) {
-          map.get(key).qty += qty;
-        } else {
-          map.set(key, { id: id || key, title, price, img, qty });
-        }
-      }
-      return Array.from(map.values());
-    }
-
-    // safe text setter
-    function safeSetText(el, txt){
-      if (!el) return;
-      try { el.textContent = txt; } catch(e){ /* ignore */ }
-    }
-
-    // compact render
+    // Compact: hide image when empty; show only first normalized item when present
     function renderCompact(){
       const cart = readCartNormalized();
       if (!cart.length){
+        if (compactImgWrap) compactImgWrap.style.display = 'none';
+        const compactMore = document.getElementById('compact-more');
+        if (compactMore) compactMore.style.display = 'none';
         safeSetText(compactTitleEl, 'Keranjang kosong');
         safeSetText(compactQtyEl, '');
-        safeSetText(compactLineEl, '—');
+        safeSetText(compactLineEl, '');
         safeSetText(subtotalEl, formatRp(0));
         safeSetText(taxEl, formatRp(0));
         safeSetText(totalEl, formatRp(0));
         if (toPaymentBtn) toPaymentBtn.disabled = true;
         return;
       }
+
+      if (compactImgWrap) compactImgWrap.style.display = '';
+      const compactMore = document.getElementById('compact-more');
+      if (compactMore) compactMore.style.display = '';
+
       const first = cart[0];
       safeSetText(compactTitleEl, first.title);
       safeSetText(compactQtyEl, `${first.qty} x ${formatRp(first.price)}`);
       safeSetText(compactLineEl, formatRp(first.price * first.qty));
       safeSetImage(compactImgEl, first.img, first.title);
-
-      let subtotal = 0;
-      cart.forEach(i => subtotal += i.price * i.qty);
-      const tax = Math.round(subtotal * 0.11);
-      const total = subtotal + tax + 2500;
-      safeSetText(subtotalEl, formatRp(subtotal));
-      safeSetText(taxEl, formatRp(tax));
-      safeSetText(serviceFeeEl, formatRp(2500));
-      safeSetText(totalEl, formatRp(total));
-
+      updateTotalsFromCart(cart);
       if (toPaymentBtn) toPaymentBtn.disabled = !validateCustomer();
     }
 
-    // full render (idempotent)
+    // Full list: one row per normalized item, ordered by first appearance
     function renderFull(){
       if (!cartFullEl) return;
       try {
         const cart = readCartNormalized();
         cartFullEl.innerHTML = '';
-        if (!cart.length) { cartFullEl.innerHTML = '<div class="text-center py-6 text-gray-500">Keranjang kosong.</div>'; return; }
+        if (!cart.length){
+          cartFullEl.innerHTML = '<div class="text-center py-6 text-gray-500">Keranjang kosong.</div>';
+          return;
+        }
         const frag = document.createDocumentFragment();
         cart.forEach(it => {
-          const row = document.createElement('div');
-          row.className = 'flex items-center gap-4';
-
-          const thumb = document.createElement('div');
-          thumb.className = 'w-16 h-16 rounded-md overflow-hidden bg-gray-100 flex-shrink-0';
-          const img = document.createElement('img');
-          img.className = 'w-full h-full object-cover';
-          img.loading = 'lazy'; img.decoding = 'async';
-          safeSetImage(img, it.img, it.title);
-          thumb.appendChild(img);
+          const row = document.createElement('div'); row.className = 'flex items-center gap-4';
+          const thumb = document.createElement('div'); thumb.className = 'w-16 h-16 rounded-md overflow-hidden bg-gray-100 flex-shrink-0';
+          const img = document.createElement('img'); img.className = 'w-full h-full object-cover'; img.loading = 'lazy'; img.decoding = 'async';
+          safeSetImage(img, it.img, it.title); thumb.appendChild(img);
 
           const meta = document.createElement('div'); meta.className = 'flex-grow min-w-0';
           const title = document.createElement('p'); title.className = 'font-semibold truncate'; title.textContent = it.title;
@@ -339,25 +409,25 @@
 
     function onExpand(){ if (cartFullEl) cartFullEl.classList.remove('hidden'); const compactMore = document.getElementById('compact-more'); if (compactMore) compactMore.classList.add('hidden'); renderFull(); }
 
-    // wire events
-    try {
-      if (expandBtn) expandBtn.addEventListener('click', onExpand);
-      if (toPaymentBtn) toPaymentBtn.addEventListener('click', function(e){ e.preventDefault(); if (validateCustomer()) saveOrderAndGo(); });
-      [inputNama, inputEmail, inputPhone, inputNote].forEach(i => { if (!i) return; i.addEventListener('input', ()=>{ saveDraft(); updateButtonState(); }); });
-      window.addEventListener('storage', function(e){ if (!e.key) return; if (['cart','orderDraft','customerDraft'].includes(e.key)) { renderCompact(); if (cartFullEl && !cartFullEl.classList.contains('hidden')) renderFull(); updateButtonState(); } });
-    } catch(e){ console.error('wire failed', e); }
-
     function saveOrderAndGo(){
       try {
         const cart = readCartNormalized();
         let subtotal = 0; cart.forEach(i => subtotal += i.price * i.qty);
-        const tax = Math.round(subtotal * 0.11);
-        const total = subtotal + tax + 2500;
-        const order = { cart, subtotal, tax, service: 2500, total, customer: { nama: inputNama?.value.trim()||'', email: inputEmail?.value.trim()||'', phone: inputPhone?.value.trim()||'', note: inputNote?.value.trim()||'' }, createdAt: new Date().toISOString() };
+        const tax = Math.round(subtotal * TAX_RATE);
+        const total = subtotal + tax + SERVICE_FEE;
+        const order = { cart, subtotal, tax, service: SERVICE_FEE, total, customer: { nama: inputNama?.value.trim()||'', email: inputEmail?.value.trim()||'', phone: inputPhone?.value.trim()||'', note: inputNote?.value.trim()||'' }, createdAt: new Date().toISOString() };
         localStorage.setItem('orderDraft', JSON.stringify(order));
       } catch(e){}
       setTimeout(()=> { location.href = 'Pembayaran.html'; }, 80);
     }
+
+    // wire events
+    try {
+      if (expandBtn) expandBtn.addEventListener('click', onExpand);
+      if (toPaymentBtn) toPaymentBtn.addEventListener('click', function(e){ e.preventDefault(); if (validateCustomer()) saveOrderAndGo(); });
+      [inputNama, inputEmail, inputPhone, inputNote].forEach(i => { if(!i) return; i.addEventListener('input', ()=>{ saveDraft(); updateButtonState(); }); });
+      window.addEventListener('storage', function(e){ if (!e.key) return; if (['cart','orderDraft','customerDraft'].includes(e.key)) { renderCompact(); if (cartFullEl && !cartFullEl.classList.contains('hidden')) renderFull(); updateButtonState(); } });
+    } catch(e){ console.error('wire failed', e); }
 
     // load draft
     try {

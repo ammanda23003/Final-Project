@@ -8,11 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&amp;display=swap"
         rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-    </style>
     <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
@@ -39,90 +34,77 @@
         }
     </script>
     <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
         body {
             min-height: max(884px, 100dvh);
         }
+        .modal-center { display: grid; place-items: center; min-height: 100vh; }
     </style>
 </head>
 <body class="bg-background-light dark:bg-background-dark font-display text-text-light dark:text-text-dark">
     <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
         <header class="sticky top-0 z-10 flex h-16 w-full items-center justify-between border-b border-border-light dark:border-border-dark bg-background-light/80 dark:bg-background-dark/80 px-4 backdrop-blur-sm">
-            <button class="flex size-10 shrink-0 items-center justify-center rounded-full text-text-light dark:text-text-dark">
+            <button id="back-to-menu-top" class="flex size-10 shrink-0 items-center justify-center rounded-full text-text-light dark:text-text-dark">
                 <span class="material-symbols-outlined text-2xl">arrow_back</span>
             </button>
             <h1 class="flex-1 text-center text-lg font-bold">Konfirmasi Pesanan</h1>
             <div class="size-10 shrink-0"></div>
         </header>
+
         <main class="w-full max-w-2xl mx-auto flex-grow px-4 py-8">
             <div class="flex flex-col items-center justify-center space-y-6">
                 <div class="flex size-24 items-center justify-center rounded-full bg-success/10 text-success">
                     <span class="material-symbols-outlined !text-6xl">check_circle</span>
                 </div>
                 <h2 class="text-3xl font-bold tracking-tight text-center">Pesanan Diterima</h2>
-                <p class="text-base text-center text-text-light/80 dark:text-text-dark/80">Pembayaran Anda telah berhasil da pesanan Anda sedang disiapkan</p>
+                <p class="text-base text-center text-text-light/80 dark:text-text-dark/80">Pembayaran Anda telah berhasil dan pesanan Anda sedang disiapkan</p>
+
                 <div class="w-full rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-4 shadow-sm">
                     <div class="flex items-center justify-between gap-4">
                         <div class="flex flex-col">
                             <p class="text-sm font-medium text-text-light/60 dark:text-text-dark/60">ID Pesanan</p>
-                            <p class="text-lg font-bold text-primary">ORD-123XYZ789</p>
+                            <p id="order-id" class="text-lg font-bold text-primary">ORD-123XYZ789</p>
                         </div>
-                        <button class="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 text-sm font-medium text-primary hover:bg-primary/20">
+                        <button id="copy-order-id" class="flex h-10 cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary/10 px-4 text-sm font-medium text-primary hover:bg-primary/20">
                             <span class="material-symbols-outlined text-base">content_copy</span>
                             <span class="truncate">Salin</span>
                         </button>
                     </div>
                 </div>
+
                 <div class="grid w-full grid-cols-2 gap-4">
-                    <div class="flex flex-col gap-1 rounded-xl border border-border-ligh dark:border-border-dark bg-surface-light dark:bg-surface-dark p-4">
+                    <div class="flex flex-col gap-1 rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-4">
                         <p class="text-sm font-medium text-text-light/60 dark:text-text-dark/60">Estimasi Waktu Selesai</p>
-                        <p class="text-lg font-semibold">20-25 menit</p>
+                        <p id="eta" class="text-lg font-semibold">20-25 menit</p>
                     </div>
                     <div class="flex flex-col gap-1 rounded-xl border border-border-light dark:border-border-dark bg-surface-light dark:bg-surface-dark p-4">
                         <p class="text-sm font-medium text-text-light/60 dark:text-text-dark/60">Total Pembayaran</p>
-                        <p class="text-lg font-semibold">Rp 252.250</p>
+                        <p id="confirmed-total" class="text-lg font-semibold">Rp 252.250</p>
                     </div>
                 </div>
+
                 <div class="w-full pt-4">
                     <hr class="border-border-light dark:border-border-dark"/>
                 </div>
+
                 <div class="w-full space-y-4">
                     <h3 class="text-lg font-bold">Ringkasan Pesanan</h3>
-                    <ul class="space-y-3">
-                        <li class="flex items-center gap-4">
-                            <div class="h-16 w-16 shrink-0 rounded-lg bg-cover bg-center" data-alt="Naso Goreng Spesial" style="background-image: url(Img/Nasi\ Goreng\ Spesial.png);"></div>
-                            <div class="flex-grow">
-                                <p class="font-semibold">Nasi Goreng Spesial</p>
-                                <p class="text-sm text-text-light/60 dark:text-text-dark/60">2 X Rp 50.000</p>
-                            </div>
-                            <p class="font-semibold">Rp 100.000</p>
-                        </li>
-                        <li class="flex items-center gap-4">
-                            <div class="h-16 w-16 shrink-0 rounded-lg bg-cover bg-center" data-alt="Ocean Blue Soda" style="background-image: url(Img/Ocean\ Blue\ Soda.png);"></div>
-                            <div class="flex-grow">
-                                <p class="font-semibold">Ocean Blue Soda</p>
-                                <p class="text-sm text-text-light/60 dark:text-text-dark/60">2 x Rp 25.000</p>
-                            </div>
-                            <p class="font-semibold">Rp 50.000</p>
-                        </li>
-                        <li class="flex items-center gap-4">
-                            <div class="h-16 w-16 shrink-0 rounded-lg bg-cover bg-center" data-alt="Pizza Meat Lovers" style="background-image: url(Img/pizza\ Meat\ Lovers.png);"></div>
-                            <div class="flex-grow">
-                                <p class="font-semibold">Pizza Meat Lovers</p>
-                                <p class="text-sm text-text-light/60 dark:text-text-dark/60">1 x Rp 75.000</p>
-                            </div>
-                            <p class="font-semibold">Rp 75.000</p>
-                        </li>
+                    <ul id="confirmed-items" class="space-y-3">
+                        <!-- items will be rendered here by JS -->
                     </ul>
                 </div>
+
                 <div class="w-full max-w-2xl mx-auto space-y-3">
-                    <button class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-success text-white text-base font-bold transition hover:bg-success/90">Lihat Status Pesanan</button>
-                    <button class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-transparent text-text-light dark:text-text-dark text-base font-bold transition hover:bg-black/5 dark:hover:bg-white/5">Kembali ke Menu</button>
-                    <a class="block text-center text-sm font-medium text-primary hover:underline" href="#">Hubungi Restoran</a>
+                    <button id="view-status" class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-success text-white text-base font-bold transition hover:bg-success/90">Lihat Status Pesanan</button>
+                    <button id="back-to-menu-bottom" class="flex h-12 w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-border-light dark:border-border-dark bg-transparent text-text-light dark:text-text-dark text-base font-bold transition hover:bg-black/5 dark:hover:bg-white/5">Kembali ke Menu</button>
+                    <a id="contact-restaurant" class="block text-center text-sm font-medium text-primary hover:underline" href="#">Hubungi Restoran</a>
                 </div>
             </div>
-           
         </main>
-        <footer class="w-full border-t border-gray-200 bg-background-secondary">
+
+        <footer class="w-full border-t border-gray-200 bg-background-light">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gal-4">
                     <div class="text-sm text-text-secondary">
@@ -138,5 +120,332 @@
             </div>
         </footer>
     </div>
+
+    <!-- Modal markup (hidden by default) -->
+    <div id="dev-modal" class="fixed inset-0 z-50 hidden modal-center">
+      <div id="dev-modal-overlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+      <div class="relative z-10 w-full max-w-md mx-4">
+        <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+              <span class="material-symbols-outlined text-4xl text-primary">construction</span>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold mb-1">Fitur Dalam Pengembangan</h3>
+              <p class="text-sm text-subtext-light dark:text-subtext-dark">Fitur lihat status pesanan sedang dalam pengembangan. Kami sedang bekerja untuk menghadirkannya secepat mungkin.</p>
+            </div>
+          </div>
+          <div class="mt-6 flex justify-end gap-3">
+            <button id="dev-modal-close" class="px-4 py-2 rounded-md bg-gray-100 dark:bg-zinc-800 text-sm font-medium hover:bg-gray-200 dark:hover:bg-zinc-700">Tutup</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    (function(){
+      'use strict';
+
+      // Helpers
+      const byId = id => document.getElementById(id);
+      const safeParse = (k) => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } };
+      const formatRp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+
+      // Elements
+      const backTop = byId('back-to-menu-top');
+      const backBottom = byId('back-to-menu-bottom');
+      const copyBtn = byId('copy-order-id');
+      const orderIdEl = byId('order-id');
+      const etaEl = byId('eta');
+      const confirmedTotalEl = byId('confirmed-total');
+      const confirmedItemsEl = byId('confirmed-items');
+      const viewStatusBtn = byId('view-status');
+      const contactRestaurant = byId('contact-restaurant');
+
+      // Modal elements
+      const devModal = byId('dev-modal');
+      const devModalOverlay = byId('dev-modal-overlay');
+      const devModalClose = byId('dev-modal-close');
+
+      // Keys to clear when returning to menu
+      const KEYS_TO_CLEAR = [
+        'cart',
+        'orderDraft',
+        'paymentDraft',
+        'customerDraft',
+        'selectedPaymentMethod',
+        'voucherCode',
+        'serviceFeeOverride'
+      ];
+
+      function clearAllTemporaryData(){
+        try {
+          KEYS_TO_CLEAR.forEach(k => localStorage.removeItem(k));
+        } catch(e){}
+      }
+
+      function navigateToMenu(){
+        const target = 'Menu.html';
+        setTimeout(() => { window.location.href = target; }, 50);
+      }
+
+      // Attach handlers to both back buttons (top and bottom)
+      if (backTop) backTop.addEventListener('click', function(e){
+        e.preventDefault();
+        clearAllTemporaryData();
+        navigateToMenu();
+      });
+
+      if (backBottom) backBottom.addEventListener('click', function(e){
+        e.preventDefault();
+        clearAllTemporaryData();
+        navigateToMenu();
+      });
+
+      // Copy order id to clipboard
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function(){
+          const id = orderIdEl?.textContent?.trim() || '';
+          if (!id) return;
+          try {
+            navigator.clipboard?.writeText(id);
+            copyBtn.textContent = 'Tersalin';
+            setTimeout(()=> {
+              copyBtn.innerHTML = '<span class="material-symbols-outlined text-base">content_copy</span><span class="truncate">Salin</span>';
+            }, 1200);
+          } catch(e){}
+        });
+      }
+
+      // --- ETA logic ---
+      // Default prep time (minutes) when not specified
+      const DEFAULT_PREP_MIN = 10;
+
+      // Optional: per-item prep times fallback map (id/title -> minutes)
+      // You can extend this map or provide MENU_DATA in other pages with prepTime property.
+      const PREP_TIME_MAP = {
+        // keys should be normalized (lowercase)
+        'nasi goreng spesial': 12,
+        'ocean blue soda': 2,
+        'pizza meat lovers': 18,
+        // add more known items here
+      };
+
+      // Normalize helper
+      function normalizeKey(s){
+        if (!s) return '';
+        return String(s).trim().toLowerCase();
+      }
+
+      // Compute ETA (minutes) based on items array.
+      // Strategy:
+      //  - For each item, use item.prepTime if present, else lookup PREP_TIME_MAP by title/id, else DEFAULT_PREP_MIN.
+      //  - Sum (prepTime * qty) to get totalWork.
+      //  - Apply concurrency factor (kitchenStations) to model parallel cooking.
+      //  - Add fixed buffer (packing/delivery handoff).
+      //  - Produce a small range for display (lower..upper).
+      function computeEtaRange(items){
+        if (!Array.isArray(items) || items.length === 0) return { lower: 10, upper: 15 };
+
+        // total work in minutes
+        let totalWork = 0;
+        items.forEach(it => {
+          const qty = Number(it.qty || 1);
+          let prep = Number(it.prepTime || 0);
+          if (!prep || prep <= 0) {
+            // try lookup by title or id
+            const key = normalizeKey(it.title || it.name || it.id || '');
+            prep = PREP_TIME_MAP[key] || DEFAULT_PREP_MIN;
+          }
+          totalWork += prep * qty;
+        });
+
+        // concurrency: number of parallel stations/cooks (configurable)
+        const kitchenStations = Math.max(1, Number(localStorage.getItem('kitchenStations') || 2));
+
+        // base estimate (minutes)
+        const baseMinutes = Math.ceil(totalWork / kitchenStations);
+
+        // buffer for packing/verification/hand-off
+        const buffer = Number(localStorage.getItem('serviceBufferMinutes') || 5);
+
+        // delivery or pickup overhead (if needed)
+        const overhead = Number(localStorage.getItem('overheadMinutes') || 0);
+
+        // final estimate
+        const estimate = Math.max(5, baseMinutes + buffer + overhead);
+
+        // produce a small range +/- variance (3 minutes or 15% whichever larger)
+        const variance = Math.max(3, Math.round(estimate * 0.15));
+        const lower = Math.max(5, estimate - variance);
+        const upper = estimate + variance;
+
+        return { lower, upper };
+      }
+
+      // --- Data retrieval and rendering (same as before, but now set ETA dynamically) ---
+      function getConfirmedData(){
+        const paymentDraft = safeParse('paymentDraft');
+        if (paymentDraft && (paymentDraft.items || paymentDraft.cart)) {
+          const items = paymentDraft.items || paymentDraft.cart || [];
+          const subtotal = Number(paymentDraft.subtotal || paymentDraft.subtotalAmount || 0);
+          const tax = Number(paymentDraft.tax || 0);
+          const service = Number(paymentDraft.service || 0);
+          const total = Number(paymentDraft.total || 0);
+          const id = paymentDraft.orderId || paymentDraft.id || orderIdEl?.textContent || '';
+          return { items, subtotal, tax, service, total, id };
+        }
+
+        const orderDraft = safeParse('orderDraft');
+        if (orderDraft && Array.isArray(orderDraft.cart)) {
+          const items = orderDraft.cart;
+          const subtotal = Number(orderDraft.subtotal || 0);
+          const tax = Number(orderDraft.tax || 0);
+          const service = Number(orderDraft.service || 0);
+          const total = Number(orderDraft.total || 0);
+          const id = orderDraft.orderId || orderDraft.id || orderIdEl?.textContent || '';
+          return { items, subtotal, tax, service, total, id };
+        }
+
+        // fallback: build from cart
+        const rawCart = safeParse('cart') || [];
+        const input = Array.isArray(rawCart) && rawCart.length && typeof rawCart[0] === 'string'
+          ? rawCart.map(id => ({ id, qty: 1 }))
+          : rawCart;
+
+        const map = new Map();
+        const order = [];
+        for (const it of input) {
+          if (!it) continue;
+          const qty = parseInt(it.qty, 10) || 1;
+          if (!Number.isFinite(qty) || qty <= 0) continue;
+          const keyRaw = it.id || it.title || it.name || String(it).slice(0,50);
+          const key = String(keyRaw).toLowerCase().trim();
+          const title = it.title || it.name || it.id || (typeof it === 'string' ? it : 'Item');
+          const price = Number(it.price || 0);
+          const img = it.img || it.image || null;
+          const prepTime = Number(it.prepTime || 0);
+
+          if (map.has(key)) {
+            const cur = map.get(key);
+            cur.qty += qty;
+            if ((!cur.price || cur.price === 0) && price) cur.price = price;
+            if ((!cur.img) && img) cur.img = img;
+            if ((!cur.title || cur.title === 'Item') && title) cur.title = title;
+            if ((!cur.prepTime || cur.prepTime === 0) && prepTime) cur.prepTime = prepTime;
+          } else {
+            map.set(key, { id: key, title, price, img, qty, prepTime });
+            order.push(key);
+          }
+        }
+
+        const items = order.map(k => map.get(k)).filter(Boolean);
+        let subtotal = 0;
+        items.forEach(i => subtotal += (Number(i.price) || 0) * i.qty);
+        const tax = Math.round(subtotal * 0.11);
+        const service = Number(localStorage.getItem('serviceFeeOverride') || 2500);
+        const total = subtotal + tax + service;
+        return { items, subtotal, tax, service, total, id: orderIdEl?.textContent || '' };
+      }
+
+      function renderConfirmed(){
+        const data = getConfirmedData();
+        if (data.id) orderIdEl.textContent = data.id;
+
+        // compute ETA range from items
+        const etaRange = computeEtaRange(data.items || []);
+        etaEl.textContent = `${etaRange.lower}-${etaRange.upper} menit`;
+
+        confirmedTotalEl.textContent = formatRp(data.total || 0);
+
+        confirmedItemsEl.innerHTML = '';
+        if (!data.items || !data.items.length) {
+          confirmedItemsEl.innerHTML = '<li class="text-center text-sm text-subtext-light">Tidak ada item.</li>';
+          return;
+        }
+
+        const frag = document.createDocumentFragment();
+        data.items.forEach(it => {
+          const li = document.createElement('li');
+          li.className = 'flex items-center gap-4';
+
+          const imgDiv = document.createElement('div');
+          imgDiv.className = 'h-16 w-16 shrink-0 rounded-lg bg-cover bg-center';
+          const imgUrl = it.img || it.image || (typeof it.id === 'string' ? `Img/${it.id}.png` : '');
+          if (imgUrl) imgDiv.style.backgroundImage = `url("${imgUrl}")`;
+
+          const meta = document.createElement('div');
+          meta.className = 'flex-grow';
+          const title = document.createElement('p');
+          title.className = 'font-semibold';
+          title.textContent = it.title || it.name || it.id || 'Item';
+          const qty = document.createElement('p');
+          qty.className = 'text-sm text-text-light/60 dark:text-text-dark/60';
+          qty.textContent = `${it.qty || 1} x ${formatRp(it.price || 0)}`;
+          meta.appendChild(title);
+          meta.appendChild(qty);
+
+          const price = document.createElement('p');
+          price.className = 'font-semibold';
+          price.textContent = formatRp((it.price || 0) * (it.qty || 1));
+
+          li.appendChild(imgDiv);
+          li.appendChild(meta);
+          li.appendChild(price);
+          frag.appendChild(li);
+        });
+
+        confirmedItemsEl.appendChild(frag);
+      }
+
+      // Modal control functions
+      function openDevModal(){
+        if (!devModal) return;
+        devModal.classList.remove('hidden');
+        devModalClose?.focus();
+        document.body.style.overflow = 'hidden';
+      }
+      function closeDevModal(){
+        if (!devModal) return;
+        devModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      // Wire view status to open modal
+      if (viewStatusBtn) {
+        viewStatusBtn.addEventListener('click', function(e){
+          e.preventDefault();
+          openDevModal();
+        });
+      }
+
+      // Close modal handlers: close button, overlay click, Esc key
+      if (devModalClose) devModalClose.addEventListener('click', closeDevModal);
+      if (devModalOverlay) devModalOverlay.addEventListener('click', closeDevModal);
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape') closeDevModal();
+      });
+
+      // Contact restaurant link behavior
+      if (contactRestaurant) {
+        contactRestaurant.addEventListener('click', function(e){
+          e.preventDefault();
+          window.location.href = 'mailto:restoran@example.com';
+        });
+      }
+
+      // Initialize render
+      renderConfirmed();
+
+      // React to storage changes
+      window.addEventListener('storage', function(e){
+        if (!e.key) return;
+        if (['paymentDraft','orderDraft','cart','voucherCode','serviceFeeOverride','kitchenStations'].includes(e.key)) {
+          renderConfirmed();
+        }
+      });
+
+    })();
+    </script>
 </body>
 </html>
