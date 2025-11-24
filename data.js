@@ -350,5 +350,27 @@ window.MENU_DATA = {
     isFavorite: false,
     isPromo: false,
     prepTime: 3
+  },
+  "es-teh-leci": {
+    id: "es-teh-leci",
+    title: "Es Teh Leci",
+    price: 18000,
+    img: "Img/estehleci.png",
+    desc: "Perpaduan teh, es, dan satu buah leci utuh di atasnya. Manis, dingin, dan sangat pas untuk melepas dahaga.",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 5
+  },
+  "jus-stroberi": {
+    id: "jus-stroberi",
+    title: "Jus Stroberi",
+    price: 20000,
+    img: "Img/jusstroberi.png",
+    desc: "Stroberi segar yang diblender dengan sedikit es. Rasa manis yang pas dan alami.",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 10
   }
 };
