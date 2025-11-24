@@ -23,7 +23,9 @@
             "background-light": "#FFFFFF",
             "background-secondary": "#F5F5F5",
             "text-primary": "#1F2937",
-            "text-secondary": "#6B7280"
+            "text-secondary": "#6B7280",
+            "promo-orange": "#FF9800",
+            "promo-green": "#16A34A"
           },
           fontFamily: { display: ["Poppins", "sans-serif"] }
         }
@@ -154,6 +156,19 @@
     const catBtns = Array.from(document.querySelectorAll('.cat-btn'));
     const searchInput = document.getElementById('search');
 
+    /* ---------- Promo helper ---------- */
+    function computePromoPrice(item){
+      let price = Number(item.price || 0);
+      if (item.isPromo && item.promo){
+        if (item.promo.type === 'percent') {
+          price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
+        } else if (item.promo.type === 'fixed') {
+          price = Math.max(0, price - Number(item.promo.value || 0));
+        }
+      }
+      return price;
+    }
+
     /* ---------- Render logic ---------- */
     function createCartBadge() {
       const b = document.createElement('div');
@@ -167,9 +182,8 @@
       cardsEl.innerHTML = '';
 
       const items = Object.values(MENU).filter(item => {
-        // category filter
+        if (!item) return false;
         if (category !== 'all' && item.category !== category) return false;
-        // search filter
         if (!ql) return true;
         return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
       });
@@ -186,18 +200,33 @@
         const article = document.createElement('article');
         article.className = 'group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition flex flex-col';
 
+        // compute promo
+        const isPromo = !!item.isPromo;
+        const promoLabel = item.promo?.label || '';
+        const promoPrice = computePromoPrice(item);
+        const hasPromo = isPromo && (promoPrice < Number(item.price || 0));
+
+        // build inner HTML
         article.innerHTML = `
           <a href="menu_detail.html?id=${encodeURIComponent(item.id)}" class="block flex flex-col h-full">
             <div class="relative w-full overflow-hidden bg-gray-100">
               <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
                 <img alt="${escapeHtml(item.title)}" loading="lazy" class="w-full h-full object-cover block" />
               </div>
+
+              ${hasPromo ? `<div class="absolute top-3 right-3 bg-promo-orange text-white text-xs font-semibold px-3 py-1 rounded-full">${escapeHtml(promoLabel || 'Promo')}</div>` : ''}
             </div>
+
             <div class="p-4 flex flex-col flex-1">
               <h4 class="text-lg font-semibold text-text-primary">${escapeHtml(item.title)}</h4>
               <p class="mt-1 text-sm text-text-secondary break-words">${escapeHtml(item.desc || '')}</p>
+
               <div class="mt-auto flex items-center justify-between gap-3">
-                <p class="text-lg font-bold text-text-primary whitespace-nowrap">${formatRp(item.price)}</p>
+                <div class="text-right">
+                  ${hasPromo ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div>
+                  <div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>` : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`}
+                </div>
+
                 <button class="add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]" type="button">
                   <span class="material-symbols-outlined">add_shopping_cart</span>
                   Tambah
@@ -231,18 +260,21 @@
           e.preventDefault();
           e.stopPropagation();
           const article = btn.closest('article');
-          const idParam = article?.querySelector('a')?.getAttribute('href')?.split('id=')[1];
+          const href = article?.querySelector('a')?.getAttribute('href') || '';
+          const idParam = href.split('id=')[1] || '';
           const id = idParam || article?.querySelector('h4')?.textContent?.trim().toLowerCase().replace(/\s+/g, '-');
           const title = article?.querySelector('h4')?.textContent?.trim() || 'Item';
-          const priceText = article?.querySelector('.text-lg.font-bold')?.textContent || '';
-          const price = parseInt((priceText || '').replace(/\D/g, '')) || 0;
+
+          // determine price to store: if promo exists, use promoPrice
+          const menuItem = Object.values(MENU).find(x => x && (x.id === id || x.title === title));
+          const unitPrice = menuItem ? computePromoPrice(menuItem) : 0;
           const imgEl = article.querySelector('img');
           const imgSrc = imgEl?.src || '';
 
           const cart = readCart();
           const idx = findCartIndexById(cart, id);
           if (idx === -1) {
-            cart.push({ id, title, price, qty: 1, img: imgSrc });
+            cart.push({ id, title, price: unitPrice, qty: 1, img: imgSrc });
             writeCart(cart);
             const existingBadge = article.querySelector('.absolute.top-2.left-2');
             if (!existingBadge) {
@@ -251,6 +283,7 @@
             }
           } else {
             cart[idx].qty = (Number(cart[idx].qty) || 1) + 1;
+            cart[idx].price = unitPrice; // update stored price to promo price if applicable
             cart[idx].img = cart[idx].img || imgSrc;
             writeCart(cart);
           }
@@ -352,6 +385,11 @@
       if (e.key === 'cart') {
         renderCards({ q: lastQ, category: currentCategory });
         updateCartCountIndicator();
+      }
+      if (e.key === 'MENU_DATA') {
+        // re-read MENU and re-render if data.js changed
+        try { window.MENU_DATA = JSON.parse(e.newValue); } catch {}
+        renderCards({ q: lastQ, category: currentCategory });
       }
     });
 

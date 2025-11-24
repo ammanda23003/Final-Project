@@ -1,552 +1,539 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Home - Resto Modern</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;display=swap"
-        rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <script>
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    colors: {
-                        "primary": "#4CAF50",
-                        "cta": "#FF9800",
-                        "background-light": "#FFFFFF",
-                        "background-secondary": "#F5F5F5",
-                        "text-primary": "#1F2937",
-                        "text-secondary": "#6B7280",
-                    },
-                    fontFamily: {
-                        "display": ["Poppins", "sans-serif"]
-                    },
-                    borderRadius: {
-                        "DEFAULT": "0.5rem",
-                        "lg": "0.75rem",
-                        "xl": "1rem",
-                        "full": "9999px"
-                    },
-                },
-            },
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Home - Resto Modern</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#4CAF50",
+            "cta": "#FF9800",
+            "background-light": "#FFFFFF",
+            "background-secondary": "#F5F5F5",
+            "text-primary": "#1F2937",
+            "text-secondary": "#6B7280",
+            "promo-orange": "#FF9800"
+          },
+          fontFamily: { "display": ["Poppins", "sans-serif"] }
         }
-    </script>
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-
-        body {
-            min-height: max(884px, 100dvh);
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    body { min-height: max(884px, 100dvh); }
+    .pb-56-25{padding-bottom:56.25%}
+  </style>
 </head>
 
 <body class="bg-background-light font-display text-text-primary">
-    <div class="flex h-auto min-h-screen w-full flex-col">
-        <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
-            <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 relative">
-                <div class="flex items-center gap-3">
-                    <span class="material-symbols-outlined text-primary text-4xl">
-                        restaurant_menu
-                    </span>
-                    <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
+  <div class="flex h-auto min-h-screen w-full flex-col">
+    <!-- Header -->
+    <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+      <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 relative">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
+          <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
+        </div>
+
+        <!-- Desktop nav -->
+        <nav id="desktop-nav" class="hidden items-center gap-8 md:flex">
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu.html">Menu</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_favorit.html">Favorit</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+          <a id="header-cart-link" aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors relative" href="cart.html">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span id="header-cart-badge" class="hidden absolute -top-2 -right-3 text-xs bg-red-600 text-white rounded-full px-2 h-5 leading-5"></span>
+          </a>
+        </nav>
+
+        <!-- Mobile toggle -->
+        <button id="menu-toggle" class="md:hidden" aria-label="Buka menu">
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+
+        <!-- Mobile menu -->
+        <nav id="mobile-menu" class="hidden md:hidden absolute top-full right-4 mt-2 w-56 rounded-xl border border-gray-200 bg-background-light shadow-lg overflow-hidden">
+          <ul class="flex flex-col py-2">
+            <li><a href="Menu.html" class="block py-2.5 px-4 hover:bg-gray-100">Menu</a></li>
+            <li><a href="Promo.html" class="block py-2.5 px-4 hover:bg-gray-100">Promo</a></li>
+            <li><a href="Menu_favorit.html" class="block py-2.5 px-4 hover:bg-gray-100">Favorit</a></li>
+            <li><a href="Bantuan.html" class="block py-2.5 px-4 hover:bg-gray-100">Bantuan</a></li>
+            <li>
+              <a href="cart.html" class="flex items-center gap-2 py-2.5 px-4 hover:bg-gray-100">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                Keranjang
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
+      <section class="w-full rounded-xl bg-background-secondary p-8 md:p-12 text-center">
+        <div class="mx-auto max-w-3xl">
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">Selamat Datang di Smart Ordering</h2>
+          <p class="mt-4 text-base md:text-lg text-text-secondary">Pindai kode QR di meja Anda untuk memulai pesanan.</p>
+          <div class="mt-8 mx-auto max-w-lg">
+            <label class="flex flex-col min-w-40 h-14 w-full">
+              <div class="flex w-full flex-1 items-stretch rounded-lg h-full shadow-sm">
+                <div class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                  <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
                 </div>
-
-                <!-- Desktop nav -->
-                <nav class="hidden items-center gap-8 md:flex">
-                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu.html">Menu</a>
-                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
-                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_favorit.html">Favorit</a>
-                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
-                    <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors"
-                        href="cart.html">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                    </a>
-                </nav>
-
-                <!-- Mobile toggle -->
-                <button id="menu-toggle" class="md:hidden" aria-label="Buka menu">
-                    <span class="material-symbols-outlined text-3xl">menu</span>
+                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja secara manual" />
+                <button id="start-order" class="flex min-w-[120px] items-center justify-center rounded-r-lg h-full px-5 bg-cta text-white text-base font-bold hover:bg-orange-600 transition-colors">
+                  <span class="truncate">Mulai Pesan</span>
                 </button>
+              </div>
+            </label>
+          </div>
+        </div>
+      </section>
 
-                <!-- Mobile menu -->
-                <nav id="mobile-menu"
-                     class="hidden md:hidden absolute top-full right-4 mt-2 w-64 rounded-xl border border-gray-200 bg-background-light shadow-lg overflow-hidden">
-                    <ul class="flex flex-col py-2">
-                        <li><a href="Menu.html" class="block py-2.5 px-4 hover:bg-gray-100">Menu</a></li>
-                        <li><a href="Promo.html" class="block py-2.5 px-4 hover:bg-gray-100">Promo</a></li>
-                        <li><a href="Menu_favorit.html" class="block py-2.5 px-4 hover:bg-gray-100">Favorit</a></li>
-                        <li><a href="Bantuan.html" class="block py-2.5 px-4 hover:bg-gray-100">Bantuan</a></li>
-                        <li>
-                            <a href="cart.html" class="flex items-center gap-2 py-2.5 px-4 hover:bg-gray-100">
-                                <span class="material-symbols-outlined">shopping_cart</span>
-                                Keranjang
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </header>
-
-        <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
-            <section class="w-full rounded-xl bg-background-secondary p-8 md:p-12 text-center">
-                <div class="mx-auto max-w-3xl">
-                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">Selamat Datang di Smart
-                        Ordering</h2>
-                    <p class="mt-4 text-base md:text-lg text-text-secondary">Pindai kode QR di meja Anda untuk memulai
-                        pesanan.</p>
-                    <div class="mt-8 mx-auto max-w-lg">
-                        <label class="flex flex-col min-w-40 h-14 w-full">
-                            <div class="flex w-full flex-1 items-stretch rounded-lg h-full shadow-sm">
-                                <div
-                                    class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
-                                    <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
-                                </div>
-                                <input
-                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base font-normal leading-normal"
-                                    placeholder="Masukkan kode meja secara manual" value="" />
-                                <button
-                                    class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-r-lg h-full px-5 bg-cta text-white text-base font-bold leading-normal tracking-wide hover:bg-orange-600 transition-colors">
-                                    <span class="truncate">Mulai Pesan</span>
-                                </button>
-                            </div>
-                        </label>
-                    </div>
+      <!-- Menu header + search + categories -->
+      <div class="mt-10">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <h3 class="text-2xl font-bold text-text-primary">Menu</h3>
+          <div class="w-full sm:max-w-xs">
+            <label class="flex flex-col min-w-40 h-12 w-full">
+              <div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-background-secondary">
+                <div class="text-text-secondary flex items-center justify-center pl-4">
+                  <span class="material-symbols-outlined">search</span>
                 </div>
-            </section>
+                <input id="search" class="form-input flex w-full min-w-0 px-2 py-2 bg-transparent focus:outline-0" placeholder="Cari makanan atau minuman" />
+              </div>
+            </label>
+          </div>
+        </div>
 
-            <div class="mt-10">
+        <div id="category-bar" class="mt-6 flex gap-3 overflow-x-auto pb-2">
+          <!-- kategori akan di-render di sini -->
+        </div>
+
+        <div id="cards-grid" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+          <!-- kartu menu akan di-render di sini -->
+        </div>
+      </div>
+
+      <!-- Rekomendasi Menu Spesial (dipertahankan seperti tampilan asli) -->
+      <section class="mt-16 w-full">
+        <div class="flex flex-col items-center">
+          <h3 class="text-2xl font-bold text-text-primary">Rekomendasi Menu Spesial</h3>
+          <p class="mt-2 text-base text-text-secondary">Jangan lewatkan promo dan menu terbaik dari kami!</p>
+        </div>
+        <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="group relative overflow-hidden rounded-xl">
+            <img alt="Nasi Goreng Spesial"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3HTY0atfdxw-4lnPVANEqgNqbiKCmEnBFRz2ZG4F3SG5iF4CCz7oyEDQi5ZqH4sKKD8U2dMH4uD5nnGF8mzbV69OkTYKN8d4xTbFIrllFko550ZHw43hfLWN0HMZVWdOa4I6whwvDkvxicD30f6dna_xunCLAc7AgOhCjkQcZdGi33_t3c_7DV8yp7GJ-t_M-JXMM-SCCYQtPa8Ae4Jzr5iovcIJDnSO_oiQINalSnXUmfrFuWGpvMAn6ZtX8-B2dhjB58FR3uk4" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <span class="rounded-full bg-cta px-3 py-1 text-sm font-semibold text-white">Promo</span>
+              <h4 class="mt-2 text-xl font-bold text-white">Paket Nasi Goreng Komplit</h4>
+              <p class="mt-1 text-white/90">Nasi Goreng Spesial + Es Teh Manis. Hemat 15%!</p>
+            </div>
+          </div>
+
+          <div class="group relative overflow-hidden rounded-xl">
+            <img alt="Pizza Meat Lovers"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLtEhMvTdah4JmPNHGcR_1HQroDQigf9AQdU6TwI8ZFVLNJaAR_clOBlri7qeQf93-HjxVuR6qCjZ_QJUt_34Rfxb61vj5mzhQo1ez7H4ceJjuL16wEGyZh3SfUzAhI_xnIYYKtUbmDxFnwfCY7hArxqHOpUtxEuS_JeyBQUjLlcCCpECthr4LYG4wH3B7r_UcT11OkiH4z3pHCPLV_YEy8zOlu8FDGfeOA6U_npC0bKLezmPoBdHla6bZEd8Li0kdFagy5Y-_00M" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <span class="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">Menu Baru</span>
+              <h4 class="mt-2 text-xl font-bold text-white">Pizza Meat Lovers</h4>
+              <p class="mt-1 text-white/90">Topping melimpah dengan 3 jenis daging pilihan.</p>
+            </div>
+          </div>
+
+          <div class="group relative overflow-hidden rounded-xl md:col-span-2 lg:col-span-1">
+            <img alt="Menu Baru"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnKiemIDOp47UkA3y-KvbFTgtoInXDNG4IBJtBINJ34a-5raOIVv4xfGp8i_lkSB0NhkAGjoQLM8uXYwDh1snaJ2IRaPZT66mov6Wt0ONBHEXCAZAtLAmdo0u05fgNToz6Sq7M1ETrkE72S8ri4Yv9Igoc7SeqO75dNSDg9Fwm9QIS7HFHTsx4ywnnr0WfdMdaM5Gb8G46DplSUJxz7rpWczBmq5GZFNfUtAriu34LwG-vbfPzaYQFiLM6do3dyMencSmzLjeXCr8" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div class="absolute bottom-0 left-0 p-6">
+              <span class="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">Terbaru</span>
+              <h4 class="mt-2 text-xl font-bold text-white">Menu Baru</h4>
+              <p class="mt-1 text-white/90">Cicipi kreasi terbaru dari chef kami.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ulasan Pelanggan (dipertahankan seperti tampilan asli) -->
+      <section class="mt-16 w-full">
+        <div class="flex flex-col items-center">
+          <h3 class="text-2xl font-bold text-text-primary">Ulasan Pelanggan</h3>
+          <p class="mt-2 text-base text-text-secondary">Apa kata mereka yang sudah mencoba?</p>
+        </div>
+        <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <img alt="Andi" class="h-12 w-12 rounded-full object-cover"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzfjIdWFKad2cqARFjMoJEH_DvlN-aS1Cl6y3K2v1jbuDE4RGy4lmtAZdGEsJ2_xh0N_krFcOODPMVFoV-ZtTqNKPdv1I2aMaIACfOPCyKjrIlnf6cAG7mCJI25W-q3h8iHBJE2oF4GU_URsK4iNB3GKeHcI6p8lPf4yKtLZYoGsuxWaELzmCvDIeRtmpn8v2ab_IPuLdcPKG551_b8hwXQ0EdRstPQ3ByEi0iorbliv2nZHXHHWmuzPIJaEReNcgujQeg_5ESlJc" />
                 <div>
-                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                        <h3 class="text-2xl font-bold text-text-primary">Menu</h3>
-                        <div class="w-full sm:max-w-xs">
-                            <label class="flex flex-col min-w-40 h-12 w-full">
-                                <div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-background-secondary">
-                                    <div class="text-text-secondary flex items-center justify-center pl-4">
-                                        <span class="material-symbols-outlined">search</span>
-                                    </div>
-                                    <input
-                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden text-text-primary focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-text-secondary px-2 text-base font-normal leading-normal"
-                                        placeholder="Cari makanan atau minuman" value="" />
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex gap-3 overflow-x-auto pb-2">
-                        <button
-                            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-primary text-white text-sm font-medium">Makanan</button>
-                        <button
-                            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium">Minuman</button>
-                        <button
-                            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium">Paket</button>
-                        <button
-                            class="flex h-10 shrink-0 items-center justify-center gap-x-2 rounded-full px-5 bg-background-secondary text-text-primary hover:bg-gray-300 transition-colors text-sm font-medium">Favorit</button>
-                    </div>
-
-                    <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
-                        <!-- Salad Segar -->
-                        <a href="menu_detail.html?id=salad-segar"
-                           class="group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
-                            <img class="h-48 w-full object-cover"
-                                alt="A healthy salad with fresh vegetables in a white bowl."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEX8Suup0fHDFyw7-zpHdQWmZ95rjqrvsOOyQeZMRVsQzZkjQpnRHoyslVbvk-kH330saKvnYozXPvzrVFp64iXJp19mfen5sxDRqOfdgB2qcVn-QfRGO_9utnL36liGm8SLxojXgsKpWmA28r_HKhtrCtq__0pWfT1QZuj-e12-k2Fup5IWWyvejqfLogVx4ZKRsE89Ak9RCnA5qFKE69zpuIuCvRIc0B_8tI-UsWrYngA-N-fBuI21sHMaZWscWHGrc1MrhLnoY" />
-                            <div class="flex flex-1 flex-col p-4">
-                                <h4 class="text-lg font-semibold text-text-primary">Salad Segar</h4>
-                                <p class="mt-1 text-sm text-text-secondary">Campuran sayuran segar dengan dressing
-                                    spesial.</p>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <p class="text-lg font-bold text-text-primary">Rp 35.000</p>
-                                    <button type="button"
-                                            class="add-button flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold"
-                                            data-id="salad-segar" aria-label="Tambah Salad Segar">
-                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-                                        <span>Tambah</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Pizza Pepperoni -->
-                        <a href="menu_detail.html?id=pizza-pepperoni"
-                           class="group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
-                            <img class="h-48 w-full object-cover"
-                                alt="A delicious looking pizza with pepperoni and cheese."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9TwopEAJvn9CfWhiblTQtv5gpbdVIRNhlKS7n8z4Lfc6NImThoP85z8qHE6c5tjAKLpMqu79gwcprDt1MVn4EXZCsDqdP_viJmIk4b0YoQ8q9Iz-JsKy1tbcEpdWYOrOCQ4eTkTIyrHBJO83HAt-IsjKvBN5wuFeKRsS-PAhxXDm-OZ185T9ypmW3kuH4XOcI-Bj_22LGaSy7umV7IhKNocl1LUqw80VWVD4AR3_7-jGvukQx39bL9zAeZdY_2XzgV6wsFmTv-Qw" />
-                            <div class="flex flex-1 flex-col p-4">
-                                <h4 class="text-lg font-semibold text-text-primary">Pizza Pepperoni</h4>
-                                <p class="mt-1 text-sm text-text-secondary">Pizza klasik dengan topping pepperoni dan
-                                    keju mozzarella.</p>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <p class="text-lg font-bold text-text-primary">Rp 85.000</p>
-                                    <button type="button"
-                                            class="add-button flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold"
-                                            data-id="pizza-pepperoni" aria-label="Tambah Pizza Pepperoni">
-                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-                                        <span>Tambah</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Pancake Madu -->
-                        <a href="menu_detail.html?id=pancake-madu"
-                           class="group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
-                            <img class="h-48 w-full object-cover"
-                                alt="A stack of fluffy pancakes with syrup and berries."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWD-UBkck_pDwfncxTgb_ywgQkpJ95ErFCtwI2ZRps6B51EZaYDY-CTi5HQzi9S-BOBtkXXiL9nRjtnaFZJJJh2U8KzBqfkSgLkPHSwezPrrIKRtuTmng1BTgurJfHasn_AnBu7bp_tPwzaJcTojw7CIGX9NaCVbQjESipjW7xCV86qhDU3vjzcRq0OaIy509_Dq-c7Lnro2VL2pHo7WbxshL0UuGqz0bKazxv7iwcMs86UQRjcKngpf-PpmbppkdNwESXjYT4I1o" />
-                            <div class="flex flex-1 flex-col p-4">
-                                <h4 class="text-lg font-semibold text-text-primary">Pancake Madu</h4>
-                                <p class="mt-1 text-sm text-text-secondary">Pancake lembut disiram madu dan buah berry
-                                    segar.</p>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <p class="text-lg font-bold text-text-primary">Rp 45.000</p>
-                                    <button type="button"
-                                            class="add-button flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold"
-                                            data-id="pancake-madu" aria-label="Tambah Pancake Madu">
-                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-                                        <span>Tambah</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Ramen Kuah Pedas -->
-                        <a href="menu_detail.html?id=ramen-kuah-pedas"
-                           class="group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
-                            <img class="h-48 w-full object-cover"
-                                alt="A steaming bowl of ramen with a soft-boiled egg."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUr3KQ5uChaPyzMw3wJCbZuwuHHztPAkb1vt7qfnB43geToNLwG5TmImkMFU6YcC6d1m6wD1N91_xWZRjpQNeEsh8rx0RAxdrMFzpQwtuxOAJLy9EImEFsptm9kmn-2rra-nT8ALv-9CDaPNJdsXOjDuVlB1mwirzzGHvDdRwH-ce6VtS9NCuY1iju08dug0h7JATtB_kI6prjpxtA2KJFLED3W15VOc5OYE6rTcsFTE9Zn6IombNz1-VTCeZWI281lBQTadfLA-I" />
-                            <div class="flex flex-1 flex-col p-4">
-                                <h4 class="text-lg font-semibold text-text-primary">Ramen Kuah Pedas</h4>
-                                <p class="mt-1 text-sm text-text-secondary">Mie ramen dengan kuah kaldu pedas dan
-                                    topping lengkap.</p>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <p class="text-lg font-bold text-text-primary">Rp 65.000</p>
-                                    <button type="button"
-                                            class="add-button flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold"
-                                            data-id="ramen-kuah-pedas" aria-label="Tambah Ramen Kuah Pedas">
-                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-                                        <span>Tambah</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Nasi Goreng Spesial -->
-                        <a href="menu_detail.html?id=nasi-goreng-spesial"
-                           class="group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
-                            <img class="h-48 w-full object-cover"
-                                alt="A plate of fried rice with a fried egg on top."
-                                src="Img/Nasi Goreng Spesial.png" />
-                            <div class="flex flex-1 flex-col p-4">
-                                <h4 class="text-lg font-semibold text-text-primary">Nasi Goreng Spesial</h4>
-                                <p class="mt-1 text-sm text-text-secondary">Nasi goreng dengan ayam, udang, dan telur
-                                    mata sapi.</p>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <p class="text-lg font-bold text-text-primary">Rp 35.000</p>
-                                    <button type="button"
-                                            class="add-button flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold"
-                                            data-id="nasi-goreng-spesial" aria-label="Tambah Nasi Goreng Spesial">
-                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-                                        <span>Tambah</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Spaghetti Carbonara -->
-                        <a href="menu_detail.html?id=spaghetti-carbonara"
-                           class="group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
-                            <img class="h-48 w-full object-cover"
-                                alt="A bowl of pasta with creamy carbonara sauce."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-1Po6SeWQ1y6K5n0z7Hn1l66MErNUd6nIHHmVtzw9B6g6M7xDD2WrO8Z4QgVG7t0VHFftBIcFHQ0kjhuHwdqCSTE1C7cV3EQ3Nw_6yry_y6rQTcu26DEVBlwLY6jSoAAk3Jk-TgX1Kagy2TpPM67U2vgy3CR5meox85jVtCMtVvB1VgsDDBqlZn6hNBBRBFeEkb-lcdfAcvyq8ScicxqVYhC40YJ416fqedZ65GRmb09bf5OpxneGCcI7oQfeWdceSIHYSEuGAKQ" />
-                            <div class="flex flex-1 flex-col p-4">
-                                <h4 class="text-lg font-semibold text-text-primary">Spaghetti Carbonara</h4>
-                                <p class="mt-1 text-sm text-text-secondary">Pasta dengan saus carbonara creamy dan
-                                    potongan smoked beef.</p>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <p class="text-lg font-bold text-text-primary">Rp 45.000</p>
-                                    <button type="button"
-                                            class="add-button flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold"
-                                            data-id="spaghetti-carbonara" aria-label="Tambah Spaghetti Carbonara">
-                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-                                        <span>Tambah</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Burger Klasik -->
-                        <a href="menu_detail.html?id=burger-klasik"
-                           class="group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg">
-                            <img class="h-48 w-full object-cover"
-                                alt="A juicy beef burger with fries."
-                                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnKiemIDOp47UkA3y-KvbFTgtoInXDNG4IBJtBINJ34a-5raOIVv4xfGp8i_lkSB0NhkAGjoQLM8uXYwDh1snaJ2IRaPZT66mov6Wt0ONBHEXCAZAtLAmdo0u05fgNToz6Sq7M1ETRkE72S8ri4Yv9Igoc7SeqO75dNSDg9Fwm9QIS7HFHTsx4ywnnr0WfdMdaM5Gb8G46DplSUJxz7rpWczBmq5GZFNfUtAriu34LwG-vbfPzaYQFiLM6do3dyMencSmzLjeXCr8" />
-                            <div class="flex flex-1 flex-col p-4">
-                                <h4 class="text-lg font-semibold text-text-primary">Burger Klasik</h4>
-                                <p class="mt-1 text-sm text-text-secondary">Burger daging sapi dengan selada, tomat, dan
-                                    saus spesial.</p>
-                                <div class="mt-4 flex items-center justify-between">
-                                    <p class="text-lg font-bold text-text-primary">Rp 60.000</p>
-                                    <button type="button"
-                                            class="add-button flex items-center justify-center gap-2 rounded-lg h-10 px-4 bg-cta/10 text-cta hover:bg-cta/20 transition-colors text-sm font-bold"
-                                            data-id="burger-klasik" aria-label="Tambah Burger Klasik">
-                                        <span class="material-symbols-outlined text-base">add_shopping_cart</span>
-                                        <span>Tambah</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </a>
-
-                        <!-- Tambah kartu lain dengan pola yang sama jika diperlukan -->
-                    </div>
+                  <p class="font-semibold text-text-primary">Andi S.</p>
+                  <p class="text-sm text-text-secondary">2 hari lalu</p>
                 </div>
+              </div>
+              <div class="flex items-center gap-1 text-cta">
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+              </div>
             </div>
+            <p class="mt-4 text-text-secondary">"Makanannya enak-enak, terutama ramennya! Pelayanannya juga cepat. Pasti akan kembali lagi."</p>
+          </div>
 
-            <section class="mt-16 w-full">
-                <div class="flex flex-col items-center">
-                    <h3 class="text-2xl font-bold text-text-primary">Rekomendasi Menu Spesial</h3>
-                    <p class="mt-2 text-base text-text-secondary">Jangan lewatkan promo dan menu terbaik dari kami!</p>
+          <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <img alt="Siti" class="h-12 w-12 rounded-full object-cover"
+                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=example" />
+                <div>
+                  <p class="font-semibold text-text-primary">Siti R.</p>
+                  <p class="text-sm text-text-secondary">1 minggu lalu</p>
                 </div>
-                <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <div class="group relative overflow-hidden rounded-xl">
-                        <img alt="Nasi Goreng Spesial"
-                            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3HTY0atfdxw-4lnPVANEqgNqbiKCmEnBFRz2ZG4F3SG5iF4CCz7oyEDQi5ZqH4sKKD8U2dMH4uD5nnGF8mzbV69OkTYKN8d4xTbFIrllFko550ZHw43hfLWN0HMZVWdOa4I6whwvDkvxicD30f6dna_xunCLAc7AgOhCjkQcZdGi33_t3c_7DV8yp7GJ-t_M-JXMM-SCCYQtPa8Ae4Jzr5iovcIJDnSO_oiQINalSnXUmfrFuWGpvMAn6ZtX8-B2dhjB58FR3uk4" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 p-6">
-                            <span class="rounded-full bg-cta px-3 py-1 text-sm font-semibold text-white">Promo</span>
-                            <h4 class="mt-2 text-xl font-bold text-white">Paket Nasi Goreng Komplit</h4>
-                            <p class="mt-1 text-white/90">Nasi Goreng Spesial + Es Teh Manis. Hemat 15%!</p>
-                        </div>
-                    </div>
+              </div>
+              <div class="flex items-center gap-1 text-cta">
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+              </div>
+            </div>
+            <p class="mt-4 text-text-secondary">"Suasananya nyaman dan makanannya lezat. Rekomendasi untuk keluarga."</p>
+          </div>
 
-                    <div class="group relative overflow-hidden rounded-xl">
-                        <img alt="Pizza Meat Lovers"
-                            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLtEhMvTdah4JmPNHGcR_1HQroDQigf9AQdU6TwI8ZFVLNJaAR_clOBlri7qeQf93-HjxVuR6qCjZ_QJUt_34Rfxb61vj5mzhQo1ez7H4ceJjuL16wEGyZh3SfUzAhI_xnIYYKtUbmDxFnwfCY7hArxqHOpUtxEuS_JeyBQUjLlcCCpECthr4LYG4wH3B7r_UcT11OkiH4z3pHCPLV_YEy8zOlu8FDGfeOA6U_npC0bKLezmPoBdHla6bZEd8Li0kdFagy5Y-_00M" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 p-6">
-                            <span class="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">Menu
-                                Baru</span>
-                            <h4 class="mt-2 text-xl font-bold text-white">Pizza Meat Lovers</h4>
-                            <p class="mt-1 text-white/90">Topping melimpah dengan 3 jenis daging pilihan.</p>
-                        </div>
-                    </div>
-
-                    <div class="group relative overflow-hidden rounded-xl md:col-span-2 lg:col-span-1">
-                        <img alt="Menu Baru"
-                            class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnKiemIDOp47UkA3y-KvbFTgtoInXDNG4IBJtBINJ34a-5raOIVv4xfGp8i_lkSB0NhkAGjoQLM8uXYwDh1snaJ2IRaPZT66mov6Wt0ONBHEXCAZAtLAmdo0u05fgNToz6Sq7M1ETRkE72S8ri4Yv9Igoc7SeqO75dNSDg9Fwm9QIS7HFHTsx4ywnnr0WfdMdaM5Gb8G46DplSUJxz7rpWczBmq5GZFNfUtAriu34LwG-vbfPzaYQFiLM6do3dyMencSmzLjeXCr8" />
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 p-6">
-                            <span
-                                class="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">Terbaru</span>
-                            <h4 class="mt-2 text-xl font-bold text-white">Menu Baru</h4>
-                            <p class="mt-1 text-white/90">Cicipi kreasi terbaru dari chef kami.</p>
-                        </div>
-                    </div>
+          <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <img alt="Budi" class="h-12 w-12 rounded-full object-cover"
+                    src="https://images.unsplash.com/photo-1545996124-1b6f6f0b6b3b?q=80&w=400&auto=format&fit=crop&ixlib=rb-4.0.3&s=example" />
+                <div>
+                  <p class="font-semibold text-text-primary">Budi H.</p>
+                  <p class="text-sm text-text-secondary">3 minggu lalu</p>
                 </div>
-            </section>
+              </div>
+              <div class="flex items-center gap-1 text-cta">
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+                <span class="material-symbols-outlined text-lg">star</span>
+              </div>
+            </div>
+            <p class="mt-4 text-text-secondary">"Porsi pas, rasa otentik, dan harga sesuai. Favorit keluarga kami."</p>
+          </div>
+        </div>
+      </section>
+    </main>
 
-            <section class="mt-16 w-full">
-                <div class="flex flex-col items-center">
-                    <h3 class="text-2xl font-bold text-text-primary">Ulasan Pelanggan</h3>
-                    <p class="mt-2 text-base text-text-secondary">Apa kata mereka yang sudah mencoba?</p>
+    <!-- Footer -->
+    <footer class="mt-16 w-full border-t border-gray-200 bg-background-secondary">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between text-center md:text-left gap-2 md:gap-4">
+          <div class="text-xs md:text-sm text-text-secondary">
+            <p class="font-semibold text-text-primary">Resto Modern</p>
+            <p class="mt-1">Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+          </div>
+          <div class="flex gap-4 text-xs md:text-sm mt-2 md:mt-0">
+            <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+            <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+          </div>
+          <p class="text-xs md:text-sm text-text-secondary mt-2 md:mt-0">© 2025 Smart Ordering System</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- data.js harus tersedia dan mendefinisikan window.MENU_DATA -->
+  <script src="data.js"></script>
+
+  <script>
+  (function(){
+    'use strict';
+
+    /* Helpers */
+    function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+    function safeEncodeUrl(u){
+      if (!u) return '';
+      try {
+        let s = u.replace(/\\/g,'').trim();
+        for (let i=0;i<3;i++){ try { const d = decodeURIComponent(s); if (d===s) break; s = d; } catch { break; } }
+        return encodeURI(s);
+      } catch { return u; }
+    }
+
+    /* Promo price helper */
+    function computePromoPrice(item){
+      let price = Number(item.price || 0);
+      if (item.isPromo && item.promo){
+        if (item.promo.type === 'percent') {
+          price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
+        } else if (item.promo.type === 'fixed') {
+          price = Math.max(0, price - Number(item.promo.value || 0));
+        }
+      }
+      return price;
+    }
+
+    /* Cart helpers */
+    function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
+    function writeCart(cart){ localStorage.setItem('cart', JSON.stringify(cart)); }
+    function addToCart(item, qty, unitPrice){
+      try {
+        const cart = readCart();
+        const key = item.id || item.title;
+        let found = false;
+        for (const it of cart){
+          if ((it.id && it.id === key) || (it.title && it.title === item.title)){
+            it.qty = (Number(it.qty) || 0) + qty;
+            it.price = unitPrice;
+            found = true;
+            break;
+          }
+        }
+        if (!found){
+          cart.push({ id: item.id || item.title, title: item.title, price: unitPrice, qty: qty, img: item.img || '' });
+        }
+        writeCart(cart);
+        updateCartBadge();
+        return true;
+      } catch(e){
+        console.error(e);
+        return false;
+      }
+    }
+
+    function updateCartBadge(){
+      try {
+        const cart = readCart();
+        const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
+        const badge = document.getElementById('header-cart-badge');
+        if (!badge) return;
+        if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
+        else { badge.textContent = ''; badge.classList.add('hidden'); }
+      } catch(e){}
+    }
+
+    /* Deterministic shuffle per 12 jam */
+    function lcg(seed){ return function(){ seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
+    function shuffleDeterministic(arr, seed){
+      const a = arr.slice();
+      const rand = lcg(seed);
+      for (let i = a.length - 1; i > 0; i--){
+        const j = Math.floor(rand() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+    function getTimeBlock12h(){ return Math.floor(Date.now() / (12 * 60 * 60 * 1000)); }
+
+    /* Rendering categories and cards */
+    const categoryBar = document.getElementById('category-bar');
+    const cardsGrid = document.getElementById('cards-grid');
+    const searchInput = document.getElementById('search');
+
+    function getMenuArray(){ try { return Object.values(window.MENU_DATA || {}); } catch { return []; } }
+    function uniqueCategories(menuArr){
+      const set = new Set();
+      menuArr.forEach(it => { if (it && it.category) set.add(it.category); });
+      return Array.from(set);
+    }
+
+    function renderCategoryButtons(){
+      const menu = getMenuArray();
+      const cats = uniqueCategories(menu);
+      categoryBar.innerHTML = '';
+      const allBtn = document.createElement('button');
+      allBtn.className = 'cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-primary text-white text-sm font-medium';
+      allBtn.textContent = 'Semua';
+      allBtn.dataset.cat = 'all';
+      categoryBar.appendChild(allBtn);
+
+      cats.forEach(cat => {
+        const b = document.createElement('button');
+        b.className = 'cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium';
+        b.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        b.dataset.cat = cat;
+        categoryBar.appendChild(b);
+      });
+
+      categoryBar.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          categoryBar.querySelectorAll('.cat-btn').forEach(x => { x.classList.remove('bg-primary','text-white'); x.classList.add('bg-background-secondary','text-text-primary'); });
+          btn.classList.remove('bg-background-secondary','text-text-primary');
+          btn.classList.add('bg-primary','text-white');
+          const cat = btn.dataset.cat || 'all';
+          renderCards({ q: searchInput.value || '', category: cat });
+        });
+      });
+
+      const first = categoryBar.querySelector('.cat-btn');
+      if (first) { first.click(); }
+    }
+
+    function renderCards({ q = '', category = 'all', maxCount = 8 } = {}){
+      const ql = (q || '').trim().toLowerCase();
+      const menu = getMenuArray().filter(Boolean);
+
+      let filtered = menu.filter(item => {
+        if (!item) return false;
+        if (category !== 'all' && item.category !== category) return false;
+        if (!ql) return true;
+        return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
+      });
+
+      const block = getTimeBlock12h();
+      const seed = block ^ 0x9e3779b1;
+      filtered = shuffleDeterministic(filtered, seed);
+
+      const toShow = filtered.slice(0, maxCount);
+
+      cardsGrid.innerHTML = '';
+      if (!toShow.length){
+        cardsGrid.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Tidak ada item ditemukan</div>';
+        return;
+      }
+
+      const cart = readCart();
+
+      toShow.forEach(item => {
+        const url = safeEncodeUrl(item.img || '');
+        const isPromo = !!item.isPromo;
+        const promoPrice = computePromoPrice(item);
+        const hasPromo = isPromo && (promoPrice < Number(item.price || 0));
+
+        const article = document.createElement('article');
+        article.className = 'group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col';
+
+        article.innerHTML = `
+          <a href="menu_detail.html?id=${encodeURIComponent(item.id)}" class="block flex flex-col h-full">
+            <div class="relative w-full overflow-hidden bg-gray-100">
+              <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
+                <img alt="${(item.title||'')}" loading="lazy" class="w-full h-full object-cover block" />
+              </div>
+              ${hasPromo ? `<div class="absolute top-3 right-3 bg-promo-orange text-white text-xs font-semibold px-3 py-1 rounded-full">${(item.promo?.label)||'Promo'}</div>` : ''}
+            </div>
+            <div class="p-4 flex flex-col flex-1">
+              <h4 class="text-lg font-semibold text-text-primary">${item.title || ''}</h4>
+              <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
+              <div class="mt-auto flex items-center justify-between gap-3">
+                <div class="text-right">
+                  ${hasPromo ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div><div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>` : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`}
                 </div>
-                <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <img alt="Andi" class="h-12 w-12 rounded-full object-cover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzfjIdWFKad2cqARFjMoJEH_DvlN-aS1Cl6y3K2v1jbuDE4RGy4lmtAZdGEsJ2_xh0N_krFcOODPMVFoV-ZtTqNKPdv1I2aMaIACfOPCyKjrIlnf6cAG7mCJI25W-q3h8iHBJE2oF4GU_URsK4iNB3GKeHcI6p8lPf4yKtLZYoGsuxWaELzmCvDIeRtmpn8v2ab_IPuLdcPKG551_b8hwXQ0EdRstPQ3ByEi0iorbliv2nZHXHHWmuzPIJaEReNcgujQeg_5ESlJc" />
-                                <div>
-                                    <p class="font-semibold text-text-primary">Andi S.</p>
-                                    <p class="text-sm text-text-secondary">2 hari lalu</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1 text-cta">
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-text-secondary">"Makanannya enak-enak, terutama ramennya! Pelayanannya juga
-                            cepat. Pasti akan kembali lagi."</p>
-                    </div>
-
-                    <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <img alt="Citra" class="h-12 w-12 rounded-full object-cover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMvB6E47hHKVwe3GtIh8NOdn4LnTwxxrfxH5bDkSDPq7CITXNSj1frLOaRWuNExSzFcsp3vCaZZa0_7qL3KLIZkf-RFAaVQ2gNSLCdFn2iLu3VHjAULXr2qileJrlPT6U-yxpGrtrqrdTiPSxJehFRcsYH8tN34ltEog6pgtYO8-NnzFDyYaClIA7uBWQsEtFf-mHG2LEzVhd0Hi4aLRqxOZ8XC-Krk25e9yPEzQwTMQZvKmdml6Y4QJ0E6aSRBFEslsWqRAeC-pY" />
-                                <div>
-                                    <p class="font-semibold text-text-primary">Citra W.</p>
-                                    <p class="text-sm text-text-secondary">5 hari lalu</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1 text-cta">
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star_half</span>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-text-secondary">"Sistem ordernya canggih dan mudah dipakai. Tidak perlu
-                            antri lagi. Pizzanya a bit pricey tapi worth it."</p>
-                    </div>
-
-                    <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <img alt="Budi" class="h-12 w-12 rounded-full object-cover"
-                                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCprzOoreSRZg1zQkCDrv4XnveVn85Th3rjSsyr0rqAxuLMrqyJoiaw-hVdd_ZVAGCQdupSXYKtb_z2wy5vIXBsrsUspiE0Q4ss4pMnCA8LF0ZR_J3L5yuTDG61BLSl9Jd82e8npu6jUPKwQj8n5Fw4kvoryF6GBNrXGgfu7_jUtgrV2YdZQScEHboP-Tq_UgJAPzaY802Z2Tz_AoGxdHNC3RvicCUfZIlR9qygk6AlLyLn_Ii4kGynG6MN_Z4zTTdX-H-Nm10xqGU" />
-                                <div>
-                                    <p class="font-semibold text-text-primary">Budi P.</p>
-                                    <p class="text-sm text-text-secondary">1 minggu lalu</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-1 text-cta">
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                                <span class="material-symbols-outlined text-lg">star</span>
-                            </div>
-                        </div>
-                        <p class="mt-4 text-text-secondary">"Tempatnya nyaman untuk kumpul bareng teman. Banyak pilihan
-                            menu, dari makanan berat sampai cemilan."</p>
-                    </div>
-                </div>
-            </section>
-
-            <div class="mt-12 w-full text-center">
-                <button
-                    class="flex w-full items-center justify-center gap-2 rounded-lg bg-[#FF9800] h-14 px-6 text-white text-lg font-bold shadow-md hover:bg-orange-600 transition-colors sm:w-auto sm:mx-auto">
-                    <span class="material-symbols-outlined">edit</span>
-                    <a href="Tulis_Ulasan.html">Tulis Ulasan</a>
+                <button class="add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]" type="button" data-id="${item.id}">
+                  <span class="material-symbols-outlined">add_shopping_cart</span>
+                  Tambah
                 </button>
+              </div>
             </div>
+          </a>
+        `;
 
-            <section class="mt-16 w-full rounded-xl bg-background-secondary p-8 md:p-12">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <div class="lg:col-span-2">
-                        <h3 class="text-2xl font-bold text-text-primary">Informasi Restoran</h3>
-                        <p class="mt-2 text-text-secondary">Kunjungi kami atau hubungi untuk reservasi.</p>
-                        <div class="mt-6 space-y-4">
-                            <div class="flex items-start gap-4">
-                                <span class="material-symbols-outlined mt-1 text-primary">location_on</span>
-                                <div>
-                                    <h4 class="font-semibold text-text-primary">Alamat</h4>
-                                    <p class="text-text-secondary">Jl. Teknologi No. 1, Jakarta, Indonesia, 12345</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <span class="material-symbols-outlined mt-1 text-primary">schedule</span>
-                                <div>
-                                    <h4 class="font-semibold text-text-primary">Jam Buka</h4>
-                                    <p class="text-text-secondary">Senin - Minggu: 10:00 - 22:00</p>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-4">
-                                <span class="material-symbols-outlined mt-1 text-primary">call</span>
-                                <div>
-                                    <h4 class="font-semibold text-text-primary">Kontak</h4>
-                                    <p class="text-text-secondary">(021) 1234-5678</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="h-64 w-full overflow-hidden rounded-lg md:h/full">
-                        <img alt="Lokasi Restoran" class="h-full w-full object-cover"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPSz9Bn9oUP9ZpnO0-Qfc6LMb8QoDoV2NNozBPjG6AvH6JV16uX3LONt_hUemC2nYWcLUf4QaJH0gZ2y5OyiPmdSENltMgpE1tdTPytzE0wivxc1OrmxIm0t4DQ3gdBhdnXYuB2MsLzzm7AZo4JwELrEqVxDjH529h_3ieLnXP2Ui_EkRn324pbZvUwCGZ6OY9mmD2NhA9jX1neKb0Ai-Sueuy6ZDAPX4JEzp-6yXJh9Axa3jPjdT5VZx-14VhkGQqAW58yzTZIAY" />
-                    </div>
-                </div>
-            </section>
-        </main>
+        cardsGrid.appendChild(article);
+        const imgEl = article.querySelector('img');
+        imgEl.src = url;
+        imgEl.addEventListener('error', () => {
+          try { const dec = decodeURIComponent(imgEl.src); if (dec !== imgEl.src) { imgEl.src = dec; return; } } catch {}
+          const wrap = imgEl.closest('div.w-full');
+          if (wrap) wrap.innerHTML = '<div class="flex items-center justify-center text-sm text-gray-400 w-full h-full">Gambar tidak ditemukan</div>';
+        });
 
-        <footer class="w-full border-t border-gray-200 bg-background-secondary">
-            <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
-                    <div class="text-sm text-text-secondary">
-                        <p class="font-semibold text-text-primary">Resto Modern</p>
-                        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
-                    </div>
-                    <div class="flex gap-6 text-sm">
-                        <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
-                        <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
-                    </div>
-                    <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- Minimal JS: mobile menu toggle, auto-close, Escape; add-button prevention + addToCart skeleton -->
-    <script>
-        // Mobile menu
-        const menuToggle = document.getElementById('menu-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        function toggleMobileMenu() {
-            mobileMenu.classList.toggle('hidden');
+        if (cart.find(c => c.id === item.id)){
+          const badge = document.createElement('div');
+          badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
+          badge.textContent = 'Dalam keranjang';
+          article.querySelector('.relative')?.appendChild(badge);
         }
+      });
 
-        menuToggle?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleMobileMenu();
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!mobileMenu?.contains(e.target) && !menuToggle?.contains(e.target)) {
-                mobileMenu?.classList.add('hidden');
-            }
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') mobileMenu?.classList.add('hidden');
-        });
-
-        // add-button: prevent card link navigation and call addToCart
-        function addToCart(itemId, qty = 1) {
-            console.log('Add to cart:', itemId, qty);
+      cardsGrid.querySelectorAll('.add-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          const id = btn.dataset.id;
+          const menuItem = getMenuArray().find(x => x && x.id === id);
+          if (!menuItem) return;
+          const unitPrice = computePromoPrice(menuItem);
+          const success = addToCart(menuItem, 1, unitPrice);
+          if (success){
             const toast = document.createElement('div');
-            toast.textContent = 'Ditambahkan ke keranjang';
-            toast.className = 'fixed bottom-6 right-6 rounded-lg bg-text-primary/90 text-white px-4 py-2 shadow-lg';
+            toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
+            toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
             document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 1600);
-        }
-
-        document.querySelectorAll('.add-button').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation(); // prevent parent <a> navigation
-                const id = btn.dataset.id;
-                addToCart(id);
-            });
-
-            // Ensure keyboard users can use Enter on button without navigating parent link
-            btn.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const id = btn.dataset.id;
-                    addToCart(id);
-                }
-            });
+            setTimeout(()=> toast.remove(), 1400);
+            const article = btn.closest('article');
+            if (article && !article.querySelector('.absolute.top-2.left-2')){
+              const badge = document.createElement('div');
+              badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
+              badge.textContent = 'Dalam keranjang';
+              article.querySelector('.relative')?.appendChild(badge);
+            }
+          }
         });
-    </script>
-</body>
+      });
+    }
 
+    /* UI wiring */
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
+    document.addEventListener('click', (e) => { if (mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
+
+    searchInput?.addEventListener('input', (e) => {
+      const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+      const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+      renderCards({ q: e.target.value || '', category: cat });
+    });
+
+    document.getElementById('start-order')?.addEventListener('click', () => {
+      const code = document.getElementById('manual-table')?.value?.trim();
+      if (code) {
+        localStorage.setItem('table_code', code);
+        alert('Kode meja disimpan: ' + code);
+      } else {
+        alert('Masukkan kode meja terlebih dahulu.');
+      }
+    });
+
+    function initWhenReady(){
+      if (!window.MENU_DATA){
+        setTimeout(initWhenReady, 50);
+        return;
+      }
+      renderCategoryButtons();
+      updateCartBadge();
+    }
+    initWhenReady();
+
+    window.addEventListener('storage', (e) => {
+      if (!e.key) return;
+      if (e.key === 'cart') updateCartBadge();
+      if (e.key === 'MENU_DATA') {
+        renderCategoryButtons();
+      }
+    });
+
+  })();
+  </script>
+</body>
 </html>
