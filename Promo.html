@@ -6,13 +6,7 @@
   <title>Promo & Diskon — Resto Modern</title>
 
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
-    body { min-height: max(884px, 100dvh); }
-  </style>
-  <script id="tailwind-config">
+  <script>
     tailwind.config = {
       darkMode: "class",
       theme: {
@@ -21,119 +15,105 @@
             primary: "#4CAF50",
             secondary: "#FF9800",
             "background-light": "#f8f7f5",
-            "background-dark": "#231b0f",
             "light-text": "#333333",
-            "dark-text": "#f8f7f5",
-            "light-border": "#eadecd",
-            "dark-border": "#4a3c27",
+            "light-border": "#eadecd"
           },
           fontFamily: { display: ["Work Sans", "sans-serif"] },
-          borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px" },
-          boxShadow: {
-            card: "0 6px 18px rgba(0,0,0,0.08)",
-          }
+          boxShadow: { card: "0 6px 18px rgba(0,0,0,0.08)" }
         }
       }
     }
   </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+    body { min-height: max(884px, 100dvh); }
+  </style>
 </head>
 
 <body class="bg-background-light font-display text-light-text">
   <!-- Header -->
-  <header class="sticky top-0 z-20 w-full bg-background-light/85 backdrop-blur-sm border-b border-light-border">
+  <header class="sticky top-0 z-20 w-full bg-background-light/95 backdrop-blur-sm border-b border-light-border">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="flex h-16 items-center justify-between">
         <div class="flex items-center gap-3">
           <span class="material-symbols-outlined text-[#4CAF50] text-[28px] leading-none">restaurant_menu</span>
           <h2 class="text-[18px] font-bold tracking-tight">Resto Modern</h2>
         </div>
+
+        <!-- Desktop nav -->
         <nav class="hidden md:flex items-center gap-6">
           <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="index.html">Home</a>
           <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Menu.html">Menu</a>
           <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Menu_favorit.html">Favorit</a>
           <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
           <button class="relative h-10 w-10 flex items-center justify-center rounded-full text-light-text">
-            <span class="material-symbols-outlined">shopping_cart</span>
-            <!-- <span class="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center rounded-full bg-primary text-xs font-bold text-white">3</span> -->
+            <a href="cart.html"><span class="material-symbols-outlined">shopping_cart</span></a>
           </button>
         </nav>
+
+        <!-- Mobile controls: visible on small screens -->
+        <div class="flex items-center gap-2 md:hidden">
+          <!-- Home icon (optional quick access) -->
+          <a href="index.html" class="inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-100" aria-label="Home">
+            <span class="material-symbols-outlined">home</span>
+          </a>
+
+          <!-- Hamburger button -->
+          <button id="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" class="inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-100">
+            <svg id="icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu (hidden by default) -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-light-border bg-background-light">
+      <div class="px-4 pt-3 pb-4 space-y-1">
+        <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Home</a>
+        <a href="Menu.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Menu</a>
+        <a href="Menu_favorit.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Favorit</a>
+        <a href="Bantuan.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Bantuan</a>
+        <a href="Promo.html" class="block px-3 py-2 rounded-md text-base font-semibold text-secondary bg-secondary/10 hover:bg-secondary/20">Promo</a>
       </div>
     </div>
   </header>
 
-  <!-- Main -->
   <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Title -->
     <h1 class="text-[28px] sm:text-[32px] font-bold leading-tight pb-4">Promo & Diskon</h1>
 
-    <!-- Hero banner (exact layered style) -->
-    <section class="relative rounded-xl overflow-hidden mb-8">
+    <!-- Hero banner -->
+    <section id="hero" class="relative rounded-xl overflow-hidden mb-8">
       <div class="w-full h-[220px] sm:h-[280px] lg:h-[320px]">
-        <img src="Img/Pizza Peperoni.png" alt="Promo Pizza Hari Ini"
-             class="w-full h-full object-cover" />
+        <img id="hero-img" src="Img/Pizza Peperoni.png" alt="Promo Pizza Hari Ini" class="w-full h-full object-cover" />
       </div>
       <div class="absolute inset-0 bg-gradient-to-r from-black/45 via-black/35 to-transparent"></div>
       <div class="absolute inset-0 flex items-center">
         <div class="px-5 sm:px-8">
           <div class="text-white">
-            <p class="text-[14px] sm:text-[16px] font-semibold opacity-95">Promo penawaran hari ini</p>
-            <p class="text-[34px] sm:text-[40px] font-extrabold text-yellow-300 leading-tight mt-1">20% OFF</p>
-            <button
-              class="mt-3 sm:mt-4 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] sm:text-[14px] font-bold hover:bg-orange-500 transition-colors">
-              <a href="Promo_Pizza.html">Lihat Detail</a> 
-            </button>
+            <p id="hero-sub" class="text-[14px] sm:text-[16px] font-semibold opacity-95">Promo penawaran hari ini</p>
+            <p id="hero-title" class="text-[34px] sm:text-[40px] font-extrabold text-yellow-300 leading-tight mt-1">20% OFF</p>
+            <a id="hero-cta" class="mt-3 sm:mt-4 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] sm:text-[14px] font-bold hover:bg-orange-500 transition-colors" href="promo_detail.html">
+              Lihat Detail
+            </a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Promo cards -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Card 1 -->
-      <article class="rounded-xl border border-light-border bg-white overflow-hidden shadow-card">
-        <div class="w-full aspect-[4/3]">
-          <img src="Img/Promo Coffe.png" alt="Buy 1 Get 1 Coffee" class="w-full h-full object-cover" />
-        </div>
-        <div class="p-4">
-          <h3 class="text-[16px] font-bold">Buy 1 Get 1 Coffee</h3>
-          <button
-            class="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] font-bold hover:bg-orange-500 transition-colors">
-            Lihat Promo
-          </button>
-        </div>
-      </article>
-
-      <!-- Card 2 -->
-      <article class="rounded-xl border border-light-border bg-white overflow-hidden shadow-card">
-        <div class="w-full aspect-[4/3]">
-          <img src="Img/Promo Burger.png" alt="Diskon 50% Paket Burger" class="w-full h-full object-cover" />
-        </div>
-        <div class="p-4">
-          <h3 class="text-[16px] font-bold">Diskon 50% Paket Burger</h3>
-          <button
-            class="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] font-bold hover:bg-orange-500 transition-colors">
-            Lihat Promo
-          </button>
-        </div>
-      </article>
-
-      <!-- Card 3 -->
-      <article class="rounded-xl border border-light-border bg-white overflow-hidden shadow-card">
-        <div class="w-full aspect-[4/3]">
-          <img src="Img/Promo Ramen.png" alt="Free Ocha Ramen Day" class="w-full h-full object-cover" />
-        </div>
-        <div class="p-4">
-          <h3 class="text-[16px] font-bold">Free Ocha Ramen Day</h3>
-          <button
-            class="mt-3 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] font-bold hover:bg-orange-500 transition-colors">
-            Lihat Promo
-          </button>
-        </div>
-      </article>
+    <section id="promo-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-live="polite">
+      <!-- cards rendered here by JS -->
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="mt-10 border-t border-light-border">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 text-sm text-light-text/75">
       <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
@@ -145,9 +125,146 @@
           <a class="hover:text-primary" href="#">Bantuan</a>
           <a class="hover:text-primary" href="#">FAQ</a>
         </div>
-        <p>© 2023 Smart Ordering System. All rights reserved.</p>
+        <p>© 2025 Smart Ordering System. All rights reserved.</p>
       </div>
     </div>
   </footer>
+
+  <!-- data and script -->
+  <script src="data.js" defer></script>
+
+  <script>
+  (function(){
+    'use strict';
+
+    // Mobile menu toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('icon-open');
+    const iconClose = document.getElementById('icon-close');
+
+    mobileBtn?.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        mobileBtn.setAttribute('aria-expanded', 'true');
+        iconOpen.classList.add('hidden');
+        iconClose.classList.remove('hidden');
+      } else {
+        mobileMenu.classList.add('hidden');
+        mobileBtn.setAttribute('aria-expanded', 'false');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      }
+    });
+
+    // Promo rendering (same logic as before)
+    const formatRp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+    const promoGrid = document.getElementById('promo-grid');
+    const heroImg = document.getElementById('hero-img');
+    const heroTitle = document.getElementById('hero-title');
+    const heroSub = document.getElementById('hero-sub');
+    const heroCta = document.getElementById('hero-cta');
+
+    function initWhenReady(){
+      if (!window.MENU_DATA) {
+        setTimeout(initWhenReady, 50);
+        return;
+      }
+      init();
+    }
+
+    function init(){
+      const MENU = Object.values(window.MENU_DATA || {});
+      const promos = MENU.filter(i => i && i.isPromo);
+      const hero = promos[0] || MENU[0] || null;
+      if (hero) {
+        heroImg.src = hero.img || heroImg.src;
+        heroTitle.textContent = hero.promo?.label || (hero.isPromo ? 'Promo' : 'Penawaran');
+        heroSub.textContent = hero.title || heroSub.textContent;
+        heroCta.href = `promo_detail.html?id=${encodeURIComponent(hero.id)}`;
+      } else {
+        heroCta.removeAttribute('href');
+      }
+
+      const list = promos.length ? promos : MENU;
+      promoGrid.innerHTML = '';
+      list.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'rounded-xl border border-light-border bg-white overflow-hidden shadow-card';
+
+        const imgWrap = document.createElement('div');
+        imgWrap.className = 'w-full aspect-[4/3] bg-gray-100';
+        const img = document.createElement('img');
+        img.className = 'w-full h-full object-cover';
+        img.src = item.img || 'Img/placeholder.png';
+        img.alt = item.title || '';
+        imgWrap.appendChild(img);
+
+        const body = document.createElement('div');
+        body.className = 'p-4';
+
+        const h3 = document.createElement('h3');
+        h3.className = 'text-[16px] font-bold';
+        h3.textContent = item.title || 'Item';
+
+        const desc = document.createElement('p');
+        desc.className = 'text-sm text-subtext-light mt-2';
+        desc.textContent = item.desc || '';
+
+        const priceRow = document.createElement('div');
+        priceRow.className = 'mt-3 flex items-center justify-between';
+
+        const priceWrap = document.createElement('div');
+        priceWrap.className = 'text-sm text-subtext-light';
+        let finalPrice = item.price || 0;
+        if (item.isPromo && item.promo){
+          if (item.promo.type === 'percent') finalPrice = Math.round(finalPrice * (100 - Number(item.promo.value || 0)) / 100);
+          else if (item.promo.type === 'fixed') finalPrice = Math.max(0, finalPrice - Number(item.promo.value || 0));
+          const orig = document.createElement('div');
+          orig.className = 'line-through text-xs text-gray-400';
+          orig.textContent = formatRp(item.price);
+          priceWrap.appendChild(orig);
+        }
+        const final = document.createElement('div');
+        final.className = 'font-semibold text-base text-primary';
+        final.textContent = formatRp(finalPrice);
+        priceWrap.appendChild(final);
+
+        const cta = document.createElement('a');
+        cta.className = 'inline-flex items-center px-3 py-2 bg-secondary text-white rounded-lg text-sm font-semibold hover:opacity-95';
+        cta.href = `promo_detail.html?id=${encodeURIComponent(item.id)}`;
+        cta.textContent = (item.isPromo && item.promo?.label) ? item.promo.label : 'Lihat Detail';
+
+        priceRow.appendChild(priceWrap);
+        priceRow.appendChild(cta);
+
+        body.appendChild(h3);
+        body.appendChild(desc);
+        body.appendChild(priceRow);
+
+        card.appendChild(imgWrap);
+        card.appendChild(body);
+
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          const target = e.target;
+          if (target && (target.tagName === 'A' || target.closest('a'))) return;
+          window.location.href = `promo_detail.html?id=${encodeURIComponent(item.id)}`;
+        });
+
+        promoGrid.appendChild(card);
+      });
+    }
+
+    initWhenReady();
+
+    // react to MENU_DATA changes
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'MENU_DATA') initWhenReady();
+    });
+
+  })();
+  </script>
 </body>
 </html>

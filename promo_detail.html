@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="id" class="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Detail Promo — Resto Modern</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#4CAF50',
+            secondary: '#FF9800',
+            'background-light': '#f8f7f5',
+            'light-border': '#eadecd'
+          }
+        }
+      }
+    }
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+</head>
+
+<body class="bg-background-light font-display text-gray-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Header (sama seperti halaman Promo) -->
+  <header class="sticky top-0 z-20 bg-background-light/95 backdrop-blur-sm border-b border-light-border">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="flex h-16 items-center justify-between">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-[#4CAF50] text-[28px] leading-none">restaurant_menu</span>
+          <h2 class="text-[18px] font-bold tracking-tight">Resto Modern</h2>
+        </div>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex items-center gap-6">
+          <a class="text-base font-medium text-gray-800 hover:text-primary transition-colors" href="index.html">Home</a>
+          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Menu.html">Menu</a>
+          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Menu_favorit.html">Favorit</a>
+          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+          <button id="cart-btn-desktop" class="relative h-10 w-10 flex items-center justify-center rounded-full text-gray-700">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span id="cart-badge-desktop" class="absolute -top-1 -right-1 text-xs bg-red-600 text-white rounded-full px-1 hidden">0</span>
+          </button>
+        </nav>
+
+        <!-- Mobile controls -->
+        <div class="flex items-center gap-2 md:hidden">
+          <a href="index.html" class="inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-100" aria-label="Home">
+            <span class="material-symbols-outlined">home</span>
+          </a>
+
+          <button id="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" class="inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-100">
+            <svg id="icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+            <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+
+          <button id="cart-btn-mobile" class="inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-100 relative">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span id="cart-badge-mobile" class="absolute -mt-8 ml-4 text-xs bg-red-600 text-white rounded-full px-1 hidden">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-light-border bg-background-light">
+      <div class="px-4 pt-3 pb-4 space-y-1">
+        <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Home</a>
+        <a href="Menu.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Menu</a>
+        <a href="Menu_favorit.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Favorit</a>
+        <a href="Bantuan.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Bantuan</a>
+        <a href="Promo.html" class="block px-3 py-2 rounded-md text-base font-semibold text-secondary bg-secondary/10 hover:bg-secondary/20">Promo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container mx-auto px-4 py-6 flex-1 w-full">
+    <div class="max-w-5xl mx-auto">
+
+      <!-- Detail view -->
+      <div id="detail-view" class="hidden bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-8">
+        <div class="md:flex">
+          <div class="md:w-1/2">
+            <img id="detail-img" src="Img/placeholder.png" alt="Gambar promo" class="w-full h-64 md:h-full object-cover"/>
+          </div>
+
+          <div class="md:w-1/2 p-6 flex flex-col">
+            <h2 id="detail-title" class="text-2xl font-bold mb-2">Judul Promo</h2>
+            <p id="detail-desc" class="text-sm text-gray-600 mb-4">Deskripsi singkat promo atau menu.</p>
+
+            <div class="mb-4">
+              <div id="price-row" class="flex items-baseline gap-3">
+                <div id="price-original" class="text-sm text-gray-400 line-through hidden"></div>
+                <!-- Harga baru: orange -->
+                <div id="price-final" class="text-2xl font-extrabold text-secondary"></div>
+              </div>
+              <div id="promo-badge" class="mt-3 hidden"></div>
+            </div>
+
+            <!-- Waktu persiapan tetap ditampilkan -->
+            <div class="mb-4 text-sm text-gray-600">
+              <p>Waktu persiapan: <span id="detail-preptime" class="font-medium text-gray-800">—</span> menit</p>
+            </div>
+
+            <div class="mt-auto w-full">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="flex items-center gap-2">
+                  <button id="decrease-qty" class="inline-flex items-center justify-center h-10 w-10 rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50">-</button>
+                  <input id="qty" type="number" min="1" value="1" class="w-20 text-center rounded-md border border-gray-200 px-2 py-2" />
+                  <button id="increase-qty" class="inline-flex items-center justify-center h-10 w-10 rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50">+</button>
+                </div>
+              </div>
+
+              <!-- Tombol utama: orange -->
+              <div class="space-y-3">
+                <button id="add-to-cart" class="w-full inline-flex items-center justify-center gap-3 rounded-lg bg-secondary text-white px-4 py-3 text-base font-semibold shadow-md hover:bg-secondary/90 focus:outline-none focus:ring-2 focus:ring-secondary/30 focus:ring-offset-2">
+                  <span class="material-symbols-outlined">add_shopping_cart</span>
+                  <span id="add-btn-text">Tambah ke Keranjang</span>
+                  <span id="add-btn-promo" class="ml-2 text-white font-semibold"></span>
+                </button>
+
+                <a id="back-to-promo-cta" href="Promo.html" class="block w-full text-center rounded-lg border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                  Kembali ke Promo
+                </a>
+              </div>
+
+              <p id="add-feedback" class="mt-3 text-sm text-green-600 hidden">Berhasil ditambahkan ke keranjang.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- List view fallback (jika tidak ada id) -->
+      <div id="list-view" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- kartu promo akan dirender di sini -->
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer statis -->
+  <footer class="border-t border-gray-200 bg-white py-6">
+    <div class="container mx-auto px-4 text-sm text-gray-600">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+          <p class="font-semibold">Resto Modern</p>
+          <p>Jl. Raya Modern No. 104, Surabaya, Indonesia</p>
+        </div>
+        <div class="flex gap-6">
+          <a class="hover:text-primary" href="Bantuan.html">Bantuan</a>
+          <a class="hover:text-primary" href="FAQ.html">FAQ</a>
+        </div>
+        <p>© 2025 Smart Ordering System. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- shared data -->
+  <script src="data.js" defer></script>
+
+  <script>
+  (function(){
+    'use strict';
+
+    // Mobile menu toggle
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('icon-open');
+    const iconClose = document.getElementById('icon-close');
+
+    mobileBtn?.addEventListener('click', () => {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      if (isHidden) {
+        mobileMenu.classList.remove('hidden');
+        mobileBtn.setAttribute('aria-expanded', 'true');
+        iconOpen.classList.add('hidden');
+        iconClose.classList.remove('hidden');
+      } else {
+        mobileMenu.classList.add('hidden');
+        mobileBtn.setAttribute('aria-expanded', 'false');
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      }
+    });
+
+    // Cart badge helpers
+    function updateCartBadges(){
+      try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const count = cart.reduce((s, it) => s + (Number(it.qty) || 0), 0);
+        const bdDesktop = document.getElementById('cart-badge-desktop');
+        const bdMobile = document.getElementById('cart-badge-mobile');
+        if (bdDesktop) { bdDesktop.classList.toggle('hidden', count === 0); bdDesktop.textContent = count; }
+        if (bdMobile) { bdMobile.classList.toggle('hidden', count === 0); bdMobile.textContent = count; }
+      } catch(e){}
+    }
+
+    // Helpers & elements
+    const qs = s => document.querySelector(s);
+    const getParam = name => new URLSearchParams(window.location.search).get(name);
+    const formatRp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+
+    const detailView = qs('#detail-view');
+    const listView = qs('#list-view');
+    const detailImg = qs('#detail-img');
+    const detailTitle = qs('#detail-title');
+    const detailDesc = qs('#detail-desc');
+    const detailPrep = qs('#detail-preptime');
+    const priceOriginal = qs('#price-original');
+    const priceFinal = qs('#price-final');
+    const promoBadge = qs('#promo-badge');
+    const qtyInput = qs('#qty');
+    const addToCartBtn = qs('#add-to-cart');
+    const addBtnPromo = qs('#add-btn-promo');
+    const addBtnText = qs('#add-btn-text');
+    const addFeedback = qs('#add-feedback');
+
+    // Safe MENU_DATA access
+    function getMenuObj(){ return (window.MENU_DATA && typeof window.MENU_DATA === 'object') ? window.MENU_DATA : {}; }
+    function getMenuArray(){ return Object.values(getMenuObj()); }
+    function getPromoItems(){ return getMenuArray().filter(i => i && i.isPromo); }
+
+    // Compute promo price
+    function computePromoPrice(item){
+      let price = Number(item.price || 0);
+      if (item.isPromo && item.promo){
+        if (item.promo.type === 'percent') {
+          price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
+        } else if (item.promo.type === 'fixed') {
+          price = Math.max(0, price - Number(item.promo.value || 0));
+        }
+      }
+      return price;
+    }
+
+    // Add to cart and store promo unit price
+    function addToCartWithPrice(item, qty, unitPrice){
+      try {
+        const raw = JSON.parse(localStorage.getItem('cart') || '[]');
+        const key = item.id || item.title;
+        let found = false;
+        for (const it of raw){
+          if ((it.id && it.id === key) || (it.title && it.title === item.title)){
+            it.qty = (Number(it.qty) || 0) + qty;
+            it.price = unitPrice;
+            found = true;
+            break;
+          }
+        }
+        if (!found){
+          raw.push({
+            id: item.id || item.title,
+            title: item.title,
+            price: unitPrice,
+            img: item.img,
+            qty: qty,
+            prepTime: item.prepTime
+          });
+        }
+        localStorage.setItem('cart', JSON.stringify(raw));
+        try { window.dispatchEvent(new StorageEvent('storage', { key: 'cart', newValue: JSON.stringify(raw) })); } catch(e){}
+        updateCartBadges();
+        return true;
+      } catch(e){
+        console.error(e);
+        return false;
+      }
+    }
+
+    // Render promo list (fallback)
+    function renderPromoList(){
+      const MENU = getMenuArray();
+      const promos = MENU.filter(i => i && i.isPromo);
+      const list = promos.length ? promos : MENU;
+      listView.innerHTML = '';
+      list.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'rounded-lg border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-transform transform hover:-translate-y-1';
+
+        const imgWrap = document.createElement('div');
+        imgWrap.className = 'w-full aspect-[4/3] bg-gray-100';
+        const img = document.createElement('img');
+        img.className = 'w-full h-full object-cover';
+        img.src = item.img || 'Img/placeholder.png';
+        img.alt = item.title || '';
+        imgWrap.appendChild(img);
+
+        const body = document.createElement('div');
+        body.className = 'p-4';
+
+        const h3 = document.createElement('h3');
+        h3.className = 'text-base font-semibold';
+        h3.textContent = item.title || 'Item';
+
+        const desc = document.createElement('p');
+        desc.className = 'text-sm text-gray-600 mt-2 line-clamp-2';
+        desc.textContent = item.desc || '';
+
+        const priceRow = document.createElement('div');
+        priceRow.className = 'mt-4 flex items-center justify-between';
+
+        const priceWrap = document.createElement('div');
+        priceWrap.className = 'text-sm text-gray-600';
+        let finalPrice = computePromoPrice(item);
+        if (item.isPromo && item.promo){
+          const orig = document.createElement('div');
+          orig.className = 'line-through text-xs text-gray-400';
+          orig.textContent = formatRp(item.price);
+          priceWrap.appendChild(orig);
+        }
+        const final = document.createElement('div');
+        final.className = 'font-semibold text-base text-secondary';
+        final.textContent = formatRp(finalPrice);
+        priceWrap.appendChild(final);
+
+        const cta = document.createElement('a');
+        cta.className = 'inline-flex items-center px-3 py-2 bg-secondary text-white rounded-lg text-sm font-semibold hover:opacity-95';
+        cta.href = `promo_detail.html?id=${encodeURIComponent(item.id)}`;
+        cta.textContent = (item.isPromo && item.promo?.label) ? item.promo.label : 'Lihat Detail';
+
+        priceRow.appendChild(priceWrap);
+        priceRow.appendChild(cta);
+
+        body.appendChild(h3);
+        body.appendChild(desc);
+        body.appendChild(priceRow);
+
+        card.appendChild(imgWrap);
+        card.appendChild(body);
+
+        card.addEventListener('click', (e) => {
+          const target = e.target;
+          if (target && (target.tagName === 'A' || target.closest('a'))) return;
+          window.location.href = `promo_detail.html?id=${encodeURIComponent(item.id)}`;
+        });
+
+        listView.appendChild(card);
+      });
+    }
+
+    // Render detail view
+    function renderDetail(item){
+      if (!item) return;
+
+      detailImg.src = item.img || 'Img/placeholder.png';
+      detailTitle.textContent = item.title || '';
+      detailDesc.textContent = item.desc || '';
+      detailPrep.textContent = (item.prepTime !== undefined) ? String(item.prepTime) : '—';
+
+      const unitPrice = computePromoPrice(item);
+      if (item.isPromo && item.promo){
+        priceOriginal.textContent = formatRp(item.price);
+        priceOriginal.classList.remove('hidden');
+        promoBadge.textContent = item.promo.label || '';
+        promoBadge.className = 'inline-block text-white bg-secondary px-3 py-1 rounded-full text-sm mt-3';
+        addBtnPromo.textContent = item.promo.label || '';
+      } else {
+        priceOriginal.classList.add('hidden');
+        promoBadge.classList.add('hidden');
+        addBtnPromo.textContent = '';
+      }
+      priceFinal.textContent = formatRp(unitPrice);
+
+      detailView.classList.remove('hidden');
+      listView.classList.add('hidden');
+
+      addToCartBtn.onclick = function(){
+        const qty = Math.max(1, parseInt(qtyInput.value, 10) || 1);
+        const success = addToCartWithPrice(item, qty, unitPrice);
+        if (success) {
+          addFeedback.classList.remove('hidden');
+          addFeedback.textContent = `${item.title} (${qty}) berhasil ditambahkan ke keranjang. Mengalihkan ke Promo...`;
+          setTimeout(() => { window.location.href = 'Promo.html'; }, 600);
+        } else {
+          addFeedback.classList.remove('hidden');
+          addFeedback.textContent = `Gagal menambahkan ke keranjang. Coba lagi.`;
+          setTimeout(()=> addFeedback.classList.add('hidden'), 2200);
+        }
+      };
+    }
+
+    // Qty controls
+    document.getElementById('decrease-qty')?.addEventListener('click', () => {
+      const v = Math.max(1, (parseInt(qtyInput.value,10) || 1) - 1);
+      qtyInput.value = v;
+    });
+    document.getElementById('increase-qty')?.addEventListener('click', () => {
+      const v = Math.max(1, (parseInt(qtyInput.value,10) || 1) + 1);
+      qtyInput.value = v;
+    });
+
+    // Init when MENU_DATA ready
+    function init(){
+      updateCartBadges();
+      if (!window.MENU_DATA){
+        setTimeout(init, 50);
+        return;
+      }
+      const MENU_OBJ = getMenuObj();
+      const id = getParam('id');
+
+      if (id){
+        const item = MENU_OBJ[id] || Object.values(MENU_OBJ).find(x => x && x.id === id);
+        if (item){
+          renderDetail(item);
+          return;
+        }
+      }
+
+      // fallback: show list
+      renderPromoList();
+    }
+
+    function getMenuObj(){ return (window.MENU_DATA && typeof window.MENU_DATA === 'object') ? window.MENU_DATA : {}; }
+
+    init();
+
+    // react to storage changes
+    window.addEventListener('storage', (e) => {
+      if (!e.key) return;
+      if (['cart','MENU_DATA','favorites_v1'].includes(e.key)) {
+        updateCartBadges();
+        // re-render if needed
+        // if detail visible, re-init to refresh prices
+        init();
+      }
+    });
+
+  })();
+  </script>
+</body>
+</html>

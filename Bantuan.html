@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id" class="light">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Halaman Bantuan — Resto Modern</title>
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
             primary: "#4CAF50",
-            accent: "#FF9800",
-            muted: "#666666",
-            bg: "#f8f7f5"
+            secondary: "#FF9800",
+            muted: "#6B7280",
+            "background-light": "#f8f7f5",
+            "surface-light": "#ffffff",
+            "text-primary": "#111827"
           },
           fontFamily: {
             display: ["Work Sans", "sans-serif"]
@@ -24,82 +26,179 @@
       }
     }
   </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <style>
     body { font-family: 'Work Sans', sans-serif; }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
   </style>
 </head>
-<body class="bg-bg text-slate-800">
-    <div class="relative flex min-h-screen w-full flex-col group/design-root overflow-x-hidden">
-        <header class="sticky top-0 z-10 w-full bg-surface-light dark:bg-surface-dark shadow-sm border-b border-gray-200 dark:border-gray-700">
-            <div class="container mx-auto flex items-center p-4 gap-3">
-                <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
-                <h2 class="text-2xl font-bold tracking-tight flex-1">Resto Modern</h2>
-                <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
-                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="index.html">Home</a>
-                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu.html">Menu</a>
-                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
-                    <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_favorit.html">Favorit</a>
-                    <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors" href="cart.html">
-                        <span class="material-symbols-outlined">shopping_cart</span>
-                    </a>
-                </nav>
-                <dov class="flex md:hidden w-12 items-center justify-end">
-                    <span class="material-symbols-outlined">menu</span>
-                </dov>
-            </div>
-        </header>
-        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-            <h1 class="text-3xl font-bold mb-6">Halaman bantuan</h1>
-            <div class="mb-8">
-                <input type="text" placeholder="Cari pertanyaan atau bantuan..." class="w-full px-4 py-3 rounded-lg border border-slate-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                    <h3 class="font-semibold text-lg mb-2">Pemesanan Menu</h3>
-                    <p class="text-sm text-muted">Cara memesan, memilih menu, menambah catatan pesanan.</p>
-                </div>
-                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                    <h3 class="font-semibold text-lg mb-2">Pembayaran Digital</h3>
-                    <p class="text-sm text-muted">Metode pembayaran, kegagalan pembayaran, e-wallet, virtual account.</p>
-                </div>
-                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                    <h3 class="font-semibold text-lg mb-2">Promo & Diskon</h3>
-                    <p class="text-sm text-muted">Cara menggunakan promo, syarat promo, promo tidak muncul</p>
-                </div>
-                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                    <h3 class="font-semibold text-lg mb-2">QR Code</h3>
-                    <p class="text-sm text-muted">Tidak bisa scan SQ, halaman tidak tampil, error akses.</p>
-                </div>
-                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                    <h3 class="font-semibold text-lg mb-2">Pesanan Masuk ke Dapur</h3>
-                    <p class="text-sm text-muted">Status pesanan, estimasi waktu penyajian</p>
-                </div>
-                <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-                    <h3 class="font-semibold text-lg mb-2">Sistem & Pengaturan</h3>
-                    <p class="text-sm text-muted">masalah teknis lain seperti loading lama atau error tampilan</p>
-                </div>
-            </div>
-            <div class="mt-12 bg-white rounded-xl border border-slate-200 p-6 text-center shadow-sm">
-                <p class="text-sm text-muted mb-4">Masih butuh bantuan? Tim kami siap membantu Anda langsung di restoran</p>
-                <button class="px-4 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-green-600 transition">Hubungi Staff</button>
-            </div>
-        </main>
-    </div>
-    <footer class="w-full border-t border-gray-200 bg-background-secondary">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gal-4">
-                <div class="text-sm text-text-secondary">
-                    <p class="font-semibold text-text-primary">Resto Modern</p>
-                    <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
-                </div>
-                <div class="flex gap-6 text-sm">
-                    <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
-                    <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
-                </div>
-                <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved</p>
-            </div>
+<body class="bg-background-light text-text-primary min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-surface-light border-b border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <span class="material-symbols-outlined text-primary text-3xl">restaurant_menu</span>
+          <h1 class="text-lg font-bold tracking-tight">Resto Modern</h1>
         </div>
-    </footer>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="index.html" class="text-sm font-medium hover:text-primary">Home</a>
+          <a href="Menu.html" class="text-sm font-medium hover:text-primary">Menu</a>
+          <a href="Promo.html" class="text-sm font-medium hover:text-primary">Promo</a>
+          <a href="Menu_favorit.html" class="text-sm font-medium hover:text-primary">Favorit</a>
+          <a href="cart.html" class="text-sm font-medium hover:text-primary" aria-label="Keranjang Belanja">
+            <span class="material-symbols-outlined align-middle">shopping_cart</span>
+          </a>
+        </nav>
+
+        <!-- Mobile controls -->
+        <div class="flex items-center gap-2 md:hidden">
+          <button id="mobile-menu-open" aria-label="Buka menu" class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile menu (hidden by default) -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200 bg-surface-light">
+      <div class="px-4 pt-3 pb-4 space-y-1">
+        <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Home</a>
+        <a href="Menu.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Menu</a>
+        <a href="Promo.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Promo</a>
+        <a href="Menu_favorit.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Favorit</a>
+        <a href="cart.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Keranjang</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+    <h2 class="text-2xl sm:text-3xl font-bold mb-6">Halaman Bantuan</h2>
+
+    <!-- Search -->
+    <div class="mb-8">
+      <label for="help-search" class="sr-only">Cari bantuan</label>
+      <div class="relative">
+        <input id="help-search" type="search" placeholder="Cari pertanyaan atau bantuan..." class="w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+        <button id="clear-search" class="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted hidden">Hapus</button>
+      </div>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+        <h3 class="font-semibold text-lg mb-2">Pemesanan Menu</h3>
+        <p class="text-sm text-muted">Cara memesan, memilih menu, menambah catatan pesanan.</p>
+      </article>
+
+      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+        <h3 class="font-semibold text-lg mb-2">Pembayaran Digital</h3>
+        <p class="text-sm text-muted">Metode pembayaran, kegagalan pembayaran, e-wallet, virtual account.</p>
+      </article>
+
+      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+        <h3 class="font-semibold text-lg mb-2">Promo & Diskon</h3>
+        <p class="text-sm text-muted">Cara menggunakan promo, syarat promo, promo tidak muncul.</p>
+      </article>
+
+      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+        <h3 class="font-semibold text-lg mb-2">QR Code</h3>
+        <p class="text-sm text-muted">Tidak bisa scan QR, halaman tidak tampil, error akses.</p>
+      </article>
+
+      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+        <h3 class="font-semibold text-lg mb-2">Pesanan Masuk ke Dapur</h3>
+        <p class="text-sm text-muted">Status pesanan, estimasi waktu penyajian.</p>
+      </article>
+
+      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
+        <h3 class="font-semibold text-lg mb-2">Sistem & Pengaturan</h3>
+        <p class="text-sm text-muted">Masalah teknis seperti loading lama atau error tampilan.</p>
+      </article>
+    </div>
+
+    <!-- Contact / CTA -->
+    <div class="mt-12 bg-white rounded-xl border border-gray-200 p-6 text-center shadow-sm">
+      <p class="text-sm text-muted mb-4">Masih butuh bantuan? Tim kami siap membantu Anda langsung di restoran.</p>
+      <a href="tel:+628000000000" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-green-600 transition">
+        <span class="material-symbols-outlined">phone</span>
+        Hubungi Staff
+      </a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-200">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted">
+        <div>
+          <p class="font-semibold text-text-primary">Resto Modern</p>
+          <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+        </div>
+        <div class="flex gap-6">
+          <a href="Bantuan.html" class="hover:text-primary">Bantuan</a>
+          <a href="FAQ.html" class="hover:text-primary">FAQ</a>
+        </div>
+        <p>© 2025 Smart Ordering System. All rights reserved</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Minimal JS: mobile menu toggle + small UX helpers -->
+  <script>
+    (function () {
+      const mobileOpen = document.getElementById('mobile-menu-open');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const searchInput = document.getElementById('help-search');
+      const clearBtn = document.getElementById('clear-search');
+
+      // Toggle mobile menu
+      mobileOpen?.addEventListener('click', () => {
+        const isHidden = mobileMenu.classList.contains('hidden');
+        if (isHidden) {
+          mobileMenu.classList.remove('hidden');
+          mobileOpen.setAttribute('aria-expanded', 'true');
+        } else {
+          mobileMenu.classList.add('hidden');
+          mobileOpen.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      // Search clear button visibility
+      function updateClearBtn() {
+        if (!searchInput) return;
+        clearBtn.classList.toggle('hidden', !searchInput.value.trim());
+      }
+      searchInput?.addEventListener('input', updateClearBtn);
+      clearBtn?.addEventListener('click', () => {
+        if (!searchInput) return;
+        searchInput.value = '';
+        updateClearBtn();
+        searchInput.focus();
+      });
+
+      // Improve keyboard accessibility: close mobile menu on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.add('hidden');
+            mobileOpen?.setAttribute('aria-expanded', 'false');
+            mobileOpen?.focus();
+          }
+        }
+      });
+
+      // Prevent layout shift on small screens by ensuring focus outlines are visible
+      // (no-op here, but kept for clarity)
+    })();
+  </script>
 </body>
 </html>

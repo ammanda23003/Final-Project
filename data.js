@@ -1,9 +1,9 @@
-// data.js
-// Satu sumber data untuk seluruh halaman (Menu, Favorit, Cart).
-// Pastikan <script src="data.js"></script> dimuat sebelum script halaman yang mengonsumsi MENU_DATA.
+// scripts/data.js
+// Satu sumber data untuk seluruh halaman (Menu, Favorit, Promo, Cart, Checkout).
+// Pastikan <script src="scripts/data.js"></script> dimuat sebelum script halaman yang mengonsumsi MENU_DATA.
 
 window.MENU_DATA = {
-  // makanan (isFavorite: true untuk yang muncul di halaman Favorit)
+  // makanan
   "nasi-goreng-spesial": {
     id: "nasi-goreng-spesial",
     title: "Nasi Goreng Spesial",
@@ -11,7 +11,10 @@ window.MENU_DATA = {
     img: "Img/Nasi Goreng Spesial.png",
     desc: "Nasi Goreng spesial dengan suwiran ayam, udang, dan telur mata sapi",
     category: "makanan",
-    isFavorite: true
+    isFavorite: true,
+    isPromo: true,
+    promo: { type: "percent", value: 15, label: "15% OFF" },
+    prepTime: 12
   },
   "mie-ayam-bakso": {
     id: "mie-ayam-bakso",
@@ -20,7 +23,9 @@ window.MENU_DATA = {
     img: "Img/Mie Ayam Bakso.png",
     desc: "Mie ayam klasik dengan bakso sapi",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 8
   },
   "ayam-bakar-madu": {
     id: "ayam-bakar-madu",
@@ -29,7 +34,9 @@ window.MENU_DATA = {
     img: "Img/Ayam Bakar Madu.png",
     desc: "Ayam bakar bumbu madu, disajikan dengan nasi",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 20
   },
   "spaghetti-bolognese": {
     id: "spaghetti-bolognese",
@@ -38,7 +45,9 @@ window.MENU_DATA = {
     img: "Img/Spaghetti Bolognese.png",
     desc: "Pasta dengan saus daging sapi cincang",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 14
   },
   "soto-betawi": {
     id: "soto-betawi",
@@ -47,7 +56,9 @@ window.MENU_DATA = {
     img: "Img/sotobetawi.png",
     desc: "Soto khas Jakarta dengan santan dan daging sapi",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 18
   },
   "cumi-goreng-tepung": {
     id: "cumi-goreng-tepung",
@@ -56,7 +67,9 @@ window.MENU_DATA = {
     img: "Img/cumigorengtepung.png",
     desc: "Cumi digoreng renyah, disajikan dengan saus tartar",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 10
   },
   "sate-ayam": {
     id: "sate-ayam",
@@ -65,7 +78,10 @@ window.MENU_DATA = {
     img: "Img/Sate Ayam.png",
     desc: "10 tusuk sate ayam dengan bumbu kacang yang khas",
     category: "makanan",
-    isFavorite: true
+    isFavorite: true,
+    isPromo: true,
+    promo: { type: "fixed", value: 5000, label: "Rp 5.000 OFF" },
+    prepTime: 15
   },
   "rendang": {
     id: "rendang",
@@ -74,7 +90,9 @@ window.MENU_DATA = {
     img: "Img/Rendang.png",
     desc: "Daging sapi empuk dengan bumbu rendang kaya rasa",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 30
   },
   "gado-gado": {
     id: "gado-gado",
@@ -83,7 +101,9 @@ window.MENU_DATA = {
     img: "Img/gadogado.png",
     desc: "Salad sayur dengan saus kacang khas Indonesia",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 7
   },
   "kwetiau-goreng-seafood": {
     id: "kwetiau-goreng-seafood",
@@ -92,7 +112,9 @@ window.MENU_DATA = {
     img: "Img/kwetiauseafood.png",
     desc: "Kwetiau goreng dengan udang, cumi, dan bakso ikan",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 16
   },
   "beef-burger": {
     id: "beef-burger",
@@ -101,7 +123,9 @@ window.MENU_DATA = {
     img: "Img/Classic Burger.png",
     desc: "Burger daging sapi dengan tambahan keju, selada, dan tomat",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 12
   },
   "sop-buntut": {
     id: "sop-buntut",
@@ -110,7 +134,9 @@ window.MENU_DATA = {
     img: "Img/Sop Buntut.png",
     desc: "Sop buntut sapi dengan tambahan wortel dan kentang",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 25
   },
   "ayam-penyet": {
     id: "ayam-penyet",
@@ -119,7 +145,9 @@ window.MENU_DATA = {
     img: "Img/ayampenyet.png",
     desc: "Ayam goreng penyet yang lezat dengan sambal terasi pedas",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 12
   },
   "ikan-bakar-jimbaran": {
     id: "ikan-bakar-jimbaran",
@@ -128,7 +156,9 @@ window.MENU_DATA = {
     img: "Img/ikanbakarjimbaran.png",
     desc: "Ikan bakar dengan bumbu khas Bali",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 22
   },
   "tomyamgoong": {
     id: "tomyamgoong",
@@ -137,7 +167,9 @@ window.MENU_DATA = {
     img: "Img/tomyumgoong.png",
     desc: "Sup asam pedas khas Thailand dengan tambahan udang",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 14
   },
   "beef-teriyaki": {
     id: "beef-teriyaki",
@@ -146,7 +178,9 @@ window.MENU_DATA = {
     img: "Img/beefteriyaki.png",
     desc: "Irisan daging sapi dengan saus teriyaki manis",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 12
   },
   "salad-sayur": {
     id: "salad-sayur",
@@ -155,7 +189,9 @@ window.MENU_DATA = {
     img: "Img/Salad.png",
     desc: "Salad sayur segar dengan saus pilihan",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 6
   },
   "pizza-pepperoni": {
     id: "pizza-pepperoni",
@@ -164,7 +200,10 @@ window.MENU_DATA = {
     img: "Img/Pizza Peperoni.png",
     desc: "Pizza klasik dengan topping pepperoni dan keju mozzarella",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: true,
+    promo: { type: "percent", value: 20, label: "20% OFF" },
+    prepTime: 18
   },
   "pancake-madu": {
     id: "pancake-madu",
@@ -173,7 +212,9 @@ window.MENU_DATA = {
     img: "Img/pancakemadu.png",
     desc: "Pancake lembut dengan siraman madu asli dan buah berry segar",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 10
   },
   "ramen-kuah-pedas": {
     id: "ramen-kuah-pedas",
@@ -182,7 +223,9 @@ window.MENU_DATA = {
     img: "Img/Ramen.png",
     desc: "Mi Ramen dengan kuah pedas yang menggoda",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 20
   },
   "burger-klasik": {
     id: "burger-klasik",
@@ -191,7 +234,9 @@ window.MENU_DATA = {
     img: "Img/Classic Burger.png",
     desc: "Burger daging sapi dengan tambahan selada dan keju",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 12
   },
   "spaghetti-carbonara": {
     id: "spaghetti-carbonara",
@@ -200,7 +245,9 @@ window.MENU_DATA = {
     img: "Img/Spaghetti Carbonara.png",
     desc: "Pasta dengan saus carbonara creamy dan smoked beef",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 14
   },
   "taco-daging-sapi": {
     id: "taco-daging-sapi",
@@ -209,7 +256,9 @@ window.MENU_DATA = {
     img: "Img/tacodagingsapi.png",
     desc: "Taco dengan isian daging sapi cincang pedas",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 8
   },
   "burger-sapi-spesial": {
     id: "burger-sapi-spesial",
@@ -218,7 +267,9 @@ window.MENU_DATA = {
     img: "Img/beefburgerspesial.png",
     desc: "Burger sapi spesial dengan patty tebal dan saus mayo lada hitam",
     category: "makanan",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 14
   },
   "pizza-meat-lovers": {
     id: "pizza-meat-lovers",
@@ -227,7 +278,10 @@ window.MENU_DATA = {
     img: "Img/pizzameatlovers.png",
     desc: "Pizza dengan pepperoni, sosis, ham, dan keju mozzarella",
     category: "makanan",
-    isFavorite: true
+    isFavorite: true,
+    isPromo: true,
+    promo: { type: "percent", value: 10, label: "10% OFF" },
+    prepTime: 20
   },
 
   // minuman
@@ -238,7 +292,9 @@ window.MENU_DATA = {
     img: "Img/Es Kopi Latte.png",
     desc: "Kopi espresso dengan susu segar",
     category: "minuman",
-    isFavorite: true
+    isFavorite: true,
+    isPromo: false,
+    prepTime: 3
   },
   "es-teh-lemon": {
     id: "es-teh-lemon",
@@ -247,7 +303,9 @@ window.MENU_DATA = {
     img: "Img/Es Teh Lemon.png",
     desc: "Es teh manis dengan perasan jeruk lemon segar",
     category: "minuman",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 2
   },
   "jus-jeruk": {
     id: "jus-jeruk",
@@ -256,7 +314,9 @@ window.MENU_DATA = {
     img: "Img/Jus Jeruk Segar.png",
     desc: "Perasan buah jeruk asli segar",
     category: "minuman",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 3
   },
   "cappucino-panas": {
     id: "cappucino-panas",
@@ -265,7 +325,9 @@ window.MENU_DATA = {
     img: "Img/hotcappucino.png",
     desc: "Kopi espresso nikmat dengan busa susu tebal",
     category: "minuman",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 4
   },
   "ocean-blue-soda": {
     id: "ocean-blue-soda",
@@ -274,7 +336,9 @@ window.MENU_DATA = {
     img: "Img/Ocean Blue Soda.png",
     desc: "Soda biru segar dengan sirup leci",
     category: "minuman",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 1
   },
   "jus-alpukat": {
     id: "jus-alpukat",
@@ -283,6 +347,8 @@ window.MENU_DATA = {
     img: "Img/jusalpukat.png",
     desc: "Jus alpukat creamy, kaya serat dan vitamin",
     category: "minuman",
-    isFavorite: false
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 3
   }
 };
