@@ -5,12 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Data Diri Pelanggan & Ringkasan Pesanan - Resto Modern</title>
 
-  <!-- Load Tailwind non-blocking: use defer so parsing isn't blocked on mobile -->
-  <script defer src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-
+  <!-- Tailwind config must come BEFORE the script so config is applied -->
   <script>
-    /* Tailwind config (kept same) */
-    tailwind = window.tailwind || {};
+    window.tailwind = window.tailwind || {};
     tailwind.config = {
       darkMode: "class",
       theme: {
@@ -21,34 +18,37 @@
             "background-light": "#f6f7f6",
             "background-dark": "#151d15"
           },
-          fontFamily: { display: ["Work Sans", "sans-serif"] }
+          fontFamily: { display: ["Work Sans","sans-serif"] }
         }
       }
     };
   </script>
 
-  <!-- Fonts: preload + swap for faster text rendering on mobile -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" crossorigin href="https://fonts.gstatic.com" />
+  <!-- Load Tailwind synchronously to ensure classes are available immediately -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Load MENU_DATA before main script -->
+  <script src="scripts/data.js" defer></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" crossorigin href="https://fonts.gstatic.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
   <style>
-    /* small critical helpers kept inline to avoid FOUC while Tailwind loads */
-    html,body { height: 100%; }
-    .size-16 { width:64px; height:64px; }
-    /* neutral background until tailwind loads */
-    body { font-family: "Work Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: #f6f7f6; color: #111827; min-height: 100dvh; }
+    /* minimal helpers only */
+    html,body{height:100%}
+    .size-16{width:64px;height:64px}
   </style>
 </head>
 
-<body class="font-display bg-background-light dark:bg-background-dark text-gray-900">
+<body class="font-display bg-background-light text-gray-900">
   <div class="min-h-screen flex flex-col">
-    <!-- Header -->
+    <!-- header omitted for brevity (same as before) -->
     <header class="sticky top-0 z-20 bg-background-light/90 backdrop-blur-sm border-b border-gray-200">
       <div class="container mx-auto px-4">
         <div class="flex items-center h-16">
           <a href="cart.html" class="inline-flex items-center gap-2 text-gray-700 hover:text-primary" aria-label="Kembali">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
             <span class="hidden sm:inline text-sm font-medium">Kembali</span>
           </a>
           <h1 class="flex-1 text-center text-lg font-bold">Data Diri Pelanggan</h1>
@@ -66,24 +66,24 @@
               <div>
                 <label for="nama-lengkap" class="block text-sm font-medium mb-2">Nama Lengkap</label>
                 <input id="nama-lengkap" name="nama-lengkap" placeholder="Masukkan nama lengkap Anda" type="text"
-                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" />
+                  class="block w-full rounded-md border border-gray-300 px-3 py-2 sm:text-sm" />
               </div>
 
               <div>
                 <label for="email" class="block text-sm font-medium mb-2">Email</label>
                 <input id="email" name="email" placeholder="contoh@email.com" type="email"
-                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" />
+                  class="block w-full rounded-md border border-gray-300 px-3 py-2 sm:text-sm" />
               </div>
 
               <div>
                 <label for="nomor-telepon" class="block text-sm font-medium mb-2">Nomor Telepon</label>
                 <input id="nomor-telepon" name="nomor-telepon" placeholder="081234567890" type="tel"
-                  class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm" />
+                  class="block w-full rounded-md border border-gray-300 px-3 py-2 sm:text-sm" />
               </div>
 
               <div>
                 <label for="catatan" class="block text-sm font-medium mb-2">Catatan Pesanan (opsional)</label>
-                <textarea id="catatan" rows="2" placeholder="Catatan untuk restoran" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"></textarea>
+                <textarea id="catatan" rows="2" placeholder="Catatan untuk restoran" class="block w-full rounded-md border border-gray-300 px-3 py-2 sm:text-sm"></textarea>
               </div>
             </form>
           </div>
@@ -94,23 +94,28 @@
           <div class="bg-white rounded-lg shadow-sm p-6 sticky top-24">
             <h2 class="text-xl font-bold mb-4">Ringkasan Pesanan Anda</h2>
 
-            <div id="cart-items" class="space-y-4 max-h-64 overflow-y-auto pr-2 mb-4" aria-live="polite">
-              <!-- rendered dynamically -->
+            <div id="summary-compact" class="space-y-3 mb-4">
+              <div id="compact-first-item" class="flex items-center gap-3">
+                <div class="w-16 h-16 rounded-md bg-gray-100 flex-shrink-0 overflow-hidden">
+                  <img id="compact-img" src="Img/placeholder.png" alt="" class="w-full h-full object-cover" loading="lazy" decoding="async"/>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p id="compact-title" class="font-semibold truncate">—</p>
+                  <p id="compact-qty" class="text-sm text-gray-500 mt-1">—</p>
+                </div>
+                <div id="compact-line" class="text-right font-medium">—</div>
+              </div>
+              <div id="compact-more" class="text-sm text-gray-500">
+                <button id="expand-cart" class="text-primary text-sm font-medium">Tampilkan detail pesanan</button>
+              </div>
             </div>
 
+            <div id="cart-full" class="space-y-4 max-h-64 overflow-y-auto pr-2 mb-4 hidden" aria-live="polite"></div>
+
             <div class="border-t border-gray-200 pt-4 space-y-2 text-sm text-gray-600">
-              <div class="flex justify-between">
-                <span>Subtotal</span>
-                <span id="subtotal">Rp 0</span>
-              </div>
-              <div class="flex justify-between">
-                <span>Pajak (11%)</span>
-                <span id="tax">Rp 0</span>
-              </div>
-              <div class="flex justify-between">
-                <span>Biaya layanan</span>
-                <span id="service-fee">Rp 2.500</span>
-              </div>
+              <div class="flex justify-between"><span>Subtotal</span><span id="subtotal">Rp 0</span></div>
+              <div class="flex justify-between"><span>Pajak (11%)</span><span id="tax">Rp 0</span></div>
+              <div class="flex justify-between"><span>Biaya layanan</span><span id="service-fee">Rp 2.500</span></div>
             </div>
 
             <div class="border-t border-gray-200 my-4"></div>
@@ -132,209 +137,245 @@
     <footer class="w-full border-t border-gray-200 bg-background-light">
       <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
-          <div class="text-sm text-text-secondary">
-            <p class="font-semibold text-text-primary">Resto Modern</p>
+          <div class="text-sm">
+            <p class="font-semibold">Resto Modern</p>
             <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
           </div>
           <div class="flex gap-6 text-sm">
-            <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
-            <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+            <a class="text-gray-600 hover:text-primary" href="Bantuan.html">Bantuan</a>
+            <a class="text-gray-600 hover:text-primary" href="FAQ.html">FAQ</a>
           </div>
-          <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved</p>
+          <p class="text-sm">© 2025 Smart Ordering System. All rights reserved</p>
         </div>
       </div>
     </footer>
   </div>
 
-  <!-- Lightweight JS logic: defer heavy work until idle, lazy-load images, debounce storage writes -->
   <script>
-    // Use requestIdleCallback where available to defer non-critical work
-    const idle = window.requestIdleCallback || function(cb){ return setTimeout(cb, 200); };
+  (function(){
+    'use strict';
 
-    // Helpers
+    // Fallback placeholder as tiny SVG data URI to avoid 404 spam
+    const PLACEHOLDER_DATA_URI = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+         <rect width="100%" height="100%" fill="#f3f4f6"/>
+         <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9ca3af" font-family="sans-serif" font-size="18">No image</text>
+       </svg>`
+    );
+
+    // Safe helpers
+    const byId = id => document.getElementById(id);
+    const safeParse = key => { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } };
     const formatRp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
-    const readCart = () => { try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } };
-    const writeCustomerDraft = d => localStorage.setItem('customerDraft', JSON.stringify(d));
-    const readCustomerDraft = () => { try { return JSON.parse(localStorage.getItem('customerDraft') || '{}'); } catch { return {}; } };
 
     // DOM refs
-    const cartItemsEl = document.getElementById('cart-items');
-    const subtotalEl = document.getElementById('subtotal');
-    const taxEl = document.getElementById('tax');
-    const totalEl = document.getElementById('total');
-    const toPaymentBtn = document.getElementById('to-payment');
+    const compactTitleEl = byId('compact-title');
+    const compactQtyEl = byId('compact-qty');
+    const compactLineEl = byId('compact-line');
+    const compactImgEl = byId('compact-img');
+    const expandBtn = byId('expand-cart');
 
-    const inputNama = document.getElementById('nama-lengkap');
-    const inputEmail = document.getElementById('email');
-    const inputPhone = document.getElementById('nomor-telepon');
-    const inputNote = document.getElementById('catatan');
+    const cartFullEl = byId('cart-full');
+    const subtotalEl = byId('subtotal');
+    const taxEl = byId('tax');
+    const serviceFeeEl = byId('service-fee');
+    const totalEl = byId('total');
+    const toPaymentBtn = byId('to-payment');
 
-    // Performance: debounce to avoid many writes / re-renders on mobile
-    function debounce(fn, wait){
-      let t = null;
-      return function(...args){
-        clearTimeout(t);
-        t = setTimeout(()=> fn.apply(this, args), wait);
-      };
+    const inputNama = byId('nama-lengkap');
+    const inputEmail = byId('email');
+    const inputPhone = byId('nomor-telepon');
+    const inputNote = byId('catatan');
+
+    // Ensure any image fallback uses data-uri
+    function safeSetImage(imgEl, src, alt){
+      if (!imgEl) return;
+      try {
+        imgEl.onerror = null;
+        // set a short timeout in case src is missing to avoid repeated 404 spikes
+        if (!src) { imgEl.src = PLACEHOLDER_DATA_URI; imgEl.alt = alt || ''; return; }
+        imgEl.src = src;
+        imgEl.alt = alt || '';
+        imgEl.onerror = function(){
+          // if remote missing, fallback to MENU_DATA img or placeholder data-uri
+          if (window.MENU_DATA && window.MENU_DATA.length){
+            const fallback = window.MENU_DATA[0] && window.MENU_DATA[0].img;
+            imgEl.onerror = null;
+            imgEl.src = fallback || PLACEHOLDER_DATA_URI;
+          } else {
+            imgEl.onerror = null;
+            imgEl.src = PLACEHOLDER_DATA_URI;
+          }
+        };
+      } catch(e){ if (imgEl) imgEl.src = PLACEHOLDER_DATA_URI; }
     }
 
-    // Render cart; keep it lightweight and safe for mobile (use requestIdleCallback)
-    function renderCartImmediate() {
-      const cart = readCart();
-      cartItemsEl.innerHTML = '';
+    // find menu item in global data if available
+    function findMenuItemById(id){
+      try {
+        if (!window.MENU_DATA || !Array.isArray(window.MENU_DATA)) return null;
+        return window.MENU_DATA.find(m => String(m.id) === String(id)) || null;
+      } catch { return null; }
+    }
 
-      if (!cart.length) {
-        cartItemsEl.innerHTML = '<div class="text-center py-6 text-gray-500">Keranjang kosong.</div>';
-        subtotalEl.textContent = formatRp(0);
-        taxEl.textContent = formatRp(0);
-        totalEl.textContent = formatRp(0);
-        updateButtonState();
+    // normalize and merge cart with MENU_DATA when possible
+    function readCartNormalized(){
+      const raw = safeParse('cart') || [];
+      // support simple arrays of ids
+      const input = Array.isArray(raw) && raw.length && typeof raw[0] === 'string' ? raw.map(id => ({ id, qty: 1 })) : raw;
+      if (!Array.isArray(input)) return [];
+      const map = new Map();
+      for (const it of input){
+        if (!it) continue;
+        let id = it.id || it.productId || null;
+        let qty = Number(it.qty) || 1;
+        if (!id && typeof it === 'string') { id = it; qty = 1; }
+        const menu = id ? findMenuItemById(id) : null;
+        const title = (menu && menu.title) || it.title || it.name || 'Item';
+        const price = (menu && Number(menu.price)) || Number(it.price) || 0;
+        const img = (menu && menu.img) || it.img || it.image || null;
+        const key = id || title;
+        if (map.has(key)) {
+          map.get(key).qty += qty;
+        } else {
+          map.set(key, { id: id || key, title, price, img, qty });
+        }
+      }
+      return Array.from(map.values());
+    }
+
+    // safe text setter
+    function safeSetText(el, txt){
+      if (!el) return;
+      try { el.textContent = txt; } catch(e){ /* ignore */ }
+    }
+
+    // compact render
+    function renderCompact(){
+      const cart = readCartNormalized();
+      if (!cart.length){
+        safeSetText(compactTitleEl, 'Keranjang kosong');
+        safeSetText(compactQtyEl, '');
+        safeSetText(compactLineEl, '—');
+        safeSetText(subtotalEl, formatRp(0));
+        safeSetText(taxEl, formatRp(0));
+        safeSetText(totalEl, formatRp(0));
+        if (toPaymentBtn) toPaymentBtn.disabled = true;
         return;
       }
+      const first = cart[0];
+      safeSetText(compactTitleEl, first.title);
+      safeSetText(compactQtyEl, `${first.qty} x ${formatRp(first.price)}`);
+      safeSetText(compactLineEl, formatRp(first.price * first.qty));
+      safeSetImage(compactImgEl, first.img, first.title);
 
       let subtotal = 0;
-      // limit image size and use loading="lazy"
-      cart.forEach(item => {
-        const price = Number(item.price) || 0;
-        const qty = Number(item.qty) || 1;
-        const line = price * qty;
-        subtotal += line;
-
-        const row = document.createElement('div');
-        row.className = 'flex items-center gap-4';
-        row.innerHTML = `
-          <div class="w-16 h-16 rounded-md overflow-hidden bg-gray-100 flex-shrink-0">
-            <img src="${(item.img || 'Img/placeholder.png')}" alt="${(item.title||'')}" loading="lazy" decoding="async" class="w-full h-full object-cover" onerror="this.src='Img/placeholder.png'"/>
-          </div>
-          <div class="flex-grow min-w-0">
-            <p class="font-semibold truncate">${(item.title||'Item')}</p>
-            <p class="text-sm text-gray-500 mt-1">${qty} x ${formatRp(price)}</p>
-          </div>
-          <div class="text-right">
-            <p class="font-medium">${formatRp(line)}</p>
-          </div>
-        `;
-        cartItemsEl.appendChild(row);
-      });
-
+      cart.forEach(i => subtotal += i.price * i.qty);
       const tax = Math.round(subtotal * 0.11);
       const total = subtotal + tax + 2500;
+      safeSetText(subtotalEl, formatRp(subtotal));
+      safeSetText(taxEl, formatRp(tax));
+      safeSetText(serviceFeeEl, formatRp(2500));
+      safeSetText(totalEl, formatRp(total));
 
-      subtotalEl.textContent = formatRp(subtotal);
-      taxEl.textContent = formatRp(tax);
-      totalEl.textContent = formatRp(total);
-
-      updateButtonState();
+      if (toPaymentBtn) toPaymentBtn.disabled = !validateCustomer();
     }
 
-    // Defer heavy rendering to idle time on first load to avoid blocking main thread on mobile
-    function renderCart() {
-      // fast path: if cart small, render immediately; if large, defer rendering for 60ms
-      const cart = readCart();
-      if (cart.length <= 6) {
-        renderCartImmediate();
-      } else {
-        idle(() => renderCartImmediate());
-      }
+    // full render (idempotent)
+    function renderFull(){
+      if (!cartFullEl) return;
+      try {
+        const cart = readCartNormalized();
+        cartFullEl.innerHTML = '';
+        if (!cart.length) { cartFullEl.innerHTML = '<div class="text-center py-6 text-gray-500">Keranjang kosong.</div>'; return; }
+        const frag = document.createDocumentFragment();
+        cart.forEach(it => {
+          const row = document.createElement('div');
+          row.className = 'flex items-center gap-4';
+
+          const thumb = document.createElement('div');
+          thumb.className = 'w-16 h-16 rounded-md overflow-hidden bg-gray-100 flex-shrink-0';
+          const img = document.createElement('img');
+          img.className = 'w-full h-full object-cover';
+          img.loading = 'lazy'; img.decoding = 'async';
+          safeSetImage(img, it.img, it.title);
+          thumb.appendChild(img);
+
+          const meta = document.createElement('div'); meta.className = 'flex-grow min-w-0';
+          const title = document.createElement('p'); title.className = 'font-semibold truncate'; title.textContent = it.title;
+          const qty = document.createElement('p'); qty.className = 'text-sm text-gray-500 mt-1'; qty.textContent = `${it.qty} x ${formatRp(it.price)}`;
+          meta.appendChild(title); meta.appendChild(qty);
+
+          const priceRight = document.createElement('div'); priceRight.className = 'text-right';
+          const line = document.createElement('p'); line.className = 'font-medium'; line.textContent = formatRp(it.qty * it.price);
+          priceRight.appendChild(line);
+
+          row.appendChild(thumb); row.appendChild(meta); row.appendChild(priceRight);
+          frag.appendChild(row);
+        });
+        cartFullEl.appendChild(frag);
+      } catch(e){ console.error('renderFull error', e); }
     }
 
-    // Validation: require name, email (simple), phone, and non-empty cart
-    function validateCustomer() {
-      const name = (inputNama.value || '').trim();
-      const email = (inputEmail.value || '').trim();
-      const phone = (inputPhone.value || '').trim();
-      const cartNotEmpty = readCart().length > 0;
+    function validateCustomer(){
+      const name = (inputNama && inputNama.value || '').trim();
+      const email = (inputEmail && inputEmail.value || '').trim();
+      const phone = (inputPhone && inputPhone.value || '').trim();
+      const cartNotEmpty = readCartNormalized().length > 0;
       const emailOk = /^\S+@\S+\.\S+$/.test(email);
-      return name && emailOk && phone && cartNotEmpty;
+      return !!(name && emailOk && phone && cartNotEmpty);
     }
 
-    // update button and persist draft debounced
-    const debouncedSaveDraft = debounce(() => {
-      writeCustomerDraft({ nama: inputNama.value, email: inputEmail.value, phone: inputPhone.value, note: inputNote.value });
-    }, 450);
+    function debounce(fn, wait=300){ let t=null; return function(...a){ clearTimeout(t); t=setTimeout(()=>fn.apply(this,a), wait); }; }
 
-    function updateButtonState() {
-      toPaymentBtn.disabled = !validateCustomer();
+    const saveDraft = debounce(()=> {
+      try {
+        const payload = { nama: inputNama?.value||'', email: inputEmail?.value||'', phone: inputPhone?.value||'', note: inputNote?.value||'' };
+        localStorage.setItem('customerDraft', JSON.stringify(payload));
+      } catch(e){}
+    }, 400);
+
+    function updateButtonState(){ if (toPaymentBtn) toPaymentBtn.disabled = !validateCustomer(); }
+
+    function onExpand(){ if (cartFullEl) cartFullEl.classList.remove('hidden'); const compactMore = document.getElementById('compact-more'); if (compactMore) compactMore.classList.add('hidden'); renderFull(); }
+
+    // wire events
+    try {
+      if (expandBtn) expandBtn.addEventListener('click', onExpand);
+      if (toPaymentBtn) toPaymentBtn.addEventListener('click', function(e){ e.preventDefault(); if (validateCustomer()) saveOrderAndGo(); });
+      [inputNama, inputEmail, inputPhone, inputNote].forEach(i => { if (!i) return; i.addEventListener('input', ()=>{ saveDraft(); updateButtonState(); }); });
+      window.addEventListener('storage', function(e){ if (!e.key) return; if (['cart','orderDraft','customerDraft'].includes(e.key)) { renderCompact(); if (cartFullEl && !cartFullEl.classList.contains('hidden')) renderFull(); updateButtonState(); } });
+    } catch(e){ console.error('wire failed', e); }
+
+    function saveOrderAndGo(){
+      try {
+        const cart = readCartNormalized();
+        let subtotal = 0; cart.forEach(i => subtotal += i.price * i.qty);
+        const tax = Math.round(subtotal * 0.11);
+        const total = subtotal + tax + 2500;
+        const order = { cart, subtotal, tax, service: 2500, total, customer: { nama: inputNama?.value.trim()||'', email: inputEmail?.value.trim()||'', phone: inputPhone?.value.trim()||'', note: inputNote?.value.trim()||'' }, createdAt: new Date().toISOString() };
+        localStorage.setItem('orderDraft', JSON.stringify(order));
+      } catch(e){}
+      setTimeout(()=> { location.href = 'Pembayaran.html'; }, 80);
     }
 
-    // Wire inputs
-    [inputNama, inputEmail, inputPhone, inputNote].forEach(el => {
-      if (!el) return;
-      el.addEventListener('input', () => {
-        debouncedSaveDraft();
-        // don't call validate on every keystroke on very slow devices: debounce visual update small
-        debounce(updateButtonState, 120)();
-      });
-    });
+    // load draft
+    try {
+      const d = safeParse('customerDraft') || {};
+      if (inputNama && d.nama) inputNama.value = d.nama;
+      if (inputEmail && d.email) inputEmail.value = d.email;
+      if (inputPhone && d.phone) inputPhone.value = d.phone;
+      if (inputNote && d.note) inputNote.value = d.note;
+    } catch(e){}
 
-    // Button action
-    toPaymentBtn.addEventListener('click', () => {
-      if (!validateCustomer()) return;
-      // compose orderDraft quickly (no heavy processing)
-      const cart = readCart();
-      let subtotal = 0;
-      cart.forEach(i => subtotal += (Number(i.price) || 0) * (Number(i.qty) || 1));
-      const tax = Math.round(subtotal * 0.11);
-      const service = 2500;
-      const total = subtotal + tax + service;
+    // init
+    try {
+      renderCompact();
+      if (window.innerWidth >= 1024) renderFull();
+      updateButtonState();
+    } catch(e){ console.error('init failed', e); }
 
-      const order = {
-        cart,
-        subtotal,
-        tax,
-        service,
-        total,
-        customer: {
-          nama: inputNama.value.trim(),
-          email: inputEmail.value.trim(),
-          phone: inputPhone.value.trim(),
-          note: inputNote.value.trim()
-        },
-        createdAt: new Date().toISOString()
-      };
-      localStorage.setItem('orderDraft', JSON.stringify(order));
-      // small delay to ensure storage settle on slow devices
-      setTimeout(()=> window.location.href = 'Pembayaran.html', 60);
-    });
-
-    // Sync between tabs less frequently to reduce churn
-    window.addEventListener('storage', debounce((e) => {
-      if (e.key === 'cart' || e.key === 'orderDraft' || e.key === 'customerDraft') {
-        const draft = readCustomerDraft();
-        if (draft) {
-          if (draft.nama && !inputNama.value) inputNama.value = draft.nama;
-          if (draft.email && !inputEmail.value) inputEmail.value = draft.email;
-          if (draft.phone && !inputPhone.value) inputPhone.value = draft.phone;
-          if (draft.note && !inputNote.value) inputNote.value = draft.note;
-        }
-        renderCart();
-        updateButtonState();
-      }
-    }, 300));
-
-    // Init (defer non-essential)
-    (function init(){
-      // populate draft (synchronously)
-      const draft = readCustomerDraft();
-      if (draft) {
-        if (draft.nama) inputNama.value = draft.nama;
-        if (draft.email) inputEmail.value = draft.email;
-        if (draft.phone) inputPhone.value = draft.phone;
-        if (draft.note) inputNote.value = draft.note;
-      }
-
-      // render cart - defer heavy tasks for mobile where needed
-      renderCart();
-
-      // accessibility: announce cart length
-      idle(() => {
-        const cart = readCart();
-        if (cart.length) cartItemsEl.setAttribute('aria-label', `${cart.length} item di keranjang`);
-      });
-
-      // Ensure images won't block rendering: add lazy loading attribute as fallback for any remaining imgs
-      document.querySelectorAll('img').forEach(img => { if (!img.loading) img.loading = 'lazy'; });
-    })();
+  })();
   </script>
 </body>
 </html>
