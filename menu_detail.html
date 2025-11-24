@@ -1,546 +1,309 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Detail Menu - Resto Modern</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Detail Menu — Resto Modern</title>
 
-        body {
-            min-height: 100dvh;
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#16A34A",
+            cta: "#FF7A18",
+            surface: "#FFFFFF",
+            muted: "#F5F7F9",
+            text: "#0F172A",
+            subtext: "#6B7280",
+            promo: "#FF6B00"
+          },
+          fontFamily: { display: ["Poppins", "sans-serif"] },
+          boxShadow: { card: "0 10px 30px rgba(2,6,23,0.06)" }
         }
-    </style>
+      }
+    };
+  </script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+    body { font-family: Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: #f8fafc; color: #0f172a; }
+  </style>
 </head>
+<body>
 
-<body class="min-h-screen flex flex-col bg-background-light font-sans text-text-primary"
-    style="--tw-bg-opacity:1; --tw-bg:#ffffff;">
-    <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-white">
-        <div class="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-primary text-3xl"style="color: #4CAF50;">restaurant_menu</span>
-                <h1 class="text-lg font-semibold">Resto Modern</h1>
+  <!-- Header -->
+  <header class="sticky top-0 z-30 bg-white border-b border-gray-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="Menu.html" class="inline-flex items-center gap-2 text-subtext hover:text-primary">
+          <span class="material-symbols-outlined">arrow_back</span>
+          <span class="hidden sm:inline text-sm font-semibold">Kembali</span>
+        </a>
+        <span class="material-symbols-outlined text-primary text-3xl">restaurant_menu</span>
+        <h1 class="text-lg font-bold">Resto Modern</h1>
+      </div>
+      <nav class="hidden md:flex items-center gap-6 text-sm">
+        <a href="Promo.html" class="hover:text-primary">Promo</a>
+        <a href="Menu_favorit.html" class="hover:text-primary">Favorit</a>
+        <a href="Bantuan.html" class="hover:text-primary">Bantuan</a>
+        <a href="cart.html" class="relative hover:text-primary" aria-label="Keranjang">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <span id="cart-badge" class="hidden absolute -top-2 -right-3 text-xs bg-red-600 text-white rounded-full px-2 h-5 leading-5"></span>
+        </a>
+      </nav>
+      <button id="menu-toggle" class="md:hidden p-2" aria-label="Buka menu">
+        <span class="material-symbols-outlined text-2xl">menu</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <article id="detail-card" class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-card">
+      <!-- Image -->
+      <div class="w-full bg-gray-100">
+        <img id="item-img" alt="Gambar menu" class="w-full h-[320px] sm:h-[420px] object-cover" />
+      </div>
+
+      <!-- Content grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-8 p-6 sm:p-8">
+        <!-- Left column -->
+        <div>
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1 pr-4">
+              <h2 id="item-title" class="text-2xl sm:text-3xl font-bold leading-tight">Nama Menu</h2>
+              <p id="item-desc" class="mt-2 text-sm text-subtext">Deskripsi singkat menu ditampilkan di sini.</p>
             </div>
-            <a href="index.html" class="text-text-secondary hover:text-primary">Kembali</a>
-        </div>
-    </header>
 
-    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div id="root" class="max-w-3xl mx-auto"></div>
-    </main>
-
-    <footer class="w-full border-t border-gray-200 bg-background-secondary">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
-                <div class="text-sm text-text-secondary">
-                    <p class="font-semibold text-text-primary">Resto Modern</p>
-                    <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
-                </div>
-                <div class="flex gap-6 text-sm">
-                    <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
-                    <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
-                </div>
-                <p class="text-sm text-text-secondary">© 2025 Smart Ordering System. All rights reserved.</p>
+            <!-- Harga area: tidak menyusut, min-width, nowrap -->
+            <div class="text-right flex-shrink-0 min-w-[150px] sm:min-w-[190px]">
+              <div id="price-original" class="text-sm text-gray-400 line-through hidden whitespace-nowrap">Rp 0</div>
+              <div id="price-final" class="mt-1 text-3xl sm:text-4xl font-extrabold text-primary leading-none whitespace-nowrap">Rp 0</div>
+              <div id="price-note" class="text-xs text-subtext mt-1">per porsi</div>
             </div>
-        </div>
-    </footer>
-
-    <script>
-        // ----- Dummy data (ganti dengan API/backend production) -----
-        const MENU_DATA = {
-            // home menu
-            "salad-segar": {
-                id: "salad-segar",
-                title: "Salad Sayur",
-                price: 25000,
-                img: "Img/Salad.png",
-                desc: "Campuran sayuran segar dengan dressing spesial.",
-                sauces: [
-                    { key: "madu", label: "Madu", price: 0 },
-                    { key: "mayonaise", label: "Mayonaise", price: 0 }
-                ],
-                additions: [
-                    { key: "extra-telur", label: "Extra Telur", price: 5000 },
-                    { key: "tambahan-daging", label: "Tambahan Daging", price: 5000 }
-                ]
-            },
-
-            "pizza-pepperoni": {
-                id: "pizza-pepperoni",
-                title: "Pizza Pepperoni",
-                price: 85000,
-                img: "Img/Pizza\ Peperoni.png",
-                desc: "Pizza klasik dengan topping pepperoni dan keju mozzarella.",
-                sauces: [{ key: "oregano", label: "Oregano", price: 0 }],
-                additions: [{ key: "extra-cheese", label: "Extra Cheese", price: 10000 }]
-            },
-
-            "pancake-madu": {
-                id: "pancake-madu",
-                title: "Pancake Madu",
-                price: 45000,
-                img: "Img/pancakemadu.png",
-                desc: "Pancake lembut dengan siraman madu asli dan buah berry segar.",
-                // Tidak ada pilihan saus dan tidak ada tambahan: gunakan array kosong
-                sauces: [],
-                additions: []
-            },
-
-            "ramen-kuah-pedas": {
-                id: "ramen-kuah-pedas",
-                title: "Ramen Kuah Pedas",
-                price: 65000,
-                img: "Img/Ramen.png",
-                desc: "Mie Ramen dengan kuah kaldu gurih dan pedas di tambah dengan toping lengkap,",
-                sauces: [],
-                additions: [{key: "udang-panggang", label:"Udang Panggang", price: 6000},{key: "nori", label:"Nori", price: 1500},
-                    {key: "extra-ramen-noodles", label:"Extra Ramen Noodles", price: 1500},
-                ]
-            },
-
-            "nasi-goreng-spesial": {
-                id: "nasi-goreng-spesial",
-                title: "Nasi Goreng Spesial",
-                price: 50000,
-                img: "Img/Nasi Goreng Spesial.png",
-                desc: "Nasi Goreng spesial dengan suwiran ayam, udang, dan telur mata sapi",
-                sauces: [],
-                additions: [{key: "telur-orak-arik", label:"Telur Orak-arik", price: 3500}, {key: "cumi-goreng", label:"Cumi Goreng", price: 5000},
-                    {key: "kulit-crispy", label:"Kulit Crispy", price: 3500},
-                ]
-            },
-
-            "spaghetti-carbonara": {
-                id: "spaghetti-carbonara",
-                title: "Spaghetti Carbonara",
-                price: 75000,
-                img: "Img/Spaghetti Carbonara.png",
-                desc: "Pasta dengan saur carbonara creamy dan potongan smoked beef yang lezat",
-                sauces: [{key: "classic-carbonara-sauce", label: "Classic Carbonara Sauce", print: 0},{key: "creamy-alfredo-style", label: "Creamy Alfredo Style", print: 0},
-                    {key: "spicy-carbonara", label: "Spicy Carbonara", print: 0},
-                 ],
-                additions: [{key: "smoked-becon", label:"Smoked Becon", price: 5000}, {key: "sauteed-mushrooms", label:"Sauteed Mushrooms", price: 3000},
-                    {key: "grilled-chicken-slices", label:"Grilled Chicken Slices", price: 7000},{key: "chicken-black-pepper-extra", label:"Chicken Black Papper Extra", price: 6000},
-                ]
-            },
-
-            "burger-klasik": {
-                id: "burger-klasik",
-                title: "Burger Klasik",
-                price: 60000,
-                img: "Img/Classic Burger.png",
-                desc: "Burger daging sapi dengan tambahan selada, keju dan sayur mayo yang lezat",
-                sauces: [{ key: "Extra-Mayo", label: "Extra-Mayo", price: 0 }, { key: "mustard", label: "mustard", price: 0 }],
-                additions: [{ key: "extra-cheese", label: "Extra Cheese", price: 10000 }, { key: "double-patty", label: "Double Patty", price: 15000 },
-                    { key: "Extra-Melt-cheese", label: "Extra Melt Cheese", price: 5000 }
-                ]
-            },
-            // menu makanan
-            "mie-ayam-bakso":{
-                id: "mie-ayam-bakso",
-                title: "Mie Ayam Bakso",
-                price: 15000,
-                img: "Img/Mie Ayam Bakso.png",
-                desc: "Mie ayam klasik dengan bakso sapi",
-                sauces: [],
-                additions: [],
-            },
-            "ayam-bakar-madu":{
-                id:"ayam-bakar-madu",
-                title: "Ayam Bakar Madu",
-                price: 55000,
-                img: "Img/Ayam Bakar Madu.png",
-                desc: "Ayam bakar bumbu madu, disajikan dengan nasi",
-                sauces:[],
-                additions:[]
-            },
-            "spaghetti-bolognese":{
-                id: "spaghetti-bolognese",
-                title: "Spaghetti Bolognese",
-                price: 25000,
-                img: "Img/Spaghetti Bolognese.png",
-                desc: "Pasta dengan saus dan daging sapi cincang",
-                sauces: [],
-                additions:[],
-            },
-            "soto-betawi": {
-                id: "soto-betawi",
-                title: "Soto Betawi",
-                price: 45000,
-                img: "Img/sotobetawi.png",
-                desc: "Soto khas Jakarta dengan santan dan daging sapi",
-                sauces: [],
-                additions: [],
-            },
-            "cumi-goreng-tepung": {
-                id: "cumi-goreng-tepung",
-                title: "Cumi Goreng Tepung",
-                price: 23000,
-                img: "Img/cumigorengtepung.png",
-                desc: "Cumi digoreng renyah, disajikan dengan saus tartar",
-                sauces: [],
-                additions: [],
-            },
-            "sate-ayam": {
-                id: "sate-ayam",
-                title: "Sate Ayam",
-                price: 20000,
-                img: "Img/Sate Ayam.png",
-                desc: "10 tusuk sate ayam dengan bumbu kacang yang khas",
-                sauces: [],
-                additions: []
-            },
-            "rendang":{
-                id: "rendang",
-                title: "Rendang",
-                price: 45000,
-                img: "Img/Rendang.png",
-                desc: "Daging sapi empuk dengan bumbu rendang kaya rasa",
-                sauces: [],
-                additions: [],
-            },
-            "gado-gado": {
-                id: "gado-gado",
-                title: "Gado Gado",
-                price: 15000,
-                img: "Img/gadogado.png",
-                desc: "Salad sayur dengan saus kacang khas Indonesia",
-                sauces: [],
-                additions: []
-            },
-            "kwetiau-goreng-seafood": {
-                id: "kwetiau-goreng-seafod",
-                title: "Kwetiau Goreng Seafood",
-                price: 35000,
-                img: "Img/kwetiauseafood.png",
-                desc: "Kwetiau Goreng dengan udang, cumi dan bakso ikan",
-                sauces: [],
-                additions: []
-            },
-            "beef-burger": {
-                id:"beef-burger",
-                title: "Beef Burger",
-                price: 46000,
-                img: "Img/Classic Burger.png",
-                desc: "Burger daging sapi dengan tambahan keju, selada, dan tomat",
-                sauces: [],
-                additions: []
-            },
-            "sop-buntut":{
-                id: "sop-buntut",
-                title: "Sob Buntut",
-                price: 55000,
-                img: "Img/Sop Buntut.png",
-                desc: "Sop buntut sapi dengan tambahan wortel dan kentang",
-                sauces:[],
-                additions: []
-            },
-            "ayam-penyet":{
-                id: "ayam-penyet",
-                title: "Ayam Penyet",
-                price: 25000,
-                img: "Img/ayampenyet.png",
-                desc: "Ayam Goreng penyet yang lezat dengan tambahan sambel terasi pedas",
-                sauces: [],
-                additions: []
-            },
-            "ikan-bakar-jimbaran": {
-                id: "ikan-bakar-jimbaran",
-                title: "Ikan Bakar Jimbaran",
-                price: 55000,
-                img: "Img/ikanbakarjimbaran.png",
-                desc: "Ikan bakar lezat dengan kombinasi bumbu khas bali",
-                sauces: [],
-                additions: []
-            },
-            "tomyumgoong": {
-                id: "tomyumgoong",
-                title: "Tom Yum Goong",
-                price: 42000,
-                img: "Img/tomyumgoong.png",
-                desc: "Sup asam pedas khas Thailand dengan tambahan udang",
-                sauces: [],
-                additions: []
-            },
-            "beef-teriyaki": {
-                id: "beef-teriyaki",
-                title: "Beef Teriyaki",
-                price: 25000,
-                img: "Img/beefteriyaki.png",
-                desc: "Irisan daging sapi lezat dengan kombinasi saus teriyaki manis",
-                sauces: [],
-                additions: []
-            },
-            "taco-daging-sapi": {
-                id: "taco-daging-sapi",
-                title: "Taco Daging Sapi",
-                price: 20000,
-                img: "Img/tacodagingsapi.png",
-                desc: "Taco dengan isian daging sapi cincang pedas dan lezat",
-                sauces: [],
-                additions: []
-            },
-            "burger-sapi-spesial": {
-                id: "burger-sapi-spesial",
-                title: "Burger Sapi Spesial",
-                price: 35000,
-                img: "Img/beefburgerspesial.png",
-                desc: "Burger sapi spesial, dengan patty tebal, selada, tomat, bawang bombay, keju, dan saus mayo lada hitam",
-                sauces: [],
-                additions: []
-            },
-            "pizza-meat-lovers":{
-                id: "pizza-meat-lovers",
-                title: "Pizza Meat Lovers",
-                price: 85000,
-                desc: " Pizza dengan kombinasi peperoni, sosis sapi, potongan ham asap, dan keju mozzarella lezat di atas saus tomat klasik",
-                sauces: [],
-                additions: []
-            },
-            // menu minuman
-            "es-kopi-latte": {
-                id: "es-kopi-latte",
-                title: "Es Kopi Latte",
-                price: 22000,
-                img: "Img/Es Kopi Latte.png",
-                desc: "Kopi espresso dengan susu segar",
-                sauces: [{ key: "less-sugar", label: "Less Sugat", price: 0 }, { key: "normal-sugar", label: "Normal Sugar", price: 0 }],
-                additions: []
-            },
-            "es-teh-lemon": {
-                id: "es-teh-lemon",
-                title: "Es Teh Lemon",
-                price: 15000,
-                img: "Img/Es Teh Lemon.png",
-                desc: "Es teh manis dengan persan jeruk lemon segar",
-                sauces:[],
-                additions:[]
-            },
-            "jus-jeruk": {
-                id: "jus-jeruk",
-                title: "Jus Jeruk",
-                price: 10000,
-                img: "Img/Jus Jeruk Segar.png",
-                desc: "Perasan buah jeruk asli segar",
-                sauces: [],
-                additions: []
-            },
-            "cappucino-panas": {
-                id: "cappucino-panas",
-                title: "Cappucino Panas",
-                price: 20000,
-                img: "Img/hotcappucino.png",
-                desc: "Kopi espresso nikmat dengan busa susu tebal",
-                sauces: [],
-                additions: []
-            },
-            "ocean-blue-soda": {
-                id: "ocean-blue-soda",
-                title: "Ocean Blue Soda",
-                price: 23000,
-                img: "Img/Ocean Blue Soda.png",
-                desc: "Soda Biru nan segar, dengan campuran sirup leci",
-                sauces: [],
-                additions: []
-            },
-            "jus-alpukat": {
-                id: "jus-alpukat",
-                title: "Jus Alpukat",
-                price: 15000,
-                img: "Img/Img/jusalpukat.png",
-                desc: " Dibuat dari alpukat pilihan, kaya serat dan vitamin. Rasa lezat, pas untuk gaya hidup sehat Anda",
-                sauces: [],
-                additions: []
-            }
-        };
-
-
-        // ----- Helpers -----
-        function formatRp(n) {
-            return 'Rp' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        }
-
-        function getQueryParam(name) {
-            const params = new URLSearchParams(window.location.search);
-            return params.get(name);
-        }
-
-        // ----- Render -----
-        const root = document.getElementById('root');
-        const id = getQueryParam('id');
-
-        if (!id || !MENU_DATA[id]) {
-            root.innerHTML = `
-        <div class="rounded-xl border border-gray-200 bg-white p-6 text-center">
-          <h2 class="text-xl font-semibold mb-2">Item tidak ditemukan</h2>
-          <p class="text-text-secondary mb-4">ID: ${id ?? '—'}</p>
-          <a href="index.html" class="inline-block px-4 py-2 rounded-lg bg-primary text-white">Kembali ke Menu</a>
-        </div>`;
-        } else {
-            const item = MENU_DATA[id];
-
-            root.innerHTML = `
-      <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div class="md:flex">
-          <!-- Gambar -->
-          <div class="md:w-1/2 w-full">
-            <img id="product-image" src="${item.img}" alt="${item.title}" class="w-full h-56 md:h-full object-cover">
           </div>
 
-          <!-- Konten kanan -->
-          <div class="md:w-1/2 w-full p-6">
-            <h1 class="text-2xl font-bold text-text-primary">${item.title}</h1>
-            <p id="base-price" class="mt-2 text-xl font-extrabold text-text-primary">${formatRp(item.price)}</p>
-            <p class="mt-3 text-text-secondary">${item.desc}</p>
-
-            <!-- Pilihan Saus (radio) -->
-            <div class="mt-6">
-              <h4 class="font-medium text-text-primary">Pilihan Topping</h4>
-              <div id="sauce-options" class="mt-2 space-y-2">
-                ${item.sauces.map((s, idx) => `
-                  <label class="flex items-center gap-3">
-                    <input type="radio" name="sauce" value="${s.key}" ${idx === 0 ? 'checked' : ''} class="sauce-radio h-4 w-4" />
-                    <span class="text-text-primary">${s.label}</span>
-                    ${s.price ? `<span class="ml-auto text-text-secondary text-sm">+ ${formatRp(s.price)}</span>` : ''}
-                  </label>
-                `).join('')}
-              </div>
+          <!-- Sauce selection -->
+          <div class="mt-6">
+            <h3 class="text-sm font-semibold">Pilihan Saus</h3>
+            <div id="sauce-list" class="mt-3 grid grid-cols-2 gap-3">
+              <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary">
+                <input type="radio" name="sauce" value="Madu" class="form-radio text-primary" checked />
+                <span class="text-sm">Madu</span>
+              </label>
+              <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary">
+                <input type="radio" name="sauce" value="Mayonaise" class="form-radio text-primary" />
+                <span class="text-sm">Mayonaise</span>
+              </label>
             </div>
+          </div>
 
-            <!-- Tambahan (checkbox) -->
-            <div class="mt-5">
-              <h4 class="font-medium text-text-primary">Tambahan</h4>
-              <div id="addition-options" class="mt-2 space-y-2">
-                ${item.additions.map(a => `
-                  <label class="flex items-center gap-3">
-                    <input type="checkbox" name="addition" value="${a.key}" data-price="${a.price}" class="addition-checkbox h-4 w-4" />
-                    <span class="text-text-primary">${a.label}</span>
-                    <span class="ml-auto text-text-secondary text-sm">+ ${formatRp(a.price)}</span>
-                  </label>
-                `).join('')}
-              </div>
-            </div>
-
-            <!-- Quantity + Total + Button -->
-            <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div class="flex items-center gap-3">
-                <button id="qty-decrease" class="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center text-xl">−</button>
-                <input id="qty" type="number" value="1" min="1" class="w-16 text-center rounded-lg border border-gray-200 px-2 py-2" />
-                <button id="qty-increase" class="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center text-xl">+</button>
-              </div>
-
-              <div class="flex-1 flex items-center justify-between gap-4">
-                <div>
-                  <p class="text-sm text-text-secondary">Total</p>
-                  <p id="total-price" class="text-lg font-bold text-text-primary">${formatRp(item.price)}</p>
+          <!-- Extras -->
+          <div class="mt-6">
+            <h3 class="text-sm font-semibold">Tambahan</h3>
+            <div id="extra-list" class="mt-3 grid grid-cols-2 gap-3">
+              <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary">
+                <input type="checkbox" class="form-checkbox text-primary extra-checkbox" data-name="Extra Telur" data-price="5000" />
+                <div class="text-sm">
+                  <div>Extra Telur</div>
+                  <div class="text-xs text-subtext">+ Rp 5.000</div>
                 </div>
+              </label>
 
-                <button id="add-to-cart" class="flex items-center gap-2 bg-cta text-white px-4 py-3 rounded-lg font-semibold hover:bg-orange-600">
-                  <span class="material-symbols-outlined">add_shopping_cart</span>
-                  <span>Tambah Ke Keranjang</span>
-                </button>
+              <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary">
+                <input type="checkbox" class="form-checkbox text-primary extra-checkbox" data-name="Tambahan Daging" data-price="5000" />
+                <div class="text-sm">
+                  <div>Tambahan Daging</div>
+                  <div class="text-xs text-subtext">+ Rp 5.000</div>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right column: controls -->
+        <div class="flex flex-col gap-4">
+          <div class="rounded-lg bg-muted p-4 sm:p-6">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-medium text-subtext">Jumlah</span>
+              <div class="flex items-center gap-2">
+                <button id="dec" class="h-9 w-9 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300">-</button>
+                <input id="qty" type="number" min="1" value="1" class="w-16 h-9 text-center rounded-md border border-gray-300" />
+                <button id="inc" class="h-9 w-9 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300">+</button>
               </div>
             </div>
 
-            <p id="feedback" class="mt-3 text-sm text-green-600 hidden"></p>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-sm font-semibold">Total</span>
+              <strong id="total" class="text-2xl font-extrabold text-primary">Rp 0</strong>
+            </div>
+
+            <div class="mt-4 grid gap-3">
+              <button id="add-btn" class="inline-flex items-center justify-center gap-2 rounded-lg h-11 px-5 bg-cta text-white text-sm font-semibold hover:bg-orange-600 transition">
+                <span class="material-symbols-outlined">add_shopping_cart</span>
+                Tambah Ke Keranjang
+              </button>
+
+              <a href="Menu.html" class="inline-flex items-center justify-center gap-2 rounded-lg h-11 px-5 bg-white text-text border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition">
+                <span class="material-symbols-outlined">arrow_back</span>
+                Kembali ke Menu
+              </a>
+            </div>
+
+            <p id="feedback" class="mt-3 text-sm text-green-600 hidden">Ditambahkan ke keranjang.</p>
           </div>
         </div>
       </div>
-      `;
+    </article>
+  </main>
 
-            // ----- Interaction logic -----
-            const qtyInput = document.getElementById('qty');
-            const qtyInc = document.getElementById('qty-increase');
-            const qtyDec = document.getElementById('qty-decrease');
-            const totalEl = document.getElementById('total-price');
-            const addToCartBtn = document.getElementById('add-to-cart');
-            const feedback = document.getElementById('feedback');
+  <!-- Footer -->
+  <footer class="border-t border-gray-200 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-sm text-subtext flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <p class="font-semibold text-text">Resto Modern</p>
+        <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+      </div>
+      <div class="flex gap-6">
+        <a href="Bantuan.html" class="hover:text-primary">Bantuan</a>
+        <a href="FAQ.html" class="hover:text-primary">FAQ</a>
+      </div>
+      <div>© 2025 Smart Ordering System</div>
+    </div>
+  </footer>
 
-            // compute total
-            function computeTotal() {
-                const base = item.price;
-                const qty = Math.max(1, parseInt(qtyInput.value || '1', 10));
-                // selected additions
-                const additions = Array.from(document.querySelectorAll('.addition-checkbox'))
-                    .filter(ch => ch.checked)
-                    .map(ch => parseInt(ch.dataset.price || '0', 10));
-                const additionsSum = additions.reduce((s, v) => s + v, 0);
-                const total = (base + additionsSum) * qty;
-                totalEl.textContent = formatRp(total);
-                return { total, qty, additionsSum };
-            }
+  <!-- data.js (harus berada di folder yang sama) -->
+  <script src="data.js"></script>
 
-            // wire events
-            qtyInc.addEventListener('click', () => {
-                qtyInput.value = String(Math.max(1, parseInt(qtyInput.value || '1', 10) + 1));
-                computeTotal();
-            });
-            qtyDec.addEventListener('click', () => {
-                qtyInput.value = String(Math.max(1, parseInt(qtyInput.value || '1', 10) - 1));
-                computeTotal();
-            });
-            qtyInput.addEventListener('change', () => {
-                if (!qtyInput.value || parseInt(qtyInput.value, 10) < 1) qtyInput.value = '1';
-                computeTotal();
-            });
+  <script>
+    // Format rupiah konsisten: Rp 45.000
+    function formatRp(n){
+      const v = Number(n || 0);
+      return 'Rp ' + v.toLocaleString('id-ID');
+    }
 
-            // recalc when additions change
-            document.querySelectorAll('.addition-checkbox').forEach(ch => {
-                ch.addEventListener('change', computeTotal);
-            });
+    // Cart helpers
+    function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
+    function writeCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
 
-            // optional: sauces can change price if defined (here zero)
-            document.querySelectorAll('.sauce-radio').forEach(r => r.addEventListener('change', computeTotal));
+    // compute promo price if needed
+    function computePromoPrice(item){
+      let price = Number(item.price || 0);
+      if (item.isPromo && item.promo){
+        const v = Number(item.promo.value || 0);
+        if (item.promo.type === 'percent') price = Math.round(price * (100 - v) / 100);
+        else if (item.promo.type === 'fixed') price = Math.max(0, price - v);
+      }
+      return price;
+    }
 
-            // initial compute
-            computeTotal();
+    // extras total
+    function extrasTotal(){
+      let t = 0;
+      document.querySelectorAll('.extra-checkbox:checked').forEach(cb => t += Number(cb.dataset.price || 0));
+      return t;
+    }
 
-            // add to cart: example stores in localStorage cart array
-            addToCartBtn.addEventListener('click', () => {
-                const { total, qty, additionsSum } = computeTotal();
-                // collect selected options
-                const selectedSauceEl = document.querySelector('.sauce-radio:checked');
-                const selectedSauce = selectedSauceEl ? selectedSauceEl.value : null;
-                const selectedAdditions = Array.from(document.querySelectorAll('.addition-checkbox'))
-                    .filter(ch => ch.checked)
-                    .map(ch => ch.value);
+    // update total display
+    function updateTotal(basePrice){
+      const qty = Math.max(1, Number(document.getElementById('qty').value || 1));
+      const unit = Number(basePrice) + extrasTotal();
+      const total = unit * qty;
+      document.getElementById('total').textContent = formatRp(total);
+    }
 
-                const cartItem = {
-                    id: item.id,
-                    title: item.title,
-                    price: item.price,
-                    qty,
-                    additions: selectedAdditions,
-                    sauce: selectedSauce,
-                    unitAdditionsPrice: additionsSum,
-                    total
-                };
+    (function init(){
+      // load item from data.js or fallback
+      const id = new URLSearchParams(location.search).get('id');
+      const data = window.MENU_DATA || {};
+      const item = data[id] || {
+        id: 'soto-betawi',
+        title: 'Soto Betawi',
+        price: 45000,
+        img: 'https://images.unsplash.com/photo-1604908177522-2f6f3b6c3b2b?q=80&w=1200&auto=format&fit=crop',
+        desc: 'Soto khas Jakarta dengan santan dan daging sapi',
+        category: 'makanan'
+      };
 
-                // save to localStorage
-                const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                cart.push(cartItem);
-                localStorage.setItem('cart', JSON.stringify(cart));
+      // elements
+      const imgEl = document.getElementById('item-img');
+      const titleEl = document.getElementById('item-title');
+      const descEl = document.getElementById('item-desc');
+      const priceFinalEl = document.getElementById('price-final');
+      const priceOrigEl = document.getElementById('price-original');
 
-                // feedback toast / message
-                feedback.textContent = 'Berhasil ditambahkan ke keranjang';
-                feedback.classList.remove('hidden');
-                setTimeout(() => feedback.classList.add('hidden'), 1600);
+      // set content
+      imgEl.src = item.img || '';
+      imgEl.alt = item.title || '';
+      titleEl.textContent = item.title || '';
+      descEl.textContent = item.desc || '';
 
-                // small visual toast
-                const toast = document.createElement('div');
-                toast.textContent = `${item.title} ditambahkan (${qty})`;
-                toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
-                document.body.appendChild(toast);
-                setTimeout(() => toast.remove(), 1600);
-            });
+      // price handling (promo safe)
+      const promoPrice = computePromoPrice(item);
+      const hasPromo = item.isPromo && promoPrice < Number(item.price || 0);
+      if (hasPromo){
+        priceOrigEl.textContent = formatRp(item.price);
+        priceOrigEl.classList.remove('hidden');
+        priceFinalEl.textContent = formatRp(promoPrice);
+      } else {
+        priceOrigEl.classList.add('hidden');
+        priceFinalEl.textContent = formatRp(item.price);
+      }
+
+      // initial total
+      updateTotal(hasPromo ? promoPrice : item.price);
+
+      // qty controls
+      const qtyEl = document.getElementById('qty');
+      document.getElementById('dec').addEventListener('click', () => { qtyEl.value = Math.max(1, Number(qtyEl.value||1) - 1); updateTotal(hasPromo ? promoPrice : item.price); });
+      document.getElementById('inc').addEventListener('click', () => { qtyEl.value = Number(qtyEl.value||1) + 1; updateTotal(hasPromo ? promoPrice : item.price); });
+      qtyEl.addEventListener('input', () => updateTotal(hasPromo ? promoPrice : item.price));
+
+      // extras change -> update total immediately
+      document.querySelectorAll('.extra-checkbox').forEach(cb => cb.addEventListener('change', () => updateTotal(hasPromo ? promoPrice : item.price)));
+
+      // add to cart
+      document.getElementById('add-btn').addEventListener('click', () => {
+        const qty = Math.max(1, Number(qtyEl.value || 1));
+        const addons = [];
+        document.querySelectorAll('.extra-checkbox:checked').forEach(cb => addons.push({ name: cb.dataset.name || '', price: Number(cb.dataset.price || 0) }));
+        const unitPrice = (hasPromo ? promoPrice : Number(item.price || 0)) + extrasTotal();
+
+        const cart = readCart();
+        const idx = cart.findIndex(x => x.id === item.id);
+        if (idx === -1){
+          cart.push({ id: item.id, title: item.title, price: unitPrice, qty, img: item.img || '', addons });
+        } else {
+          cart[idx].qty = (Number(cart[idx].qty) || 0) + qty;
+          cart[idx].price = unitPrice;
+          cart[idx].addons = (cart[idx].addons || []).concat(addons);
         }
-    </script>
-</body>
+        writeCart(cart);
 
+        // feedback
+        const fb = document.getElementById('feedback');
+        fb.classList.remove('hidden');
+        fb.textContent = `${item.title} ditambahkan (${qty}).`;
+        setTimeout(() => fb.classList.add('hidden'), 1400);
+
+        // update badge
+        const count = cart.reduce((s, it) => s + (Number(it.qty) || 0), 0);
+        const badge = document.getElementById('cart-badge');
+        if (badge) { badge.textContent = count > 99 ? '99+' : String(count); badge.classList.toggle('hidden', count === 0); }
+      });
+
+      // image fallback
+      imgEl.addEventListener('error', () => { imgEl.src = 'https://via.placeholder.com/1200x800?text=Gambar+tidak+tersedia'; });
+
+      // mobile menu toggle (placeholder)
+      const menuToggle = document.getElementById('menu-toggle');
+      menuToggle?.addEventListener('click', () => { /* implement if needed */ });
+    })();
+  </script>
+</body>
 </html>
