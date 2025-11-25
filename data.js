@@ -3,7 +3,7 @@
 // Pastikan <script src="scripts/data.js"></script> dimuat sebelum script halaman yang mengonsumsi MENU_DATA.
 
 window.MENU_DATA = {
-  // makanan
+  // === MAKANAN ===
   "nasi-goreng-spesial": {
     id: "nasi-goreng-spesial",
     title: "Nasi Goreng Spesial",
@@ -14,7 +14,12 @@ window.MENU_DATA = {
     isFavorite: true,
     isPromo: true,
     promo: { type: "percent", value: 15, label: "15% OFF" },
-    prepTime: 12
+    prepTime: 12,
+    sauces: ["Manis Pedas", "Kecap", "Sambal"],
+    extras: [
+      { name: "Telur Ceplok", price: 5000 },
+      { name: "Kerupuk", price: 3000 }
+    ]
   },
   "mie-ayam-bakso": {
     id: "mie-ayam-bakso",
@@ -25,7 +30,12 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 8
+    prepTime: 8,
+    sauces: ["Cabai Minyak", "Kecap"],
+    extras: [
+      { name: "Tambah Bakso", price: 5000 },
+      { name: "Pangsit Goreng", price: 4000 }
+    ]
   },
   "ayam-bakar-madu": {
     id: "ayam-bakar-madu",
@@ -36,7 +46,12 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 20
+    prepTime: 20,
+    sauces: ["Madu", "Barbeque"],
+    extras: [
+      { name: "Sambal", price: 3000 },
+      { name: "Nasi Tambahan", price: 6000 }
+    ]
   },
   "spaghetti-bolognese": {
     id: "spaghetti-bolognese",
@@ -47,7 +62,12 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 14
+    prepTime: 14,
+    sauces: ["Tomat", "Keju"],
+    extras: [
+      { name: "Keju Parut", price: 4000 },
+      { name: "Garlic Bread", price: 6000 }
+    ]
   },
   "soto-betawi": {
     id: "soto-betawi",
@@ -58,7 +78,12 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 18
+    prepTime: 18,
+    sauces: ["Madu", "Mayonaise"], // contoh dari requirement
+    extras: [
+      { name: "Extra Telur", price: 5000 },
+      { name: "Tambahan Daging", price: 5000 }
+    ]
   },
   "cumi-goreng-tepung": {
     id: "cumi-goreng-tepung",
@@ -69,7 +94,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 10
+    prepTime: 10,
+    sauces: ["Tartar", "Pedas"],
+    extras: [{ name: "Lemon Slice", price: 2000 }]
   },
   "sate-ayam": {
     id: "sate-ayam",
@@ -81,7 +108,9 @@ window.MENU_DATA = {
     isFavorite: true,
     isPromo: true,
     promo: { type: "fixed", value: 5000, label: "Rp 5.000 OFF" },
-    prepTime: 15
+    prepTime: 15,
+    sauces: ["Kacang", "Kecap Pedas"],
+    extras: [{ name: "Lontong", price: 6000 }]
   },
   "rendang": {
     id: "rendang",
@@ -92,7 +121,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 30
+    prepTime: 30,
+    sauces: ["Rendang"],
+    extras: [{ name: "Nasi Tambahan", price: 6000 }]
   },
   "gado-gado": {
     id: "gado-gado",
@@ -103,7 +134,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 7
+    prepTime: 7,
+    sauces: ["Kacang", "Pedas"],
+    extras: [{ name: "Kerupuk", price: 3000 }]
   },
   "kwetiau-goreng-seafood": {
     id: "kwetiau-goreng-seafood",
@@ -114,7 +147,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 16
+    prepTime: 16,
+    sauces: ["Kecap", "Cabai"],
+    extras: [{ name: "Bakso Ikan Tambahan", price: 5000 }]
   },
   "beef-burger": {
     id: "beef-burger",
@@ -125,7 +160,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 12
+    prepTime: 12,
+    sauces: ["Mayonaise", "BBQ"],
+    extras: [{ name: "Extra Keju", price: 4000 }]
   },
   "sop-buntut": {
     id: "sop-buntut",
@@ -136,7 +173,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 25
+    prepTime: 25,
+    sauces: ["Sambal", "Kecap"],
+    extras: [{ name: "Nasi Tambahan", price: 6000 }]
   },
   "ayam-penyet": {
     id: "ayam-penyet",
@@ -147,7 +186,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 12
+    prepTime: 12,
+    sauces: ["Terasi", "Cabe Ijo"],
+    extras: [{ name: "Tempe Goreng", price: 4000 }]
   },
   "ikan-bakar-jimbaran": {
     id: "ikan-bakar-jimbaran",
@@ -158,7 +199,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 22
+    prepTime: 22,
+    sauces: ["Sambal Matah", "Kecap"],
+    extras: [{ name: "Lalapan", price: 3000 }]
   },
   "tomyamgoong": {
     id: "tomyamgoong",
@@ -169,7 +212,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 14
+    prepTime: 14,
+    sauces: ["Asam Pedas"],
+    extras: [{ name: "Nasi Putih", price: 6000 }]
   },
   "beef-teriyaki": {
     id: "beef-teriyaki",
@@ -180,7 +225,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 12
+    prepTime: 12,
+    sauces: ["Teriyaki", "Pedas Manis"],
+    extras: [{ name: "Nasi Tambahan", price: 6000 }]
   },
   "salad-sayur": {
     id: "salad-sayur",
@@ -191,7 +238,12 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 6
+    prepTime: 6,
+    sauces: ["Madu", "Mayonaise"], // contoh sesuai permintaan
+    extras: [
+      { name: "Extra Telur", price: 5000 },
+      { name: "Tambahan Daging", price: 5000 }
+    ]
   },
   "pizza-pepperoni": {
     id: "pizza-pepperoni",
@@ -203,7 +255,9 @@ window.MENU_DATA = {
     isFavorite: false,
     isPromo: true,
     promo: { type: "percent", value: 20, label: "20% OFF" },
-    prepTime: 18
+    prepTime: 18,
+    sauces: ["Tomat", "Keju"],
+    extras: [{ name: "Extra Pepperoni", price: 7000 }]
   },
   "pancake-madu": {
     id: "pancake-madu",
@@ -214,7 +268,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 10
+    prepTime: 10,
+    sauces: ["Madu", "Chocolate"],
+    extras: [{ name: "Extra Berry", price: 6000 }]
   },
   "ramen-kuah-pedas": {
     id: "ramen-kuah-pedas",
@@ -225,7 +281,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 20
+    prepTime: 20,
+    sauces: ["Pedas", "Kaldu Original"],
+    extras: [{ name: "Telur Ajitama", price: 7000 }]
   },
   "burger-klasik": {
     id: "burger-klasik",
@@ -236,7 +294,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 12
+    prepTime: 12,
+    sauces: ["Mayonaise", "Mustard"],
+    extras: [{ name: "Double Patty", price: 12000 }]
   },
   "spaghetti-carbonara": {
     id: "spaghetti-carbonara",
@@ -247,7 +307,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 14
+    prepTime: 14,
+    sauces: ["Carbonara"],
+    extras: [{ name: "Smoked Beef Extra", price: 8000 }]
   },
   "taco-daging-sapi": {
     id: "taco-daging-sapi",
@@ -258,7 +320,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 8
+    prepTime: 8,
+    sauces: ["Sour Cream", "Salsa"],
+    extras: [{ name: "Guacamole", price: 6000 }]
   },
   "burger-sapi-spesial": {
     id: "burger-sapi-spesial",
@@ -269,7 +333,9 @@ window.MENU_DATA = {
     category: "makanan",
     isFavorite: false,
     isPromo: false,
-    prepTime: 14
+    prepTime: 14,
+    sauces: ["Mayo Lada Hitam", "BBQ"],
+    extras: [{ name: "Keju Extra", price: 4000 }]
   },
   "pizza-meat-lovers": {
     id: "pizza-meat-lovers",
@@ -281,10 +347,12 @@ window.MENU_DATA = {
     isFavorite: true,
     isPromo: true,
     promo: { type: "percent", value: 10, label: "10% OFF" },
-    prepTime: 20
+    prepTime: 20,
+    sauces: ["Tomat", "Keju"],
+    extras: [{ name: "Keju Extra", price: 6000 }]
   },
 
-  // minuman
+  // === MINUMAN ===
   "es-kopi-latte": {
     id: "es-kopi-latte",
     title: "Es Kopi Latte",
@@ -294,7 +362,12 @@ window.MENU_DATA = {
     category: "minuman",
     isFavorite: true,
     isPromo: false,
-    prepTime: 3
+    prepTime: 3,
+    toppings: [
+      { name: "Boba", price: 5000 },
+      { name: "Whipped Cream", price: 4000 }
+    ],
+    extras: [{ name: "Susu Extra", price: 3000 }]
   },
   "es-teh-lemon": {
     id: "es-teh-lemon",
@@ -305,7 +378,11 @@ window.MENU_DATA = {
     category: "minuman",
     isFavorite: false,
     isPromo: false,
-    prepTime: 2
+    prepTime: 2,
+    toppings: [
+      { name: "Nata de Coco", price: 3000 },
+      { name: "Biji Chia", price: 3000 }
+    ]
   },
   "jus-jeruk": {
     id: "jus-jeruk",
@@ -316,7 +393,11 @@ window.MENU_DATA = {
     category: "minuman",
     isFavorite: false,
     isPromo: false,
-    prepTime: 3
+    prepTime: 3,
+    toppings: [
+      { name: "Selasih", price: 2000 },
+      { name: "Biji Chia", price: 3000 }
+    ]
   },
   "cappucino-panas": {
     id: "cappucino-panas",
@@ -327,7 +408,11 @@ window.MENU_DATA = {
     category: "minuman",
     isFavorite: false,
     isPromo: false,
-    prepTime: 4
+    prepTime: 4,
+    toppings: [
+      { name: "Cokelat Bubuk", price: 2000 },
+      { name: "Caramel Drizzle", price: 3000 }
+    ]
   },
   "ocean-blue-soda": {
     id: "ocean-blue-soda",
@@ -338,7 +423,11 @@ window.MENU_DATA = {
     category: "minuman",
     isFavorite: false,
     isPromo: false,
-    prepTime: 1
+    prepTime: 1,
+    toppings: [
+      { name: "Jelly Leci", price: 3000 },
+      { name: "Nata de Coco", price: 3000 }
+    ]
   },
   "jus-alpukat": {
     id: "jus-alpukat",
@@ -349,7 +438,11 @@ window.MENU_DATA = {
     category: "minuman",
     isFavorite: false,
     isPromo: false,
-    prepTime: 3
+    prepTime: 3,
+    toppings: [
+      { name: "Cokelat Serut", price: 3000 },
+      { name: "Kacang Sangrai", price: 3000 }
+    ]
   },
   "es-teh-leci": {
     id: "es-teh-leci",
@@ -360,7 +453,11 @@ window.MENU_DATA = {
     category: "minuman",
     isFavorite: false,
     isPromo: false,
-    prepTime: 5
+    prepTime: 5,
+    toppings: [
+      { name: "Selasih", price: 2000 },
+      { name: "Jelly Leci", price: 3000 }
+    ]
   },
   "jus-stroberi": {
     id: "jus-stroberi",
@@ -371,6 +468,10 @@ window.MENU_DATA = {
     category: "minuman",
     isFavorite: false,
     isPromo: false,
-    prepTime: 10
+    prepTime: 10,
+    toppings: [
+      { name: "Biji Chia", price: 3000 },
+      { name: "Whipped Cream", price: 4000 }
+    ]
   }
 };

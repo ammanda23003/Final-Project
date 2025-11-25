@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Detail Menu — Resto Modern</title>
 
-  <!-- Tailwind -->
+  <!-- TailwindCSS -->
   <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
   <script>
     tailwind.config = {
@@ -34,7 +34,7 @@
     body { font-family: Poppins, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: #f8fafc; color: #0f172a; }
   </style>
 </head>
-<body>
+<body class="bg-surface text-text antialiased">
 
   <!-- Header -->
   <header class="sticky top-0 z-30 bg-white border-b border-gray-200">
@@ -70,7 +70,7 @@
         <img id="item-img" alt="Gambar menu" class="w-full h-[320px] sm:h-[420px] object-cover" />
       </div>
 
-      <!-- Content grid -->
+      <!-- Content -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-8 p-6 sm:p-8">
         <!-- Left column -->
         <div>
@@ -78,52 +78,42 @@
             <div class="flex-1 pr-4">
               <h2 id="item-title" class="text-2xl sm:text-3xl font-bold leading-tight">Nama Menu</h2>
               <p id="item-desc" class="mt-2 text-sm text-subtext">Deskripsi singkat menu ditampilkan di sini.</p>
-            </div>
 
-            <!-- Harga area: tidak menyusut, min-width, nowrap -->
+              <!-- Perkiraan waktu persiapan -->
+              <p id="prep-time" class="mt-3 text-sm text-subtext hidden">
+                <strong>Perkiraan siap:</strong> ⨦<span id="prep-min">0</span> menit
+              </p>
+            </div>
             <div class="text-right flex-shrink-0 min-w-[150px] sm:min-w-[190px]">
               <div id="price-original" class="text-sm text-gray-400 line-through hidden whitespace-nowrap">Rp 0</div>
               <div id="price-final" class="mt-1 text-3xl sm:text-4xl font-extrabold text-primary leading-none whitespace-nowrap">Rp 0</div>
-              <div id="price-note" class="text-xs text-subtext mt-1">per porsi</div>
+              <div class="text-xs text-subtext mt-1">per porsi</div>
             </div>
           </div>
 
-          <!-- Sauce selection -->
-          <div class="mt-6">
+          <!-- Sauces for makanan -->
+          <section id="sauces-section" class="mt-6 hidden">
             <h3 class="text-sm font-semibold">Pilihan Saus</h3>
-            <div id="sauce-list" class="mt-3 grid grid-cols-2 gap-3">
-              <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary">
-                <input type="radio" name="sauce" value="Madu" class="form-radio text-primary" checked />
-                <span class="text-sm">Madu</span>
-              </label>
-              <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary">
-                <input type="radio" name="sauce" value="Mayonaise" class="form-radio text-primary" />
-                <span class="text-sm">Mayonaise</span>
-              </label>
+            <div id="sauces-list" class="mt-3 grid grid-cols-2 gap-3">
+              <!-- radios injected dynamically -->
             </div>
-          </div>
+          </section>
 
-          <!-- Extras -->
-          <div class="mt-6">
+          <!-- Toppings for minuman -->
+          <section id="toppings-section" class="mt-6 hidden">
+            <h3 class="text-sm font-semibold">Topping</h3>
+            <div id="toppings-list" class="mt-3 grid grid-cols-2 gap-3">
+              <!-- checkboxes injected dynamically -->
+            </div>
+          </section>
+
+          <!-- Extras for any category -->
+          <section id="extras-section" class="mt-6 hidden">
             <h3 class="text-sm font-semibold">Tambahan</h3>
-            <div id="extra-list" class="mt-3 grid grid-cols-2 gap-3">
-              <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary">
-                <input type="checkbox" class="form-checkbox text-primary extra-checkbox" data-name="Extra Telur" data-price="5000" />
-                <div class="text-sm">
-                  <div>Extra Telur</div>
-                  <div class="text-xs text-subtext">+ Rp 5.000</div>
-                </div>
-              </label>
-
-              <label class="flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary">
-                <input type="checkbox" class="form-checkbox text-primary extra-checkbox" data-name="Tambahan Daging" data-price="5000" />
-                <div class="text-sm">
-                  <div>Tambahan Daging</div>
-                  <div class="text-xs text-subtext">+ Rp 5.000</div>
-                </div>
-              </label>
+            <div id="extras-list" class="mt-3 grid grid-cols-2 gap-3">
+              <!-- checkboxes injected dynamically -->
             </div>
-          </div>
+          </section>
         </div>
 
         <!-- Right column: controls -->
@@ -181,71 +171,123 @@
   <script src="data.js"></script>
 
   <script>
-    // Format rupiah konsisten: Rp 45.000
-    function formatRp(n){
-      const v = Number(n || 0);
-      return 'Rp ' + v.toLocaleString('id-ID');
-    }
+    // Utilities
+    const formatRp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
+    const readCart = () => { try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } };
+    const writeCart = c => localStorage.setItem('cart', JSON.stringify(c));
+    const getId = () => new URLSearchParams(location.search).get('id');
 
-    // Cart helpers
-    function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
-    function writeCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
-
-    // compute promo price if needed
+    // Promo-safe price
     function computePromoPrice(item){
-      let price = Number(item.price || 0);
+      let p = Number(item.price || 0);
       if (item.isPromo && item.promo){
         const v = Number(item.promo.value || 0);
-        if (item.promo.type === 'percent') price = Math.round(price * (100 - v) / 100);
-        else if (item.promo.type === 'fixed') price = Math.max(0, price - v);
+        if (item.promo.type === 'percent') p = Math.round(p * (100 - v) / 100);
+        else if (item.promo.type === 'fixed') p = Math.max(0, p - v);
       }
-      return price;
+      return p;
     }
 
-    // extras total
-    function extrasTotal(){
+    // Totals from addons (extras + toppings)
+    function addonsTotal(){
       let t = 0;
-      document.querySelectorAll('.extra-checkbox:checked').forEach(cb => t += Number(cb.dataset.price || 0));
+      document.querySelectorAll('[data-addon="true"]:checked').forEach(cb => t += Number(cb.dataset.price || 0));
       return t;
     }
 
-    // update total display
     function updateTotal(basePrice){
       const qty = Math.max(1, Number(document.getElementById('qty').value || 1));
-      const unit = Number(basePrice) + extrasTotal();
-      const total = unit * qty;
-      document.getElementById('total').textContent = formatRp(total);
+      const unit = Number(basePrice) + addonsTotal();
+      document.getElementById('total').textContent = formatRp(unit * qty);
+    }
+
+    // Render helpers
+    function renderSauces(sauces){
+      const section = document.getElementById('sauces-section');
+      const list = document.getElementById('sauces-list');
+      if (!Array.isArray(sauces) || sauces.length === 0) return;
+      section.classList.remove('hidden');
+      list.innerHTML = '';
+      sauces.forEach((name, i) => {
+        const el = document.createElement('label');
+        el.className = 'flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary';
+        el.innerHTML = `
+          <input type="radio" name="sauce" value="${name}" class="form-radio text-primary" ${i===0 ? 'checked' : ''} />
+          <span class="text-sm">${name}</span>
+        `;
+        list.appendChild(el);
+      });
+    }
+
+    function renderCheckboxList(items, sectionId, listId){
+      const section = document.getElementById(sectionId);
+      const list = document.getElementById(listId);
+      if (!Array.isArray(items) || items.length === 0 || !section || !list) return;
+      section.classList.remove('hidden');
+      list.innerHTML = '';
+      items.forEach(opt => {
+        const el = document.createElement('label');
+        el.className = 'flex items-center gap-3 p-3 rounded-lg border border-gray-200 cursor-pointer hover:border-primary';
+        el.innerHTML = `
+          <input type="checkbox" class="form-checkbox text-primary" data-addon="true" data-name="${opt.name}" data-price="${Number(opt.price||0)}" />
+          <div class="text-sm">
+            <div>${opt.name}</div>
+            <div class="text-xs text-subtext">+ ${formatRp(opt.price)}</div>
+          </div>
+        `;
+        list.appendChild(el);
+      });
     }
 
     (function init(){
-      // load item from data.js or fallback
-      const id = new URLSearchParams(location.search).get('id');
+      const id = getId();
       const data = window.MENU_DATA || {};
-      const item = data[id] || {
-        id: 'soto-betawi',
-        title: 'Soto Betawi',
-        price: 45000,
-        img: 'https://images.unsplash.com/photo-1604908177522-2f6f3b6c3b2b?q=80&w=1200&auto=format&fit=crop',
-        desc: 'Soto khas Jakarta dengan santan dan daging sapi',
-        category: 'makanan'
-      };
+      const item = data[id];
 
-      // elements
+      const card = document.getElementById('detail-card');
       const imgEl = document.getElementById('item-img');
       const titleEl = document.getElementById('item-title');
       const descEl = document.getElementById('item-desc');
       const priceFinalEl = document.getElementById('price-final');
       const priceOrigEl = document.getElementById('price-original');
+      const prepSection = document.getElementById('prep-time');
+      const prepMinEl = document.getElementById('prep-min');
 
-      // set content
+      if (!item){
+        card.innerHTML = `
+          <div class="flex flex-col items-center justify-center p-12">
+            <span class="material-symbols-outlined text-5xl text-gray-400">error</span>
+            <h2 class="mt-4 text-xl font-bold text-red-600">Item tidak ditemukan</h2>
+            <p class="mt-1 text-sm text-subtext">ID: ${id || '(kosong)'}.</p>
+            <a href="Menu.html" class="mt-6 inline-flex items-center gap-2 rounded-lg bg-primary text-white px-4 h-10 font-semibold">
+              <span class="material-symbols-outlined">restaurant_menu</span>
+              <span>Kembali ke Menu</span>
+            </a>
+          </div>
+        `;
+        return;
+      }
+
+      // Basic content
       imgEl.src = item.img || '';
       imgEl.alt = item.title || '';
+      imgEl.addEventListener('error', () => { imgEl.src = 'https://via.placeholder.com/1200x800?text=Gambar+tidak+tersedia'; });
       titleEl.textContent = item.title || '';
       descEl.textContent = item.desc || '';
 
-      // price handling (promo safe)
+      // Prep time (show if available)
+      if (item.prepTime || item.prepTime === 0) {
+        prepMinEl.textContent = String(item.prepTime || 0);
+        prepSection.classList.remove('hidden');
+      } else {
+        prepSection.classList.add('hidden');
+      }
+
+      // Price (promo-aware)
       const promoPrice = computePromoPrice(item);
       const hasPromo = item.isPromo && promoPrice < Number(item.price || 0);
+      const basePrice = hasPromo ? promoPrice : Number(item.price || 0);
+
       if (hasPromo){
         priceOrigEl.textContent = formatRp(item.price);
         priceOrigEl.classList.remove('hidden');
@@ -255,54 +297,66 @@
         priceFinalEl.textContent = formatRp(item.price);
       }
 
-      // initial total
-      updateTotal(hasPromo ? promoPrice : item.price);
+      // Sections: sauces (makanan), toppings (minuman), extras (any)
+      if (item.category === 'makanan' && Array.isArray(item.sauces) && item.sauces.length){
+        renderSauces(item.sauces);
+      }
+      if (item.category === 'minuman' && Array.isArray(item.toppings) && item.toppings.length){
+        renderCheckboxList(item.toppings, 'toppings-section', 'toppings-list');
+      }
+      if (Array.isArray(item.extras) && item.extras.length){
+        renderCheckboxList(item.extras, 'extras-section', 'extras-list');
+      }
 
-      // qty controls
+      // Initial total
+      updateTotal(basePrice);
+
+      // Qty controls
       const qtyEl = document.getElementById('qty');
-      document.getElementById('dec').addEventListener('click', () => { qtyEl.value = Math.max(1, Number(qtyEl.value||1) - 1); updateTotal(hasPromo ? promoPrice : item.price); });
-      document.getElementById('inc').addEventListener('click', () => { qtyEl.value = Number(qtyEl.value||1) + 1; updateTotal(hasPromo ? promoPrice : item.price); });
-      qtyEl.addEventListener('input', () => updateTotal(hasPromo ? promoPrice : item.price));
+      document.getElementById('dec').addEventListener('click', () => { qtyEl.value = Math.max(1, Number(qtyEl.value||1) - 1); updateTotal(basePrice); });
+      document.getElementById('inc').addEventListener('click', () => { qtyEl.value = Number(qtyEl.value||1) + 1; updateTotal(basePrice); });
+      qtyEl.addEventListener('input', () => updateTotal(basePrice));
 
-      // extras change -> update total immediately
-      document.querySelectorAll('.extra-checkbox').forEach(cb => cb.addEventListener('change', () => updateTotal(hasPromo ? promoPrice : item.price)));
+      // Addons change -> update total
+      document.addEventListener('change', (e) => {
+        if (e.target && e.target.matches('[data-addon="true"]')) updateTotal(basePrice);
+      });
 
-      // add to cart
+      // Add to cart
       document.getElementById('add-btn').addEventListener('click', () => {
         const qty = Math.max(1, Number(qtyEl.value || 1));
+        const unitPrice = basePrice + addonsTotal();
+
         const addons = [];
-        document.querySelectorAll('.extra-checkbox:checked').forEach(cb => addons.push({ name: cb.dataset.name || '', price: Number(cb.dataset.price || 0) }));
-        const unitPrice = (hasPromo ? promoPrice : Number(item.price || 0)) + extrasTotal();
+        document.querySelectorAll('[data-addon="true"]:checked').forEach(cb => {
+          addons.push({ name: cb.dataset.name || '', price: Number(cb.dataset.price || 0) });
+        });
+
+        const sauceSel = (item.category === 'makanan')
+          ? (document.querySelector('input[name="sauce"]:checked')?.value || null)
+          : null;
 
         const cart = readCart();
         const idx = cart.findIndex(x => x.id === item.id);
         if (idx === -1){
-          cart.push({ id: item.id, title: item.title, price: unitPrice, qty, img: item.img || '', addons });
+          cart.push({ id: item.id, title: item.title, price: unitPrice, qty, img: item.img || '', addons, sauce: sauceSel });
         } else {
           cart[idx].qty = (Number(cart[idx].qty) || 0) + qty;
           cart[idx].price = unitPrice;
           cart[idx].addons = (cart[idx].addons || []).concat(addons);
+          cart[idx].sauce = sauceSel ?? cart[idx].sauce;
         }
         writeCart(cart);
 
-        // feedback
         const fb = document.getElementById('feedback');
         fb.classList.remove('hidden');
         fb.textContent = `${item.title} ditambahkan (${qty}).`;
         setTimeout(() => fb.classList.add('hidden'), 1400);
 
-        // update badge
         const count = cart.reduce((s, it) => s + (Number(it.qty) || 0), 0);
         const badge = document.getElementById('cart-badge');
         if (badge) { badge.textContent = count > 99 ? '99+' : String(count); badge.classList.toggle('hidden', count === 0); }
       });
-
-      // image fallback
-      imgEl.addEventListener('error', () => { imgEl.src = 'https://via.placeholder.com/1200x800?text=Gambar+tidak+tersedia'; });
-
-      // mobile menu toggle (placeholder)
-      const menuToggle = document.getElementById('menu-toggle');
-      menuToggle?.addEventListener('click', () => { /* implement if needed */ });
     })();
   </script>
 </body>
