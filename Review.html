@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tulis Ulasan - Resto Modern</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+
+  <!-- Font & Icon -->
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4CAF50",
+            cta: "#FF9800",
+            "background-light": "#f8f7f5",
+            "background-dark": "#231b0f",
+            "light-text": "#333333",
+            "dark-text": "#f8f7f5",
+            "light-border": "#eadecd",
+            "dark-border": "#4a3c27"
+          },
+          fontFamily: { display: ["Work Sans", "sans-serif"] }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    body { min-height: 100dvh; }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-light-text dark:text-dark-text">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-10 w-full bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-sm border-b border-light-border dark:border-dark-border">
+    <div class="container mx-auto flex items-center justify-between px-4 py-4 max-w-4xl">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary text-3xl">restaurant_menu</span>
+        <h1 class="text-lg font-bold tracking-tight">Resto Modern</h1>
+      </div>
+      <nav class="hidden md:flex items-center gap-6">
+        <a href="index.html" class="text-sm font-medium text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Beranda</a>
+        <a href="Menu.html" class="text-sm font-medium text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Menu</a>
+        <a href="Menu_favorit.html" class="text-sm font-medium text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Favorit</a>
+        <a href="Promo.html" class="text-sm font-medium text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Promo</a>
+        <a href="Bantuan.html" class="text-sm font-medium text-light-text/70 dark:text-dark-text/70 hover:text-light-text dark:hover:text-dark-text">Bantuan</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="container mx-auto px-4 py-8 max-w-3xl">
+    <h2 class="text-2xl md:text-3xl font-bold mb-4">Tulis Ulasan Anda</h2>
+
+    <div class="bg-white dark:bg-[#1f1a14] border border-light-border dark:border-dark-border rounded-xl p-6 shadow-sm">
+      <form id="review-form" class="space-y-6" novalidate>
+        <!-- Nama -->
+        <div>
+          <label for="name" class="block text-sm font-medium mb-2">Nama Anda</label>
+          <input id="name" name="name" type="text" placeholder="Masukkan nama Anda"
+            class="w-full rounded-lg border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark px-4 py-2 text-base focus:outline-none focus:ring-2 focus:ring-primary/50" />
+        </div>
+
+        <!-- Rating -->
+        <div>
+          <p class="text-sm font-medium mb-2">Beri Peringkat Anda</p>
+          <div id="rating" class="flex items-center gap-2" role="radiogroup" aria-label="Rating">
+            <!-- stars injected by JS for accessibility -->
+          </div>
+        </div>
+
+        <!-- Ulasan -->
+        <div>
+          <label for="text" class="block text-sm font-medium mb-2">Detail Ulasan</label>
+          <textarea id="text" name="text" rows="5" placeholder="Bagikan pengalaman Anda di sini... Apa yang Anda suka atau tidak suka?"
+            class="w-full rounded-lg border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/50 resize-y"></textarea>
+        </div>
+
+        <!-- Upload Foto -->
+        <div>
+          <p class="text-sm font-medium mb-2">Tambahkan Foto (Opsional)</p>
+          <div class="flex items-center gap-4">
+            <div id="preview" class="h-20 w-20 rounded-lg bg-light-border/40 dark:bg-dark-border/40 flex items-center justify-center overflow-hidden">
+              <span id="preview-placeholder" class="material-symbols-outlined text-2xl text-light-text/60 dark:text-dark-text/60">add_a_photo</span>
+              <img id="preview-img" class="hidden h-full w-full object-cover" alt="Preview foto ulasan" />
+            </div>
+            <div class="flex gap-2">
+              <label for="photo" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark text-sm font-medium cursor-pointer hover:bg-light-border/30 dark:hover:bg-dark-border/30">
+                <span class="material-symbols-outlined">upload</span>
+                Upload Foto
+              </label>
+              <input id="photo" name="photo" type="file" accept="image/*" class="hidden" />
+              <button id="remove-photo" type="button" class="hidden px-3 py-2 rounded-lg border border-red-200 text-sm text-red-600 hover:bg-red-50">Hapus</button>
+            </div>
+          </div>
+          <p class="mt-2 text-xs text-light-text/60 dark:text-dark-text/60">Maks 2MB. Foto bersifat opsional.</p>
+        </div>
+
+        <!-- Tags (optional) -->
+        <div>
+          <p class="text-sm font-medium mb-2">Pilih Tag (Opsional)</p>
+          <div id="tags" class="flex flex-wrap gap-2">
+            <button type="button" data-tag="Rasa Enak" class="tag-btn px-3 py-1 text-sm rounded-full border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark">Rasa Enak</button>
+            <button type="button" data-tag="Pelayanan Cepat" class="tag-btn px-3 py-1 text-sm rounded-full border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark">Pelayanan Cepat</button>
+            <button type="button" data-tag="Harga Terjangkau" class="tag-btn px-3 py-1 text-sm rounded-full border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark">Harga Terjangkau</button>
+            <button type="button" data-tag="Tempat Nyaman" class="tag-btn px-3 py-1 text-sm rounded-full border border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark">Tempat Nyaman</button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end gap-3 pt-2">
+          <a href="index.html" class="px-4 py-2 rounded-lg bg-white border border-light-border dark:bg-transparent dark:border-dark-border text-sm font-medium hover:bg-gray-50">Batal</a>
+          <button type="submit" class="px-6 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-emerald-600">Kirim Ulasan</button>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full border-t border-light-border dark:border-dark-border bg-background-light dark:bg-background-dark">
+    <div class="container mx-auto px-4 py-6 max-w-4xl text-sm text-light-text/70 dark:text-dark-text/70">
+      © 2025 Smart Ordering System
+    </div>
+  </footer>
+
+  <!-- Script: interaksi form -->
+  <script>
+    (function () {
+      const REVIEWS_KEY = 'user_reviews';
+      const MAX_IMAGE_SIZE = 2 * 1024 * 1024; // 2MB
+
+      // Helpers
+      function readReviews() {
+        try { return JSON.parse(localStorage.getItem(REVIEWS_KEY) || '[]'); } catch { return []; }
+      }
+      function writeReviews(list) {
+        localStorage.setItem(REVIEWS_KEY, JSON.stringify(list));
+      }
+      function escapeHtml(s) {
+        if (!s) return '';
+        return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
+      }
+
+      // Rating UI
+      const ratingContainer = document.getElementById('rating');
+      let currentRating = 0;
+      function renderStars() {
+        ratingContainer.innerHTML = '';
+        for (let i = 1; i <= 5; i++) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'star-btn text-3xl leading-none';
+          btn.setAttribute('aria-label', i + ' bintang');
+          btn.setAttribute('role', 'radio');
+          btn.setAttribute('aria-checked', 'false');
+          btn.dataset.value = i;
+          btn.innerHTML = '<span class="material-symbols-outlined">star</span>';
+          btn.addEventListener('click', () => setRating(i));
+          btn.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowUp') { setRating(Math.min(5, currentRating + 1)); btn.nextElementSibling?.focus(); }
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') { setRating(Math.max(1, currentRating - 1)); btn.previousElementSibling?.focus(); }
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setRating(i); }
+          });
+          ratingContainer.appendChild(btn);
+        }
+        ratingContainer.querySelectorAll('button')[0]?.setAttribute('tabindex', '0');
+      }
+      function setRating(n) {
+        currentRating = n;
+        ratingContainer.querySelectorAll('button').forEach((b, idx) => {
+          const star = b.querySelector('.material-symbols-outlined');
+          if (idx < n) {
+            star.classList.add('text-amber-400');
+            b.setAttribute('aria-checked', 'true');
+          } else {
+            star.classList.remove('text-amber-400');
+            b.setAttribute('aria-checked', 'false');
+          }
+        });
+      }
+
+      // Tags toggle
+      document.querySelectorAll('.tag-btn').forEach(btn => {
+        btn.addEventListener('click', () => btn.classList.toggle('bg-primary/10') || btn.classList.toggle('border-primary'));
+      });
+
+      // Photo upload & preview
+      const photoInput = document.getElementById('photo');
+      const previewImg = document.getElementById('preview-img');
+      const previewPlaceholder = document.getElementById('preview-placeholder');
+      const previewWrap = document.getElementById('preview');
+      const removePhotoBtn = document.getElementById('remove-photo');
+      let photoDataUrl = null;
+
+      photoInput.addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (file.size > MAX_IMAGE_SIZE) {
+          alert('Ukuran foto terlalu besar. Maks 2MB.');
+          photoInput.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          photoDataUrl = reader.result;
+          previewImg.src = photoDataUrl;
+          previewImg.classList.remove('hidden');
+          previewPlaceholder.classList.add('hidden');
+          removePhotoBtn.classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      });
+
+      removePhotoBtn.addEventListener('click', () => {
+        photoInput.value = '';
+        photoDataUrl = null;
+        previewImg.src = '';
+        previewImg.classList.add('hidden');
+        previewPlaceholder.classList.remove('hidden');
+        removePhotoBtn.classList.add('hidden');
+      });
+
+      // Form submit
+      const form = document.getElementById('review-form');
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const text = document.getElementById('text').value.trim();
+        const selectedTags = Array.from(document.querySelectorAll('.tag-btn')).filter(t => t.classList.contains('bg-primary/10')).map(t => t.dataset.tag);
+
+        if (!name) { alert('Mohon isi nama.'); return; }
+        if (!currentRating || currentRating < 1) { alert('Mohon pilih rating.'); return; }
+        if (!text) { alert('Mohon tuliskan ulasan.'); return; }
+
+        const review = {
+          name: escapeHtml(name),
+          rating: Number(currentRating),
+          text: escapeHtml(text),
+          tags: selectedTags,
+          photo: photoDataUrl || null,
+          time: Date.now()
+        };
+
+        const list = readReviews();
+        list.push(review);
+        writeReviews(list);
+
+        // toast
+        const toast = document.createElement('div');
+        toast.textContent = 'Ulasan berhasil dikirim';
+        toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1400);
+
+        // redirect back to index so it can render the new review
+        setTimeout(() => { window.location.href = 'index.html'; }, 700);
+      });
+
+      // Init
+      renderStars();
+      setRating(0); // no rating selected initially
+    })();
+  </script>
+</body>
+</html>
