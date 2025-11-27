@@ -109,7 +109,7 @@
                 <div class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
                   <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
                 </div>
-                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja secara manual" />
+                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja (Contoh: A1)" />
                 <button id="start-order" class="flex min-w-[120px] items-center justify-center rounded-r-lg h-full px-5 bg-cta text-white text-base font-bold hover:bg-orange-600 transition-colors">
                   <span class="truncate">Mulai Pesan</span>
                 </button>
@@ -125,7 +125,7 @@
               <p class="mt-2 text-xs text-text-secondary">Catatan: tombol scan QR ini placeholder. Integrasi scanner dapat ditambahkan nanti.</p>
             </div>
 
-            <!-- Pesan kadaluarsa -->
+            <!-- Pesan kadaluarsa / error -->
             <p id="table-expired-msg" class="mt-4 hidden text-sm text-red-600">Kode meja Anda telah kadaluarsa. Silakan masukkan kembali.</p>
           </div>
         </div>
@@ -304,6 +304,10 @@
     </footer>
   </div>
 
+  <!-- config.js dan utils.js di root -->
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
+
   <!-- data.js harus tersedia dan mendefinisikan window.MENU_DATA -->
   <script src="data.js"></script>
 
@@ -311,7 +315,7 @@
   (function(){
     'use strict';
 
-    /* Helpers */
+    /* ---------- Helpers (halaman spesifik) ---------- */
     function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
     function safeEncodeUrl(u){
       if (!u) return '';
@@ -321,8 +325,6 @@
         return encodeURI(s);
       } catch { return u; }
     }
-
-    /* Promo price helper */
     function computePromoPrice(item){
       let price = Number(item.price || 0);
       if (item.isPromo && item.promo){
@@ -335,7 +337,7 @@
       return price;
     }
 
-    /* Cart helpers */
+    /* ---------- Cart helpers ---------- */
     function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
     function writeCart(cart){ localStorage.setItem('cart', JSON.stringify(cart)); }
     function addToCart(item, qty, unitPrice){
@@ -362,7 +364,6 @@
         return false;
       }
     }
-
     function updateCartBadge(){
       try {
         const cart = readCart();
@@ -374,20 +375,7 @@
       } catch(e){}
     }
 
-    /* Deterministic shuffle per 12 jam */
-    function lcg(seed){ return function(){ seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
-    function shuffleDeterministic(arr, seed){
-      const a = arr.slice();
-      const rand = lcg(seed);
-      for (let i = a.length - 1; i > 0; i--){
-        const j = Math.floor(rand() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-    function getTimeBlock12h(){ return Math.floor(Date.now() / (12 * 60 * 60 * 1000)); }
-
-    /* Rendering categories and cards */
+    /* ---------- Rendering categories and cards ---------- */
     const categoryBar = document.getElementById('category-bar');
     const cardsGrid = document.getElementById('cards-grid');
     const searchInput = document.getElementById('search');
@@ -431,6 +419,11 @@
       if (first) { first.click(); }
     }
 
+    function currentState(){
+      const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+      return { q: searchInput.value || '', category: activeBtn ? (activeBtn.dataset.cat || 'all') : 'all' };
+    }
+
     function renderCards({ q = '', category = 'all', maxCount = 8 } = {}){
       const ql = (q || '').trim().toLowerCase();
       const menu = getMenuArray().filter(Boolean);
@@ -442,10 +435,6 @@
         return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
       });
 
-      const block = getTimeBlock12h();
-      const seed = block ^ 0x9e3779b1;
-      filtered = shuffleDeterministic(filtered, seed);
-
       const toShow = filtered.slice(0, maxCount);
 
       cardsGrid.innerHTML = '';
@@ -455,7 +444,7 @@
       }
 
       const cart = readCart();
-      const menusLocked = isMenuLocked();
+      const menusLocked = !window.utilsTable.isCodeValid();
 
       toShow.forEach(item => {
         const url = safeEncodeUrl(item.img || '');
@@ -464,9 +453,8 @@
         const hasPromo = isPromo && (promoPrice < Number(item.price || 0));
 
         const article = document.createElement('article');
-        article.className = 'group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col';
+        article.className = 'group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col relative';
 
-        // Button state: disabled if locked
         const addBtnClasses = menusLocked
           ? 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-gray-300 text-white text-sm font-semibold min-w-[84px] cursor-not-allowed opacity-70'
           : 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]';
@@ -541,7 +529,7 @@
       }
     }
 
-    /* UI wiring */
+    /* ---------- UI wiring ---------- */
     const menuToggle = document.getElementById('menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
     menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
@@ -554,23 +542,7 @@
       renderCards({ q: e.target.value || '', category: cat });
     });
 
-    /* Gate: table code with 2h expiry */
-    const TWO_HOURS = 2 * 60 * 60 * 1000;
-    function getTableCode(){ return localStorage.getItem('table_code') || ''; }
-    function getTableTime(){ return Number(localStorage.getItem('table_code_time') || 0); }
-    function clearTableCode(){
-      localStorage.removeItem('table_code');
-      localStorage.removeItem('table_code_time');
-    }
-    function isCodeValid(){
-      const code = getTableCode();
-      const t = getTableTime();
-      if (!code || !t) return false;
-      const elapsed = Date.now() - t;
-      return elapsed <= TWO_HOURS;
-    }
-    function isMenuLocked(){ return !isCodeValid(); }
-
+    /* ---------- Gate UI (menggunakan utilsTable) ---------- */
     function formatRemaining(ms){
       if (ms <= 0) return '0m';
       const m = Math.floor(ms / 60000);
@@ -588,16 +560,16 @@
       const lockOverlay = document.querySelector('#menu-block #menu-lock > div');
 
       // enable/disable search input based on lock state
-      if (searchInput) searchInput.disabled = isMenuLocked();
+      if (searchInput) searchInput.disabled = !window.utilsTable.isCodeValid();
 
-      if (isCodeValid()){
+      if (window.utilsTable.isCodeValid()){
         form.classList.add('hidden');
         status.classList.remove('hidden');
         expiredMsg.classList.add('hidden');
-        codeLbl.textContent = getTableCode();
+        codeLbl.textContent = window.utilsTable.getTableCode();
 
         // remaining
-        const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
+        const remainingMs = window.utilsTable.remainingMs();
         remainLbl.textContent = formatRemaining(remainingMs);
 
         // unlock menu
@@ -606,109 +578,89 @@
         status.classList.add('hidden');
         form.classList.remove('hidden');
         // show expired if there was a code but now invalid
-        expiredMsg.classList.toggle('hidden', !(getTableCode() && getTableTime()));
+        expiredMsg.classList.toggle('hidden', !(window.utilsTable.getTableCode() && window.utilsTable.getTableTime()));
         // lock menu
         lockOverlay.classList.remove('hidden');
       }
     }
 
-    // Start/order button
-    document.getElementById('start-order')?.addEventListener('click', () => {
-      const code = document.getElementById('manual-table')?.value?.trim();
-      if (code) {
-        localStorage.setItem('table_code', code);
-        localStorage.setItem('table_code_time', Date.now());
-        updateGateUI();
-        // Re-render menu to enable actions
-        const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
-        const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
-        renderCards({ q: searchInput.value || '', category: cat });
-      } else {
-        alert('Masukkan kode meja terlebih dahulu.');
-      }
-    });
-
-    // Placeholder scan QR
-    document.getElementById('scan-qr')?.addEventListener('click', () => {
-      alert('Fitur scan QR belum diintegrasikan. Gunakan input kode meja terlebih dahulu.');
-    });
-
-    // Clear/reset code (LOCK menu again)
-    document.getElementById('table-clear')?.addEventListener('click', () => {
-      clearTableCode();
+    /* Attach handlers via utilsTable */
+    function onStartSuccess(code){
       updateGateUI();
       const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
       const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
-      renderCards({ q: searchInput.value || '', category: cat }); // tombol/link terkunci lagi
-    });
+      renderCards({ q: searchInput.value || '', category: cat });
+    }
+    function onStartFail(reason){
+      document.getElementById('manual-table')?.focus();
+    }
 
-    // Tick remaining time label and auto-expire
-    setInterval(() => {
-      if (isCodeValid()){
-        const remainLbl = document.getElementById('table-remaining');
-        const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
-        remainLbl.textContent = formatRemaining(remainingMs);
-        if (remainingMs <= 0){
-          // auto-expire
-          clearTableCode();
-          updateGateUI();
-          const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
-          const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
-          renderCards({ q: searchInput.value || '', category: cat });
-        }
-      }
-    }, 30000); // update tiap 30 detik
+    function onReset(){
+      updateGateUI();
+      const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+      const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+      renderCards({ q: searchInput.value || '', category: cat });
+    }
 
-    /* Init */
+    /* Auto-expire callback */
+    function onAutoExpire(){
+      updateGateUI();
+      const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+      const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+      renderCards({ q: searchInput.value || '', category: cat });
+    }
+
+    /* Start */
     function initWhenReady(){
-      if (!window.MENU_DATA){
+      if (!window.MENU_DATA || !window.utilsTable){
         setTimeout(initWhenReady, 50);
         return;
       }
       renderCategoryButtons();
       updateCartBadge();
-      renderStoredUserReviews();
       updateGateUI();
 
       // Render cards initial reflecting locked/unlocked
       const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
       const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
       renderCards({ q: searchInput.value || '', category: cat });
+
+      // Attach utils handlers
+      window.utilsTable.attachTableStartHandler({ startBtnId: 'start-order', inputId: 'manual-table', onSuccess: onStartSuccess, onFail: onStartFail });
+      window.utilsTable.attachTableResetHandler('table-clear', onReset);
+      window.utilsTable.startAutoExpire(onAutoExpire, 30000);
+
+      // Listen storage events to sync across tabs
+      window.addEventListener('storage', (e) => {
+        if (!e.key) return;
+        if (e.key === 'cart') updateCartBadge();
+        if (e.key === 'MENU_DATA') renderCategoryButtons();
+        if (e.key === 'user_reviews') renderStoredUserReviews();
+        if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
+          updateGateUI();
+          const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+          const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+          renderCards({ q: searchInput.value || '', category: cat });
+        }
+      });
     }
     initWhenReady();
 
-    window.addEventListener('storage', (e) => {
-      if (!e.key) return;
-      if (e.key === 'cart') updateCartBadge();
-      if (e.key === 'MENU_DATA') renderCategoryButtons();
-      if (e.key === 'user_reviews') renderStoredUserReviews();
-      if (e.key === 'table_code' || e.key === 'table_code_time'){
-        updateGateUI();
-        const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
-        const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
-        renderCards({ q: searchInput.value || '', category: cat });
-      }
-    });
-
     /* Reviews rendering from localStorage (user_reviews) */
     const REVIEWS_KEY = 'user_reviews';
-
     function readUserReviews(){
       try { return JSON.parse(localStorage.getItem(REVIEWS_KEY) || '[]'); } catch { return []; }
     }
-
     function escapeHtml(s){
       if (!s) return '';
       return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
     }
-
     function createReviewCard({ name, rating, text, time, photo, tags }){
       const wrapper = document.createElement('div');
       wrapper.className = 'rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm';
       const date = new Date(time || Date.now());
       const dateStr = date.toLocaleDateString('id-ID');
       const starsCount = Math.max(0, Math.min(5, Number(rating || 0)));
-      const stars = '★★★★★'.slice(0, starsCount);
       const avatar = (name && name[0]) ? name[0].toUpperCase() : '?';
       wrapper.setAttribute('data-user-review-time', String(time || ''));
 
@@ -722,7 +674,7 @@
             </div>
           </div>
           <div class="flex items-center gap-1 text-amber-500">
-            ${stars.split('').map(()=>'<span class="material-symbols-outlined text-lg">star</span>').join('')}
+            ${'★'.repeat(starsCount).split('').map(()=>'<span class="material-symbols-outlined text-lg">star</span>').join('')}
           </div>
         </div>
         <p class="mt-4 text-text-secondary">${escapeHtml(text || '')}</p>
@@ -731,7 +683,6 @@
       `;
       return wrapper;
     }
-
     function renderStoredUserReviews(){
       const list = readUserReviews();
       if (!list || !list.length) return;

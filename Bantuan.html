@@ -1,204 +1,301 @@
 <!DOCTYPE html>
-<html lang="id" class="light">
+<html lang="id">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Halaman Bantuan — Resto Modern</title>
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  <title>Bantuan - Resto Modern</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <script>
     tailwind.config = {
+      darkMode: "class",
       theme: {
         extend: {
           colors: {
-            primary: "#4CAF50",
-            secondary: "#FF9800",
-            muted: "#6B7280",
-            "background-light": "#f8f7f5",
-            "surface-light": "#ffffff",
-            "text-primary": "#111827"
+            "primary": "#4CAF50",
+            "cta": "#FF9800",
+            "background-light": "#FFFFFF",
+            "background-secondary": "#F5F5F5",
+            "text-primary": "#1F2937",
+            "text-secondary": "#6B7280",
+            "promo-orange": "#FF9800"
           },
-          fontFamily: {
-            display: ["Work Sans", "sans-serif"]
-          }
+          fontFamily: { "display": ["Poppins", "sans-serif"] }
         }
       }
     }
   </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <style>
-    body { font-family: 'Work Sans', sans-serif; }
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    body { min-height: max(700px, 100dvh); }
+    .help-hero { background: linear-gradient(180deg, rgba(76,175,80,0.06), rgba(255,152,0,0.03)); }
   </style>
 </head>
-<body class="bg-background-light text-text-primary min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header class="sticky top-0 z-30 bg-surface-light border-b border-gray-200">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
+<body class="bg-background-light font-display text-text-primary">
+  <div class="flex min-h-screen w-full flex-col">
+    <!-- Header: NAVBAR sama persis dengan Menu.html -->
+    <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+      <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 relative">
         <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-primary text-3xl">restaurant_menu</span>
-          <h1 class="text-lg font-bold tracking-tight">Resto Modern</h1>
+          <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
+          <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
         </div>
 
-        <!-- Desktop nav -->
-        <nav class="hidden md:flex items-center gap-6">
-          <a href="index.html" class="text-sm font-medium hover:text-primary">Home</a>
-          <a href="Menu.html" class="text-sm font-medium hover:text-primary">Menu</a>
-          <a href="Promo.html" class="text-sm font-medium hover:text-primary">Promo</a>
-          <a href="Menu_favorit.html" class="text-sm font-medium hover:text-primary">Favorit</a>
-          <a href="cart.html" class="text-sm font-medium hover:text-primary" aria-label="Keranjang Belanja">
-            <span class="material-symbols-outlined align-middle">shopping_cart</span>
+        <nav class="hidden items-center gap-8 md:flex">
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="index.html">Beranda</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu.html">Menu</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_favorit.html">Favorit</a>
+          <a class="text-base font-medium text-primary" href="Bantuan.html">Bantuan</a>
+          <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors relative" href="cart.html">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span id="header-cart-badge" class="hidden absolute -top-2 -right-3 text-xs bg-red-600 text-white rounded-full px-2 h-5 leading-5"></span>
           </a>
         </nav>
 
-        <!-- Mobile controls -->
-        <div class="flex items-center gap-2 md:hidden">
-          <button id="mobile-menu-open" aria-label="Buka menu" class="p-2 rounded-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-            </svg>
-          </button>
+        <button id="menu-toggle" class="md:hidden" aria-label="Buka menu">
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
+
+        <nav id="mobile-menu" class="hidden md:hidden absolute top-full right-4 mt-2 w-56 rounded-xl border border-gray-200 bg-background-light shadow-lg overflow-hidden">
+          <ul class="flex flex-col py-2">
+            <li><a href="index.html" class="block py-2.5 px-4 hover:bg-gray-100">Beranda</a></li>
+            <li><a href="Menu.html" class="block py-2.5 px-4 hover:bg-gray-100">Menu</a></li>
+            <li><a href="Promo.html" class="block py-2.5 px-4 hover:bg-gray-100">Promo</a></li>
+            <li><a href="Menu_favorit.html" class="block py-2.5 px-4 hover:bg-gray-100">Favorit</a></li>
+            <li><a href="Bantuan.html" class="block py-2.5 px-4 hover:bg-gray-100">Bantuan</a></li>
+            <li>
+              <a href="cart.html" class="flex items-center gap-2 py-2.5 px-4 hover:bg-gray-100">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                Keranjang
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Hero bantuan -->
+      <section class="help-hero rounded-xl p-8 md:p-12">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl font-bold text-text-primary">Pusat Bantuan</h2>
+          <p class="mt-2 text-text-secondary">Butuh bantuan? Di sini ada panduan singkat, FAQ, dan cara menghubungi staf.</p>
+
+          <!-- Table code status (opsional) -->
+          <div id="table-status" class="mt-6 hidden inline-flex items-center gap-2 rounded-lg bg-white border border-gray-200 px-4 py-2 text-sm">
+            <span class="material-symbols-outlined text-primary">qr_code_2</span>
+            <span>Kode meja aktif: <strong id="table-code-label" class="font-semibold"></strong></span>
+            <span class="text-text-secondary">|</span>
+            <span>Sisa waktu: <strong id="table-remaining" class="font-semibold"></strong></span>
+            <button id="table-clear" class="ml-3 inline-flex items-center gap-1 px-2 py-1 rounded-md border border-gray-200 hover:bg-gray-50">
+              <span class="material-symbols-outlined text-sm">close</span>
+              Reset
+            </button>
+          </div>
+
+          <div id="table-form" class="mt-6 mx-auto max-w-lg">
+            <p class="text-sm text-text-secondary">Belum memasukkan kode meja? Kembali ke <a href="index.html" class="text-primary underline">Beranda</a> untuk memasukkan kode meja.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Konten Bantuan -->
+      <section class="mt-10 grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <!-- Sidebar quick links -->
+        <aside class="lg:col-span-1">
+          <div class="rounded-xl border border-gray-200 bg-background-light p-4 shadow-sm sticky top-28">
+            <h4 class="font-semibold mb-3">Daftar Isi</h4>
+            <ul class="space-y-2 text-sm text-text-secondary">
+              <li><a href="#faq" class="text-primary hover:underline">FAQ</a></li>
+              <li><a href="#cara-pesan" class="text-primary hover:underline">Cara Memesan</a></li>
+              <li><a href="#kode-meja" class="text-primary hover:underline">Kode Meja & QR</a></li>
+              <li><a href="#favorit" class="text-primary hover:underline">Favorit & Keranjang</a></li>
+              <li><a href="#kontak" class="text-primary hover:underline">Kontak Staf</a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <!-- Main help content -->
+        <div class="lg:col-span-2 space-y-8">
+          <!-- FAQ -->
+          <article id="faq" class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+            <h3 class="text-xl font-bold mb-3">Pertanyaan yang Sering Diajukan (FAQ)</h3>
+            <div class="space-y-4 text-text-secondary">
+              <div>
+                <p class="font-semibold">1. Bagaimana cara memasukkan kode meja?</p>
+                <p class="mt-1">Masuk ke halaman Beranda, masukkan kode meja yang tertera di meja (mis. A1) lalu tekan "Mulai Pesan". Kode berlaku 2 jam.</p>
+              </div>
+              <div>
+                <p class="font-semibold">2. Apa yang terjadi jika kode meja kadaluarsa?</p>
+                <p class="mt-1">Jika sudah lewat 2 jam, akses menu akan terkunci kembali. Masukkan kode meja lagi untuk melanjutkan.</p>
+              </div>
+              <div>
+                <p class="font-semibold">3. Bagaimana cara menambahkan item ke keranjang?</p>
+                <p class="mt-1">Setelah kode meja valid, buka Menu atau Promo, lalu tekan tombol "Tambah" pada item yang diinginkan.</p>
+              </div>
+              <div>
+                <p class="font-semibold">4. Bisakah saya memesan tanpa memasukkan kode meja?</p>
+                <p class="mt-1">Tidak. Sistem dirancang untuk mengaitkan pesanan dengan meja agar staf dapat mengantarkan pesanan ke tempat yang benar.</p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Cara Memesan -->
+          <article id="cara-pesan" class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+            <h3 class="text-xl font-bold mb-3">Cara Memesan</h3>
+            <ol class="list-decimal list-inside space-y-2 text-text-secondary">
+              <li>Masukkan kode meja di Beranda atau scan QR pada meja.</li>
+              <li>Telusuri Menu atau Promo, gunakan pencarian untuk menemukan item.</li>
+              <li>Tekan tombol "Tambah" untuk memasukkan item ke keranjang.</li>
+              <li>Buka Keranjang, periksa jumlah dan subtotal, lalu tekan "Checkout".</li>
+              <li>Isi informasi pelanggan (opsional) dan konfirmasi pembayaran (simulasi tanpa backend).</li>
+            </ol>
+          </article>
+
+          <!-- Kode Meja & QR -->
+          <article id="kode-meja" class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+            <h3 class="text-xl font-bold mb-3">Kode Meja & QR</h3>
+            <p class="text-text-secondary">Untuk menghindari kesalahan input, hanya kode meja yang terdaftar (mis. A1–A12) yang diterima. Jika kode tidak terdaftar, sistem akan menampilkan pesan dan tidak membuka akses menu.</p>
+            <p class="mt-2 text-text-secondary">Jika meja Anda tidak memiliki kode atau QR yang jelas, silakan panggil staf untuk bantuan.</p>
+          </article>
+
+          <!-- Favorit & Keranjang -->
+          <article id="favorit" class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+            <h3 class="text-xl font-bold mb-3">Favorit & Keranjang</h3>
+            <p class="text-text-secondary">Favorit dapat ditandai di halaman detail menu atau disimpan secara lokal. Keranjang disimpan di browser (localStorage) sehingga bersifat persisten pada perangkat yang sama.</p>
+            <p class="mt-2 text-text-secondary">Catatan: localStorage bersifat lokal dan dapat dimodifikasi pengguna. Untuk sinkronisasi antar perangkat diperlukan backend.</p>
+          </article>
+
+          <!-- Kontak Staf -->
+          <article id="kontak" class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
+            <h3 class="text-xl font-bold mb-3">Kontak Staf</h3>
+            <p class="text-text-secondary">Jika mengalami masalah teknis atau butuh bantuan langsung, silakan hubungi staf di lokasi. Anda juga bisa meminta bantuan melalui tombol di bawah.</p>
+
+            <div class="mt-4 flex gap-3">
+              <button id="call-staff" class="px-4 py-2 rounded-lg bg-primary text-white font-semibold hover:bg-emerald-600 transition">Minta Bantuan Staf</button>
+              <button id="report-issue" class="px-4 py-2 rounded-lg border border-gray-200 text-sm hover:bg-gray-50">Laporkan Masalah</button>
+            </div>
+
+            <p id="contact-msg" class="mt-3 text-sm text-text-secondary hidden"></p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-12 w-full border-t border-gray-200 bg-background-secondary">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between text-center md:text-left gap-2 md:gap-4">
+          <div class="text-xs md:text-sm text-text-secondary">
+            <p class="font-semibold text-text-primary">Resto Modern</p>
+            <p class="mt-1">Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+          </div>
+          <div class="flex gap-4 text-xs md:text-sm mt-2 md:mt-0">
+            <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+            <a class="text-text-secondary hover:text-primary" href="Tulis_Ulasan.html">Tulis Ulasan</a>
+          </div>
+          <p class="text-xs md:text-sm text-text-secondary mt-2 md:mt-0">© 2025 Smart Ordering System</p>
         </div>
       </div>
-    </div>
+    </footer>
+  </div>
 
-    <!-- Mobile menu (hidden by default) -->
-    <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200 bg-surface-light">
-      <div class="px-4 pt-3 pb-4 space-y-1">
-        <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Home</a>
-        <a href="Menu.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Menu</a>
-        <a href="Promo.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Promo</a>
-        <a href="Menu_favorit.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Favorit</a>
-        <a href="cart.html" class="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-50">Keranjang</a>
-      </div>
-    </div>
-  </header>
+  <!-- Include config and utils so halaman bisa menampilkan status kode meja -->
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
 
-  <!-- Main -->
-  <main class="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
-    <h2 class="text-2xl sm:text-3xl font-bold mb-6">Halaman Bantuan</h2>
-
-    <!-- Search -->
-    <div class="mb-8">
-      <label for="help-search" class="sr-only">Cari bantuan</label>
-      <div class="relative">
-        <input id="help-search" type="search" placeholder="Cari pertanyaan atau bantuan..." class="w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-        <button id="clear-search" class="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-muted hidden">Hapus</button>
-      </div>
-    </div>
-
-    <!-- Cards grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-lg mb-2">Pemesanan Menu</h3>
-        <p class="text-sm text-muted">Cara memesan, memilih menu, menambah catatan pesanan.</p>
-      </article>
-
-      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-lg mb-2">Pembayaran Digital</h3>
-        <p class="text-sm text-muted">Metode pembayaran, kegagalan pembayaran, e-wallet, virtual account.</p>
-      </article>
-
-      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-lg mb-2">Promo & Diskon</h3>
-        <p class="text-sm text-muted">Cara menggunakan promo, syarat promo, promo tidak muncul.</p>
-      </article>
-
-      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-lg mb-2">QR Code</h3>
-        <p class="text-sm text-muted">Tidak bisa scan QR, halaman tidak tampil, error akses.</p>
-      </article>
-
-      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-lg mb-2">Pesanan Masuk ke Dapur</h3>
-        <p class="text-sm text-muted">Status pesanan, estimasi waktu penyajian.</p>
-      </article>
-
-      <article class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition">
-        <h3 class="font-semibold text-lg mb-2">Sistem & Pengaturan</h3>
-        <p class="text-sm text-muted">Masalah teknis seperti loading lama atau error tampilan.</p>
-      </article>
-    </div>
-
-    <!-- Contact / CTA -->
-    <div class="mt-12 bg-white rounded-xl border border-gray-200 p-6 text-center shadow-sm">
-      <p class="text-sm text-muted mb-4">Masih butuh bantuan? Tim kami siap membantu Anda langsung di restoran.</p>
-      <a href="tel:+628000000000" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white font-semibold rounded-lg hover:bg-green-600 transition">
-        <span class="material-symbols-outlined">phone</span>
-        Hubungi Staff
-      </a>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-white border-t border-gray-200">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted">
-        <div>
-          <p class="font-semibold text-text-primary">Resto Modern</p>
-          <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
-        </div>
-        <div class="flex gap-6">
-          <a href="Bantuan.html" class="hover:text-primary">Bantuan</a>
-          <a href="FAQ.html" class="hover:text-primary">FAQ</a>
-        </div>
-        <p>© 2025 Smart Ordering System. All rights reserved</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Minimal JS: mobile menu toggle + small UX helpers -->
   <script>
-    (function () {
-      const mobileOpen = document.getElementById('mobile-menu-open');
-      const mobileMenu = document.getElementById('mobile-menu');
-      const searchInput = document.getElementById('help-search');
-      const clearBtn = document.getElementById('clear-search');
+  (function(){
+    'use strict';
 
-      // Toggle mobile menu
-      mobileOpen?.addEventListener('click', () => {
-        const isHidden = mobileMenu.classList.contains('hidden');
-        if (isHidden) {
-          mobileMenu.classList.remove('hidden');
-          mobileOpen.setAttribute('aria-expanded', 'true');
-        } else {
-          mobileMenu.classList.add('hidden');
-          mobileOpen.setAttribute('aria-expanded', 'false');
-        }
-      });
+    // Mobile menu toggle (sama seperti halaman lain)
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
+    document.addEventListener('click', (e) => { if (mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
 
-      // Search clear button visibility
-      function updateClearBtn() {
-        if (!searchInput) return;
-        clearBtn.classList.toggle('hidden', !searchInput.value.trim());
+    // Table UI update using utilsTable
+    function formatRemaining(ms){
+      if (ms <= 0) return '0m';
+      const m = Math.floor(ms / 60000);
+      const h = Math.floor(m / 60);
+      const mm = m % 60;
+      return (h ? `${h}j ${mm}m` : `${mm}m`);
+    }
+
+    function updateGateUI(){
+      if (!window.utilsTable) return;
+      const status = document.getElementById('table-status');
+      const form = document.getElementById('table-form');
+      const codeLbl = document.getElementById('table-code-label');
+      const remainLbl = document.getElementById('table-remaining');
+      const overlay = document.getElementById('promo-lock-overlay');
+
+      if (window.utilsTable.isCodeValid()){
+        status.classList.remove('hidden');
+        form.classList.add('hidden');
+        codeLbl.textContent = window.utilsTable.getTableCode();
+        remainLbl.textContent = formatRemaining(window.utilsTable.remainingMs());
+      } else {
+        status.classList.add('hidden');
+        form.classList.remove('hidden');
       }
-      searchInput?.addEventListener('input', updateClearBtn);
-      clearBtn?.addEventListener('click', () => {
-        if (!searchInput) return;
-        searchInput.value = '';
-        updateClearBtn();
-        searchInput.focus();
-      });
+    }
 
-      // Improve keyboard accessibility: close mobile menu on Escape
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-            mobileMenu.classList.add('hidden');
-            mobileOpen?.setAttribute('aria-expanded', 'false');
-            mobileOpen?.focus();
-          }
+    // Attach utils handlers (start/reset/auto-expire)
+    function initGate(){
+      if (!window.utilsTable) {
+        setTimeout(initGate, 50);
+        return;
+      }
+      window.utilsTable.attachTableResetHandler('table-clear', () => { updateGateUI(); });
+      window.utilsTable.startAutoExpire(() => { updateGateUI(); }, 30000);
+      updateGateUI();
+
+      // sync across tabs
+      window.addEventListener('storage', (e) => {
+        if (!e.key) return;
+        if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
+          updateGateUI();
         }
       });
+    }
+    initGate();
 
-      // Prevent layout shift on small screens by ensuring focus outlines are visible
-      // (no-op here, but kept for clarity)
-    })();
+    // Quick actions
+    document.getElementById('call-staff')?.addEventListener('click', () => {
+      const msg = document.getElementById('contact-msg');
+      msg.textContent = 'Permintaan bantuan telah dikirim ke staf. Mohon tunggu sebentar.';
+      msg.classList.remove('hidden');
+      setTimeout(()=> msg.classList.add('hidden'), 4000);
+    });
+
+    document.getElementById('report-issue')?.addEventListener('click', () => {
+      const msg = document.getElementById('contact-msg');
+      msg.textContent = 'Terima kasih. Laporan masalah telah dicatat. Staf akan menindaklanjuti.';
+      msg.classList.remove('hidden');
+      setTimeout(()=> msg.classList.add('hidden'), 4000);
+    });
+
+    // Update cart badge if cart exists
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const badge = document.getElementById('header-cart-badge');
+      if (badge){
+        const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
+        if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
+        else { badge.textContent = ''; badge.classList.add('hidden'); }
+      }
+    } catch(e){}
+
+  })();
   </script>
 </body>
 </html>

@@ -161,6 +161,10 @@
     </footer>
   </div>
 
+  <!-- Integrate config.js and utils.js (no visual changes) -->
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
+
   <script>
     // ---------- Helpers ----------
     function formatRp(n) {
@@ -382,6 +386,152 @@
         render();
       }
     });
+  </script>
+
+  <!-- Integration script for utilsTable (no layout changes) -->
+  <script>
+    (function(){
+      // Wait for utilsTable to be available, then wire behaviors that do not change layout:
+      function waitForUtils(){
+        if (!window.utilsTable){
+          setTimeout(waitForUtils, 50);
+          return;
+        }
+
+        // Prevent checkout navigation if table code is not valid.
+        const checkoutBtn = document.getElementById('checkout');
+        if (checkoutBtn){
+          checkoutBtn.addEventListener('click', function(e){
+            // If button contains an anchor, intercept click and prevent navigation when invalid
+            if (!window.utilsTable.isCodeValid()){
+              e.preventDefault();
+              e.stopPropagation();
+              // show a simple alert to inform user (no UI changes)
+              alert('Masukkan kode meja yang valid terlebih dahulu untuk melanjutkan checkout.');
+              return false;
+            }
+            // allow default behavior when valid
+            return true;
+          }, { capture: true });
+        }
+
+        // Disable checkout button visually/semantically when no valid table code
+        function updateCheckoutLock(){
+          const locked = !window.utilsTable.isCodeValid();
+          const btn = document.getElementById('checkout');
+          if (!btn) return;
+          btn.disabled = locked;
+          if (locked){
+            btn.classList.add('disabled','opacity-60','cursor-not-allowed');
+          } else {
+            btn.classList.remove('disabled','opacity-60','cursor-not-allowed');
+          }
+        }
+
+        // Start auto-expire watcher so UI state updates when code expires (no layout changes)
+        window.utilsTable.startAutoExpire(() => {
+          updateCheckoutLock();
+        }, 30000);
+
+        // Attach start/reset handlers if manual-table exists on other pages and user interacts across tabs
+        window.utilsTable.attachTableStartHandler({
+          startBtnId: 'start-order',
+          inputId: 'manual-table',
+          onSuccess: () => { updateCheckoutLock(); },
+          onFail: () => {}
+        });
+        window.utilsTable.attachTableResetHandler('table-clear', () => { updateCheckoutLock(); });
+
+        // Sync initial state
+        updateCheckoutLock();
+
+        // Listen storage events for table_code changes to update lock state
+        window.addEventListener('storage', (e) => {
+          if (!e.key) return;
+          if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
+            updateCheckoutLock();
+          }
+        });
+      }
+
+      waitForUtils();
+    })();
+  </script>
+
+  <!-- New script: ensure "Lanjut ke Pembayaran" disabled when cart empty and prevent navigation -->
+  <script>
+  (function(){
+    'use strict';
+
+    const checkoutBtn = document.getElementById('checkout');
+    const checkoutAnchor = checkoutBtn?.querySelector('a');
+
+    function isCartEmpty(){
+      try {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        return !Array.isArray(cart) || cart.length === 0;
+      } catch { return true; }
+    }
+
+    function updateCheckoutState(){
+      const empty = isCartEmpty();
+      const tableLocked = (window.utilsTable && typeof window.utilsTable.isCodeValid === 'function') ? !window.utilsTable.isCodeValid() : false;
+      const locked = empty || tableLocked;
+
+      if (checkoutBtn){
+        checkoutBtn.disabled = locked;
+        checkoutBtn.setAttribute('aria-disabled', String(locked));
+        if (locked) {
+          checkoutBtn.classList.add('disabled','opacity-60','cursor-not-allowed');
+          if (checkoutAnchor) checkoutAnchor.setAttribute('tabindex','-1');
+        } else {
+          checkoutBtn.classList.remove('disabled','opacity-60','cursor-not-allowed');
+          if (checkoutAnchor) checkoutAnchor.removeAttribute('tabindex');
+        }
+      }
+    }
+
+    if (checkoutAnchor){
+      checkoutAnchor.addEventListener('click', function(e){
+        if (checkoutBtn && checkoutBtn.disabled){
+          e.preventDefault();
+          e.stopPropagation();
+          alert('Keranjang kosong. Tambahkan item terlebih dahulu sebelum melanjutkan pembayaran.');
+        }
+      }, { capture: true });
+    }
+
+    // Initial state
+    updateCheckoutState();
+
+    // React to storage changes
+    window.addEventListener('storage', (e) => {
+      if (!e.key) return;
+      if (e.key === 'cart' || e.key === 'cart_cleared_at' || e.key === 'cart_updated_at'){
+        updateCheckoutState();
+      }
+      if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
+        updateCheckoutState();
+      }
+    });
+
+    // Fallback: update after user interactions on page
+    document.addEventListener('click', () => { setTimeout(updateCheckoutState, 50); });
+    document.addEventListener('input', () => { setTimeout(updateCheckoutState, 50); });
+
+    // Sync with utilsTable lifecycle if available
+    function waitForUtils(){
+      if (!window.utilsTable){
+        setTimeout(waitForUtils, 50);
+        return;
+      }
+      window.utilsTable.startAutoExpire(() => updateCheckoutState(), 30000);
+      window.utilsTable.attachTableStartHandler({ startBtnId: 'start-order', inputId: 'manual-table', onSuccess: updateCheckoutState, onFail: () => {} });
+      window.utilsTable.attachTableResetHandler('table-clear', updateCheckoutState);
+    }
+    waitForUtils();
+
+  })();
   </script>
 </body>
 </html>

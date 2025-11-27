@@ -106,7 +106,7 @@
                 <div class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
                   <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
                 </div>
-                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja secara manual" />
+                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja (Contoh: A1)" />
                 <button id="start-order" class="flex min-w-[120px] items-center justify-center rounded-r-lg h-full px-5 bg-cta text-white text-base font-bold hover:bg-orange-600 transition-colors">
                   <span class="truncate">Mulai</span>
                 </button>
@@ -175,317 +175,295 @@
     </footer>
   </div>
 
+  <!-- config.js dan utils.js di root -->
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
+
   <!-- data.js menyediakan window.MENU_DATA -->
   <script src="data.js"></script>
 
   <script>
-    (function(){
-      'use strict';
+  (function(){
+    'use strict';
 
-      /* ---------- Helpers ---------- */
-      function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
-      function computePromoPrice(item){
-        let price = Number(item.price || 0);
-        if (item.isPromo && item.promo){
-          if (item.promo.type === 'percent') {
-            price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
-          } else if (item.promo.type === 'fixed') {
-            price = Math.max(0, price - Number(item.promo.value || 0));
-          }
-        }
-        return price;
-      }
-      function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
-      function updateCartBadge(){
-        try {
-          const cart = readCart();
-          const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
-          const badge = document.getElementById('header-cart-badge');
-          if (!badge) return;
-          if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
-          else { badge.textContent = ''; badge.classList.add('hidden'); }
-        } catch(e){}
-      }
-      function safeEncodeUrl(u){
-        if (!u) return '';
-        try {
-          let s = u.replace(/\\/g,'').trim();
-          for (let i=0;i<3;i++){ try { const d = decodeURIComponent(s); if (d===s) break; s = d; } catch { break; } }
-          return encodeURI(s);
-        } catch { return u; }
-      }
-
-      /* ---------- Gate: table code with 2h expiry ---------- */
-      const TWO_HOURS = 2 * 60 * 60 * 1000;
-      function getTableCode(){ return localStorage.getItem('table_code') || ''; }
-      function getTableTime(){ return Number(localStorage.getItem('table_code_time') || 0); }
-      function clearTableCode(){
-        localStorage.removeItem('table_code');
-        localStorage.removeItem('table_code_time');
-      }
-      function isCodeValid(){
-        const code = getTableCode();
-        const t = getTableTime();
-        if (!code || !t) return false;
-        return (Date.now() - t) <= TWO_HOURS;
-      }
-      function isMenuLocked(){ return !isCodeValid(); }
-      function formatRemaining(ms){
-        if (ms <= 0) return '0m';
-        const m = Math.floor(ms / 60000);
-        const h = Math.floor(m / 60);
-        const mm = m % 60;
-        return (h ? `${h}j ${mm}m` : `${mm}m`);
-      }
-      function updateGateUI(){
-        const form = document.getElementById('table-form');
-        const status = document.getElementById('table-status');
-        const expiredMsg = document.getElementById('table-expired-msg');
-        const codeLbl = document.getElementById('table-code-label');
-        const remainLbl = document.getElementById('table-remaining');
-        const overlay = document.getElementById('menu-lock-overlay');
-
-        if (isCodeValid()){
-          form.classList.add('hidden');
-          status.classList.remove('hidden');
-          expiredMsg.classList.add('hidden');
-          codeLbl.textContent = getTableCode();
-          const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
-          remainLbl.textContent = formatRemaining(remainingMs);
-          overlay.classList.add('hidden');
-        } else {
-          status.classList.add('hidden');
-          form.classList.remove('hidden');
-          expiredMsg.classList.toggle('hidden', !(getTableCode() && getTableTime()));
-          overlay.classList.remove('hidden');
+    /* ---------- Helpers ---------- */
+    function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+    function safeEncodeUrl(u){
+      if (!u) return '';
+      try {
+        let s = u.replace(/\\/g,'').trim();
+        for (let i=0;i<3;i++){ try { const d = decodeURIComponent(s); if (d===s) break; s = d; } catch { break; } }
+        return encodeURI(s);
+      } catch { return u; }
+    }
+    function computePromoPrice(item){
+      let price = Number(item.price || 0);
+      if (item.isPromo && item.promo){
+        if (item.promo.type === 'percent') {
+          price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
+        } else if (item.promo.type === 'fixed') {
+          price = Math.max(0, price - Number(item.promo.value || 0));
         }
       }
+      return price;
+    }
 
-      // Save code
-      document.getElementById('start-order')?.addEventListener('click', () => {
-        const code = document.getElementById('manual-table')?.value?.trim();
-        if (!code){ alert('Masukkan kode meja terlebih dahulu.'); return; }
-        localStorage.setItem('table_code', code);
-        localStorage.setItem('table_code_time', Date.now());
-        updateGateUI();
-        renderCards(currentState());
-      });
-      document.getElementById('scan-qr')?.addEventListener('click', () => {
-        alert('Fitur scan QR belum diintegrasikan.');
-      });
-      document.getElementById('table-clear')?.addEventListener('click', () => {
-        clearTableCode();
-        updateGateUI();
-        renderCards(currentState()); // terkunci kembali
-      });
-      setInterval(() => {
-        if (isCodeValid()){
-          const remainLbl = document.getElementById('table-remaining');
-          const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
-          remainLbl.textContent = formatRemaining(remainingMs);
-          if (remainingMs <= 0){
-            clearTableCode();
-            updateGateUI();
-            renderCards(currentState());
-          }
-        }
-      }, 30000);
-
-      /* ---------- Menu rendering ---------- */
-      const categoryBar = document.getElementById('category-bar');
-      const cardsGrid = document.getElementById('cards-grid');
-      const searchInput = document.getElementById('search');
-
-      function getMenuArray(){ try { return Object.values(window.MENU_DATA || {}); } catch { return []; } }
-      function uniqueCategories(menuArr){
-        const set = new Set();
-        menuArr.forEach(it => { if (it && it.category) set.add(it.category); });
-        return Array.from(set);
-      }
-      function renderCategoryButtons(){
-        const cats = uniqueCategories(getMenuArray());
-        categoryBar.innerHTML = '';
-        const allBtn = document.createElement('button');
-        allBtn.className = 'cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-primary text-white text-sm font-medium';
-        allBtn.textContent = 'Semua';
-        allBtn.dataset.cat = 'all';
-        categoryBar.appendChild(allBtn);
-
-        cats.forEach(cat => {
-          const b = document.createElement('button');
-          b.className = 'cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium';
-          b.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-          b.dataset.cat = cat;
-          categoryBar.appendChild(b);
-        });
-
-        categoryBar.querySelectorAll('.cat-btn').forEach(btn => {
-          btn.addEventListener('click', () => {
-            categoryBar.querySelectorAll('.cat-btn').forEach(x => { x.classList.remove('bg-primary','text-white'); x.classList.add('bg-background-secondary','text-text-primary'); });
-            btn.classList.remove('bg-background-secondary','text-text-primary');
-            btn.classList.add('bg-primary','text-white');
-            renderCards({ q: searchInput.value || '', category: btn.dataset.cat || 'all' });
-          });
-        });
-
-        // activate first
-        categoryBar.querySelector('.cat-btn')?.click();
-      }
-
-      function currentState(){
-        const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
-        return { q: searchInput.value || '', category: activeBtn ? (activeBtn.dataset.cat || 'all') : 'all' };
-      }
-
-      function renderCards({ q = '', category = 'all', maxCount = 12 } = {}){
-        const ql = (q || '').trim().toLowerCase();
-        let filtered = getMenuArray().filter(Boolean).filter(item => {
-          if (!item) return false;
-          if (category !== 'all' && item.category !== category) return false;
-          if (!ql) return true;
-          return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
-        });
-
-        cardsGrid.innerHTML = '';
-        if (!filtered.length){
-          cardsGrid.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Tidak ada item ditemukan</div>';
-          return;
-        }
-
+    /* ---------- Cart helpers ---------- */
+    function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
+    function updateCartBadge(){
+      try {
         const cart = readCart();
-        const locked = isMenuLocked();
+        const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
+        const badge = document.getElementById('header-cart-badge');
+        if (!badge) return;
+        if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
+        else { badge.textContent = ''; badge.classList.add('hidden'); }
+      } catch(e){}
+    }
 
-        filtered.slice(0, maxCount).forEach(item => {
-          const url = safeEncodeUrl(item.img || '');
-          const promoPrice = computePromoPrice(item);
-          const hasPromo = !!item.isPromo && (promoPrice < Number(item.price || 0));
+    /* ---------- Gate: use utilsTable from utils.js ---------- */
+    const searchInput = document.getElementById('search');
+    const categoryBar = document.getElementById('category-bar');
+    const cardsGrid = document.getElementById('cards-grid');
 
-          const article = document.createElement('article');
-          article.className = 'group overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col';
+    function formatRemaining(ms){
+      if (ms <= 0) return '0m';
+      const m = Math.floor(ms / 60000);
+      const h = Math.floor(m / 60);
+      const mm = m % 60;
+      return (h ? `${h}j ${mm}m` : `${mm}m`);
+    }
 
-          const addBtnClasses = locked
-            ? 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-gray-300 text-white text-sm font-semibold min-w-[84px] cursor-not-allowed opacity-70'
-            : 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]';
+    function updateGateUI(){
+      const form = document.getElementById('table-form');
+      const status = document.getElementById('table-status');
+      const expiredMsg = document.getElementById('table-expired-msg');
+      const codeLbl = document.getElementById('table-code-label');
+      const remainLbl = document.getElementById('table-remaining');
+      const overlay = document.getElementById('menu-lock-overlay');
 
-          const linkAttrs = locked
-            ? 'tabindex="-1" aria-disabled="true" class="pointer-events-none block flex flex-col h-full"'
-            : 'class="block flex flex-col h-full"';
+      // disable search when locked
+      if (searchInput) searchInput.disabled = !window.utilsTable.isCodeValid();
 
-          article.innerHTML = `
-            <a ${linkAttrs} href="menu_detail.html?id=${encodeURIComponent(item.id)}">
-              <div class="relative w-full overflow-hidden bg-gray-100">
-                <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
-                  <img alt="${(item.title||'')}" loading="lazy" class="w-full h-full object-cover block" />
-                </div>
-                ${hasPromo ? `<div class="absolute top-3 right-3 bg-promo-orange text-white text-xs font-semibold px-3 py-1 rounded-full">${(item.promo?.label)||'Promo'}</div>` : ''}
+      if (window.utilsTable.isCodeValid()){
+        form.classList.add('hidden');
+        status.classList.remove('hidden');
+        expiredMsg.classList.add('hidden');
+        codeLbl.textContent = window.utilsTable.getTableCode();
+        remainLbl.textContent = formatRemaining(window.utilsTable.remainingMs());
+        overlay.classList.add('hidden');
+      } else {
+        status.classList.add('hidden');
+        form.classList.remove('hidden');
+        expiredMsg.classList.toggle('hidden', !(window.utilsTable.getTableCode() && window.utilsTable.getTableTime()));
+        overlay.classList.remove('hidden');
+      }
+    }
+
+    /* ---------- Menu rendering ---------- */
+    function getMenuArray(){ try { return Object.values(window.MENU_DATA || {}); } catch { return []; } }
+    function uniqueCategories(menuArr){
+      const set = new Set();
+      menuArr.forEach(it => { if (it && it.category) set.add(it.category); });
+      return Array.from(set);
+    }
+
+    function renderCategoryButtons(){
+      const cats = uniqueCategories(getMenuArray());
+      categoryBar.innerHTML = '';
+      const allBtn = document.createElement('button');
+      allBtn.className = 'cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-primary text-white text-sm font-medium';
+      allBtn.textContent = 'Semua';
+      allBtn.dataset.cat = 'all';
+      categoryBar.appendChild(allBtn);
+
+      cats.forEach(cat => {
+        const b = document.createElement('button');
+        b.className = 'cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium';
+        b.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        b.dataset.cat = cat;
+        categoryBar.appendChild(b);
+      });
+
+      categoryBar.querySelectorAll('.cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          categoryBar.querySelectorAll('.cat-btn').forEach(x => { x.classList.remove('bg-primary','text-white'); x.classList.add('bg-background-secondary','text-text-primary'); });
+          btn.classList.remove('bg-background-secondary','text-text-primary');
+          btn.classList.add('bg-primary','text-white');
+          renderCards({ q: searchInput.value || '', category: btn.dataset.cat || 'all' });
+        });
+      });
+
+      categoryBar.querySelector('.cat-btn')?.click();
+    }
+
+    function currentState(){
+      const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+      return { q: searchInput.value || '', category: activeBtn ? (activeBtn.dataset.cat || 'all') : 'all' };
+    }
+
+    function renderCards({ q = '', category = 'all', maxCount = 12 } = {}){
+      const ql = (q || '').trim().toLowerCase();
+      let filtered = getMenuArray().filter(Boolean).filter(item => {
+        if (!item) return false;
+        if (category !== 'all' && item.category !== category) return false;
+        if (!ql) return true;
+        return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
+      });
+
+      cardsGrid.innerHTML = '';
+      if (!filtered.length){
+        cardsGrid.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Tidak ada item ditemukan</div>';
+        return;
+      }
+
+      const cart = readCart();
+      const locked = !window.utilsTable.isCodeValid();
+
+      filtered.slice(0, maxCount).forEach(item => {
+        const url = safeEncodeUrl(item.img || '');
+        const promoPrice = computePromoPrice(item);
+        const hasPromo = !!item.isPromo && (promoPrice < Number(item.price || 0));
+
+        const article = document.createElement('article');
+        article.className = 'group overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col relative';
+
+        const addBtnClasses = locked
+          ? 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-gray-300 text-white text-sm font-semibold min-w-[84px] cursor-not-allowed opacity-70'
+          : 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]';
+
+        const linkAttrs = locked
+          ? 'tabindex="-1" aria-disabled="true" class="pointer-events-none block flex flex-col h-full"'
+          : 'class="block flex flex-col h-full"';
+
+        article.innerHTML = `
+          <a ${linkAttrs} href="menu_detail.html?id=${encodeURIComponent(item.id)}">
+            <div class="relative w-full overflow-hidden bg-gray-100">
+              <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
+                <img alt="${(item.title||'')}" loading="lazy" class="w-full h-full object-cover block" />
               </div>
-              <div class="p-4 flex flex-col flex-1">
-                <h4 class="text-lg font-semibold text-text-primary">${item.title || ''}</h4>
-                <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
-                <div class="mt-auto flex items-center justify-between gap-3">
-                  <div class="text-right">
-                    ${hasPromo
-                      ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div><div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>`
-                      : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`
-                    }
-                  </div>
-                  <button class="${addBtnClasses}" type="button" data-id="${item.id}">
-                    <span class="material-symbols-outlined">add_shopping_cart</span>
-                    ${locked ? 'Terkunci' : 'Tambah'}
-                  </button>
-                </div>
-              </div>
-            </a>
-          `;
-
-          cardsGrid.appendChild(article);
-          const imgEl = article.querySelector('img');
-          imgEl.src = url;
-          imgEl.addEventListener('error', () => {
-            try { const dec = decodeURIComponent(imgEl.src); if (dec !== imgEl.src) { imgEl.src = dec; return; } } catch {}
-            const wrap = imgEl.closest('div.w-full');
-            if (wrap) wrap.innerHTML = '<div class="flex items-center justify-center text-sm text-gray-400 w-full h-full">Gambar tidak ditemukan</div>';
-          });
-
-          if (!locked){
-            const btn = article.querySelector('.add-btn');
-            btn.addEventListener('click', (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              const id = btn.dataset.id;
-              const menuItem = getMenuArray().find(x => x && x.id === id);
-              if (!menuItem) return;
-              const unitPrice = computePromoPrice(menuItem);
-
-              // add to cart
-              try {
-                const cartArr = readCart();
-                const key = menuItem.id || menuItem.title;
-                let found = false;
-                for (const it of cartArr){
-                  if ((it.id && it.id === key) || (it.title && it.title === menuItem.title)){
-                    it.qty = (Number(it.qty) || 0) + 1;
-                    it.price = unitPrice;
-                    found = true;
-                    break;
+              ${hasPromo ? `<div class="absolute top-3 right-3 bg-promo-orange text-white text-xs font-semibold px-3 py-1 rounded-full">${(item.promo?.label)||'Promo'}</div>` : ''}
+            </div>
+            <div class="p-4 flex flex-col flex-1">
+              <h4 class="text-lg font-semibold text-text-primary">${item.title || ''}</h4>
+              <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
+              <div class="mt-auto flex items-center justify-between gap-3">
+                <div class="text-right">
+                  ${hasPromo
+                    ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div><div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>`
+                    : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`
                   }
-                }
-                if (!found){
-                  cartArr.push({ id: key, title: menuItem.title, price: unitPrice, qty: 1, img: menuItem.img || '' });
-                }
-                localStorage.setItem('cart', JSON.stringify(cartArr));
-                updateCartBadge();
+                </div>
+                <button class="${addBtnClasses}" type="button" data-id="${item.id}">
+                  <span class="material-symbols-outlined">add_shopping_cart</span>
+                  ${locked ? 'Terkunci' : 'Tambah'}
+                </button>
+              </div>
+            </div>
+          </a>
+        `;
 
-                const toast = document.createElement('div');
-                toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
-                toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
-                document.body.appendChild(toast);
-                setTimeout(()=> toast.remove(), 1400);
-              } catch(e){}
-            });
-          }
+        cardsGrid.appendChild(article);
+        const imgEl = article.querySelector('img');
+        imgEl.src = url;
+        imgEl.addEventListener('error', () => {
+          try { const dec = decodeURIComponent(imgEl.src); if (dec !== imgEl.src) { imgEl.src = dec; return; } } catch {}
+          const wrap = imgEl.closest('div.w-full');
+          if (wrap) wrap.innerHTML = '<div class="flex items-center justify-center text-sm text-gray-400 w-full h-full">Gambar tidak ditemukan</div>';
+        });
 
-          if (cart.find(c => c.id === item.id)){
-            const badge = document.createElement('div');
-            badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
-            badge.textContent = 'Dalam keranjang';
-            article.querySelector('.relative')?.appendChild(badge);
-          }
+        if (cart.find(c => c.id === item.id)){
+          const badge = document.createElement('div');
+          badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
+          badge.textContent = 'Dalam keranjang';
+          article.querySelector('.relative')?.appendChild(badge);
+        }
+      });
+
+      if (!locked){
+        cardsGrid.querySelectorAll('.add-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const menuItem = getMenuArray().find(x => x && x.id === id);
+            if (!menuItem) return;
+            const unitPrice = computePromoPrice(menuItem);
+
+            try {
+              const cartArr = readCart();
+              const key = menuItem.id || menuItem.title;
+              let found = false;
+              for (const it of cartArr){
+                if ((it.id && it.id === key) || (it.title && it.title === menuItem.title)){
+                  it.qty = (Number(it.qty) || 0) + 1;
+                  it.price = unitPrice;
+                  found = true;
+                  break;
+                }
+              }
+              if (!found){
+                cartArr.push({ id: key, title: menuItem.title, price: unitPrice, qty: 1, img: menuItem.img || '' });
+              }
+              localStorage.setItem('cart', JSON.stringify(cartArr));
+              updateCartBadge();
+
+              const toast = document.createElement('div');
+              toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
+              toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
+              document.body.appendChild(toast);
+              setTimeout(()=> toast.remove(), 1400);
+            } catch(e){}
+          });
         });
       }
+    }
 
-      /* ---------- UI wiring ---------- */
-      const menuToggle = document.getElementById('menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu');
-      menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
-      document.addEventListener('click', (e) => { if (mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
+    /* ---------- UI wiring ---------- */
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
+    document.addEventListener('click', (e) => { if (mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
 
-      document.getElementById('search')?.addEventListener('input', () => { renderCards(currentState()); });
+    searchInput?.addEventListener('input', () => { renderCards(currentState()); });
 
-      function initWhenReady(){
-        if (!window.MENU_DATA){
-          setTimeout(initWhenReady, 50);
-          return;
-        }
-        renderCategoryButtons();
-        updateCartBadge();
-        updateGateUI();
-        renderCards(currentState());
+    /* ---------- Init and utilsTable integration ---------- */
+    function onStartSuccess(code){
+      updateGateUI();
+      renderCards(currentState());
+    }
+    function onStartFail(){ document.getElementById('manual-table')?.focus(); }
+    function onReset(){ updateGateUI(); renderCards(currentState()); }
+    function onAutoExpire(){ updateGateUI(); renderCards(currentState()); }
+
+    function initWhenReady(){
+      if (!window.MENU_DATA || !window.utilsTable){
+        setTimeout(initWhenReady, 50);
+        return;
       }
-      initWhenReady();
+      renderCategoryButtons();
+      updateCartBadge();
+      updateGateUI();
+      renderCards(currentState());
+
+      window.utilsTable.attachTableStartHandler({ startBtnId: 'start-order', inputId: 'manual-table', onSuccess: onStartSuccess, onFail: onStartFail });
+      window.utilsTable.attachTableResetHandler('table-clear', onReset);
+      window.utilsTable.startAutoExpire(onAutoExpire, 30000);
 
       window.addEventListener('storage', (e) => {
         if (!e.key) return;
         if (e.key === 'cart') updateCartBadge();
-        if (e.key === 'MENU_DATA') renderCards(currentState());
-        if (e.key === 'table_code' || e.key === 'table_code_time'){
+        if (e.key === 'MENU_DATA') { renderCategoryButtons(); renderCards(currentState()); }
+        if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
           updateGateUI();
           renderCards(currentState());
         }
       });
+    }
+    initWhenReady();
 
-    })();
+  })();
   </script>
 </body>
 </html>

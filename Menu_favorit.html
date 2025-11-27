@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Menu Favorit - Resto Modern</title>
+  <title>Favorit - Resto Modern</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
@@ -84,7 +84,7 @@
       <!-- Gate: kode meja / QR -->
       <section id="table-gate" class="w-full rounded-xl bg-background-secondary p-8 md:p-12 text-center">
         <div class="mx-auto max-w-3xl">
-          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">Akses Menu Favorit</h2>
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">Akses Favorit</h2>
           <p class="mt-2 text-base md:text-lg text-text-secondary">Masukkan kode meja atau scan QR untuk melihat dan memesan favorit (berlaku 2 jam).</p>
 
           <div id="table-status" class="mt-6 hidden">
@@ -106,7 +106,7 @@
                 <div class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
                   <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
                 </div>
-                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja secara manual" />
+                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja (Contoh: A1)" />
                 <button id="start-order" class="flex min-w-[120px] items-center justify-center rounded-r-lg h-full px-5 bg-cta text-white text-base font-bold hover:bg-orange-600 transition-colors">
                   <span class="truncate">Mulai</span>
                 </button>
@@ -171,286 +171,261 @@
     </footer>
   </div>
 
+  <!-- config.js dan utils.js di root -->
+  <script src="config.js"></script>
+  <script src="utils.js"></script>
+
   <!-- data.js menyediakan window.MENU_DATA -->
   <script src="data.js"></script>
 
   <script>
-    (function(){
-      'use strict';
+  (function(){
+    'use strict';
 
-      /* ---------- Helpers ---------- */
-      function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
-      function computePromoPrice(item){
-        let price = Number(item.price || 0);
-        if (item.isPromo && item.promo){
-          if (item.promo.type === 'percent') {
-            price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
-          } else if (item.promo.type === 'fixed') {
-            price = Math.max(0, price - Number(item.promo.value || 0));
-          }
-        }
-        return price;
-      }
-      function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
-      function updateCartBadge(){
-        try {
-          const cart = readCart();
-          const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
-          const badge = document.getElementById('header-cart-badge');
-          if (!badge) return;
-          if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
-          else { badge.textContent = ''; badge.classList.add('hidden'); }
-        } catch(e){}
-      }
-      function safeEncodeUrl(u){
-        if (!u) return '';
-        try {
-          let s = u.replace(/\\/g,'').trim();
-          for (let i=0;i<3;i++){ try { const d = decodeURIComponent(s); if (d===s) break; s = d; } catch { break; } }
-          return encodeURI(s);
-        } catch { return u; }
-      }
-
-      /* ---------- Gate: table code with expiry ---------- */
-      const TWO_HOURS = 2 * 60 * 60 * 1000;
-      function getTableCode(){ return localStorage.getItem('table_code') || ''; }
-      function getTableTime(){ return Number(localStorage.getItem('table_code_time') || 0); }
-      function clearTableCode(){
-        localStorage.removeItem('table_code');
-        localStorage.removeItem('table_code_time');
-      }
-      function isCodeValid(){
-        const code = getTableCode();
-        const t = getTableTime();
-        if (!code || !t) return false;
-        return (Date.now() - t) <= TWO_HOURS;
-      }
-      function isFavLocked(){ return !isCodeValid(); }
-      function formatRemaining(ms){
-        if (ms <= 0) return '0m';
-        const m = Math.floor(ms / 60000);
-        const h = Math.floor(m / 60);
-        const mm = m % 60;
-        return (h ? `${h}j ${mm}m` : `${mm}m`);
-      }
-      function updateGateUI(){
-        const form = document.getElementById('table-form');
-        const status = document.getElementById('table-status');
-        const expiredMsg = document.getElementById('table-expired-msg');
-        const codeLbl = document.getElementById('table-code-label');
-        const remainLbl = document.getElementById('table-remaining');
-        const overlay = document.getElementById('fav-lock-overlay');
-
-        if (isCodeValid()){
-          form.classList.add('hidden');
-          status.classList.remove('hidden');
-          expiredMsg.classList.add('hidden');
-          codeLbl.textContent = getTableCode();
-          const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
-          remainLbl.textContent = formatRemaining(remainingMs);
-          overlay.classList.add('hidden');
-        } else {
-          status.classList.add('hidden');
-          form.classList.remove('hidden');
-          expiredMsg.classList.toggle('hidden', !(getTableCode() && getTableTime()));
-          overlay.classList.remove('hidden');
+    /* ---------- Helpers ---------- */
+    function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+    function safeEncodeUrl(u){
+      if (!u) return '';
+      try {
+        let s = u.replace(/\\/g,'').trim();
+        for (let i=0;i<3;i++){ try { const d = decodeURIComponent(s); if (d===s) break; s = d; } catch { break; } }
+        return encodeURI(s);
+      } catch { return u; }
+    }
+    function computePromoPrice(item){
+      let price = Number(item.price || 0);
+      if (item.isPromo && item.promo){
+        if (item.promo.type === 'percent') {
+          price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
+        } else if (item.promo.type === 'fixed') {
+          price = Math.max(0, price - Number(item.promo.value || 0));
         }
       }
+      return price;
+    }
 
-      // Save code
-      document.getElementById('start-order')?.addEventListener('click', () => {
-        const code = document.getElementById('manual-table')?.value?.trim();
-        if (!code){ alert('Masukkan kode meja terlebih dahulu.'); return; }
-        localStorage.setItem('table_code', code);
-        localStorage.setItem('table_code_time', Date.now());
-        updateGateUI();
-        renderFavorites();
-      });
-      document.getElementById('scan-qr')?.addEventListener('click', () => {
-        alert('Fitur scan QR belum diintegrasikan.');
-      });
-      document.getElementById('table-clear')?.addEventListener('click', () => {
-        clearTableCode();
-        updateGateUI();
-        renderFavorites(); // terkunci kembali
-      });
-      setInterval(() => {
-        if (isCodeValid()){
-          const remainLbl = document.getElementById('table-remaining');
-          const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
-          remainLbl.textContent = formatRemaining(remainingMs);
-          if (remainingMs <= 0){
-            clearTableCode();
-            updateGateUI();
-            renderFavorites();
-          }
-        }
-      }, 30000);
-
-      /* ---------- Favorites rendering ---------- */
-      const favGrid = document.getElementById('fav-grid');
-      const searchInput = document.getElementById('search');
-
-      function getMenuArray(){ try { return Object.values(window.MENU_DATA || {}); } catch { return []; } }
-      function readFavorites(){ try { return JSON.parse(localStorage.getItem('favorites') || '[]'); } catch { return []; } }
-
-      function collectFavorites(){
-        const menu = getMenuArray().filter(Boolean);
-        const favIds = new Set(readFavorites().filter(Boolean));
-        return menu.filter(item => item && (item.isFavorite || favIds.has(item.id)));
-      }
-
-      function renderFavorites(){
-        const ql = (searchInput.value || '').trim().toLowerCase();
-        const locked = isFavLocked();
+    /* ---------- Cart helpers ---------- */
+    function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
+    function updateCartBadge(){
+      try {
         const cart = readCart();
+        const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
+        const badge = document.getElementById('header-cart-badge');
+        if (!badge) return;
+        if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
+        else { badge.textContent = ''; badge.classList.add('hidden'); }
+      } catch(e){}
+    }
 
-        let favs = collectFavorites().filter(item => {
-          if (!ql) return true;
-          return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
-        });
+    /* ---------- Favorites rendering ---------- */
+    const favGrid = document.getElementById('fav-grid');
+    const searchInput = document.getElementById('search');
 
-        favGrid.innerHTML = '';
-        if (!favs.length){
-          favGrid.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Belum ada item favorit</div>';
-          return;
-        }
+    function getMenuArray(){ try { return Object.values(window.MENU_DATA || {}); } catch { return []; } }
+    function readFavorites(){ try { return JSON.parse(localStorage.getItem('favorites') || '[]'); } catch { return []; } }
 
-        favs.forEach(item => {
-          const url = safeEncodeUrl(item.img || '');
-          const promoPrice = computePromoPrice(item);
-          const hasPromo = !!item.isPromo && (promoPrice < Number(item.price || 0));
+    function collectFavorites(){
+      const menu = getMenuArray().filter(Boolean);
+      const favIds = new Set(readFavorites().filter(Boolean));
+      return menu.filter(item => item && (item.isFavorite || favIds.has(item.id)));
+    }
 
-          const article = document.createElement('article');
-          article.className = 'group overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col';
+    function renderFavorites(){
+      const ql = (searchInput.value || '').trim().toLowerCase();
+      const locked = !window.utilsTable.isCodeValid();
+      const cart = readCart();
 
-          const addBtnClasses = locked
-            ? 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-gray-300 text-white text-sm font-semibold min-w-[84px] cursor-not-allowed opacity-70'
-            : 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]';
+      let favs = collectFavorites().filter(item => {
+        if (!ql) return true;
+        return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
+      });
 
-          const linkAttrs = locked
-            ? 'tabindex="-1" aria-disabled="true" class="pointer-events-none block flex flex-col h-full"'
-            : 'class="block flex flex-col h-full"';
+      favGrid.innerHTML = '';
+      if (!favs.length){
+        favGrid.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Belum ada item favorit</div>';
+        return;
+      }
 
-          article.innerHTML = `
-            <a ${linkAttrs} href="menu_detail.html?id=${encodeURIComponent(item.id)}">
-              <div class="relative w-full overflow-hidden bg-gray-100">
-                <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
-                  <img alt="${(item.title||'')}" loading="lazy" class="w-full h-full object-cover block" />
-                </div>
-                ${hasPromo ? `<div class="absolute top-3 right-3 bg-promo-orange text-white text-xs font-semibold px-3 py-1 rounded-full">${(item.promo?.label)||'Promo'}</div>` : ''}
+      favs.forEach(item => {
+        const url = safeEncodeUrl(item.img || '');
+        const promoPrice = computePromoPrice(item);
+        const hasPromo = !!item.isPromo && (promoPrice < Number(item.price || 0));
+
+        const article = document.createElement('article');
+        article.className = 'group overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col relative';
+
+        const addBtnClasses = locked
+          ? 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-gray-300 text-white text-sm font-semibold min-w-[84px] cursor-not-allowed opacity-70'
+          : 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]';
+
+        const linkAttrs = locked
+          ? 'tabindex="-1" aria-disabled="true" class="pointer-events-none block flex flex-col h-full"'
+          : 'class="block flex flex-col h-full"';
+
+        article.innerHTML = `
+          <a ${linkAttrs} href="menu_detail.html?id=${encodeURIComponent(item.id)}">
+            <div class="relative w-full overflow-hidden bg-gray-100">
+              <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
+                <img alt="${(item.title||'')}" loading="lazy" class="w-full h-full object-cover block" />
               </div>
-              <div class="p-4 flex flex-col flex-1">
-                <div class="flex items-center justify-between">
-                  <h4 class="text-lg font-semibold text-text-primary">${item.title || ''}</h4>
-                  <span class="inline-flex items-center gap-1 text-primary text-xs font-semibold">
-                    <span class="material-symbols-outlined text-sm">favorite</span> Favorit
-                  </span>
-                </div>
-                <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
-                <div class="mt-auto flex items-center justify-between gap-3">
-                  <div class="text-right">
-                    ${hasPromo
-                      ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div><div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>`
-                      : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`
-                    }
-                  </div>
-                  <button class="${addBtnClasses}" type="button" data-id="${item.id}">
-                    <span class="material-symbols-outlined">add_shopping_cart</span>
-                    ${locked ? 'Terkunci' : 'Tambah'}
-                  </button>
-                </div>
+              ${hasPromo ? `<div class="absolute top-3 right-3 bg-promo-orange text-white text-xs font-semibold px-3 py-1 rounded-full">${(item.promo?.label)||'Promo'}</div>` : ''}
+            </div>
+            <div class="p-4 flex flex-col flex-1">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-semibold text-text-primary">${item.title || ''}</h4>
+                <span class="inline-flex items-center gap-1 text-primary text-xs font-semibold">
+                  <span class="material-symbols-outlined text-sm">favorite</span> Favorit
+                </span>
               </div>
-            </a>
-          `;
-
-          favGrid.appendChild(article);
-          const imgEl = article.querySelector('img');
-          imgEl.src = url;
-          imgEl.addEventListener('error', () => {
-            try { const dec = decodeURIComponent(imgEl.src); if (dec !== imgEl.src) { imgEl.src = dec; return; } } catch {}
-            const wrap = imgEl.closest('div.w-full');
-            if (wrap) wrap.innerHTML = '<div class="flex items-center justify-center text-sm text-gray-400 w-full h-full">Gambar tidak ditemukan</div>';
-          });
-
-          if (!locked){
-            const btn = article.querySelector('.add-btn');
-            btn.addEventListener('click', (e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              const id = btn.dataset.id;
-              const menuItem = getMenuArray().find(x => x && x.id === id);
-              if (!menuItem) return;
-              const unitPrice = computePromoPrice(menuItem);
-
-              try {
-                const cartArr = readCart();
-                const key = menuItem.id || menuItem.title;
-                let found = false;
-                for (const it of cartArr){
-                  if ((it.id && it.id === key) || (it.title && it.title === menuItem.title)){
-                    it.qty = (Number(it.qty) || 0) + 1;
-                    it.price = unitPrice;
-                    found = true;
-                    break;
+              <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
+              <div class="mt-auto flex items-center justify-between gap-3">
+                <div class="text-right">
+                  ${hasPromo
+                    ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div><div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>`
+                    : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`
                   }
-                }
-                if (!found){
-                  cartArr.push({ id: key, title: menuItem.title, price: unitPrice, qty: 1, img: menuItem.img || '' });
-                }
-                localStorage.setItem('cart', JSON.stringify(cartArr));
-                updateCartBadge();
+                </div>
+                <button class="${addBtnClasses}" type="button" data-id="${item.id}">
+                  <span class="material-symbols-outlined">add_shopping_cart</span>
+                  ${locked ? 'Terkunci' : 'Tambah'}
+                </button>
+              </div>
+            </div>
+          </a>
+        `;
 
-                const toast = document.createElement('div');
-                toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
-                toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
-                document.body.appendChild(toast);
-                setTimeout(()=> toast.remove(), 1400);
-              } catch(e){}
-            });
-          }
-
-          if (cart.find(c => c.id === item.id)){
-            const badge = document.createElement('div');
-            badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
-            badge.textContent = 'Dalam keranjang';
-            article.querySelector('.relative')?.appendChild(badge);
-          }
+        favGrid.appendChild(article);
+        const imgEl = article.querySelector('img');
+        imgEl.src = url;
+        imgEl.addEventListener('error', () => {
+          try { const dec = decodeURIComponent(imgEl.src); if (dec !== imgEl.src) { imgEl.src = dec; return; } } catch {}
+          const wrap = imgEl.closest('div.w-full');
+          if (wrap) wrap.innerHTML = '<div class="flex items-center justify-center text-sm text-gray-400 w-full h-full">Gambar tidak ditemukan</div>';
         });
-      }
 
-      /* ---------- UI wiring ---------- */
-      const menuToggle = document.getElementById('menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu');
-      menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
-      document.addEventListener('click', (e) => { if (mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
+        if (!locked){
+          const btn = article.querySelector('.add-btn');
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const menuItem = getMenuArray().find(x => x && x.id === id);
+            if (!menuItem) return;
+            const unitPrice = computePromoPrice(menuItem);
 
-      document.getElementById('search')?.addEventListener('input', () => { renderFavorites(); });
+            try {
+              const cartArr = readCart();
+              const key = menuItem.id || menuItem.title;
+              let found = false;
+              for (const it of cartArr){
+                if ((it.id && it.id === key) || (it.title && it.title === menuItem.title)){
+                  it.qty = (Number(it.qty) || 0) + 1;
+                  it.price = unitPrice;
+                  found = true;
+                  break;
+                }
+              }
+              if (!found){
+                cartArr.push({ id: key, title: menuItem.title, price: unitPrice, qty: 1, img: menuItem.img || '' });
+              }
+              localStorage.setItem('cart', JSON.stringify(cartArr));
+              updateCartBadge();
 
-      function initWhenReady(){
-        if (!window.MENU_DATA){
-          setTimeout(initWhenReady, 50);
-          return;
+              const toast = document.createElement('div');
+              toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
+              toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
+              document.body.appendChild(toast);
+              setTimeout(()=> toast.remove(), 1400);
+            } catch(e){}
+          });
         }
-        updateCartBadge();
-        updateGateUI();
-        renderFavorites();
+
+        if (cart.find(c => c.id === item.id)){
+          const badge = document.createElement('div');
+          badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
+          badge.textContent = 'Dalam keranjang';
+          article.querySelector('.relative')?.appendChild(badge);
+        }
+      });
+    }
+
+    /* ---------- UI wiring ---------- */
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
+    document.addEventListener('click', (e) => { if (mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
+
+    document.getElementById('search')?.addEventListener('input', () => { renderFavorites(); });
+
+    /* ---------- Gate integration and lifecycle ---------- */
+    function formatRemaining(ms){
+      if (ms <= 0) return '0m';
+      const m = Math.floor(ms / 60000);
+      const h = Math.floor(m / 60);
+      const mm = m % 60;
+      return (h ? `${h}j ${mm}m` : `${mm}m`);
+    }
+
+    function updateGateUI(){
+      const form = document.getElementById('table-form');
+      const status = document.getElementById('table-status');
+      const expiredMsg = document.getElementById('table-expired-msg');
+      const codeLbl = document.getElementById('table-code-label');
+      const remainLbl = document.getElementById('table-remaining');
+      const overlay = document.getElementById('fav-lock-overlay');
+
+      if (window.utilsTable.isCodeValid()){
+        form.classList.add('hidden');
+        status.classList.remove('hidden');
+        expiredMsg.classList.add('hidden');
+        codeLbl.textContent = window.utilsTable.getTableCode();
+        remainLbl.textContent = formatRemaining(window.utilsTable.remainingMs());
+        overlay.classList.add('hidden');
+      } else {
+        status.classList.add('hidden');
+        form.classList.remove('hidden');
+        expiredMsg.classList.toggle('hidden', !(window.utilsTable.getTableCode() && window.utilsTable.getTableTime()));
+        overlay.classList.remove('hidden');
       }
-      initWhenReady();
+
+      // disable search when locked
+      const searchEl = document.getElementById('search');
+      if (searchEl) searchEl.disabled = !window.utilsTable.isCodeValid();
+    }
+
+    /* ---------- Init ---------- */
+    function onStartSuccess(){ updateGateUI(); renderFavorites(); }
+    function onStartFail(){ document.getElementById('manual-table')?.focus(); }
+    function onReset(){ updateGateUI(); renderFavorites(); }
+    function onAutoExpire(){ updateGateUI(); renderFavorites(); }
+
+    function initWhenReady(){
+      if (!window.MENU_DATA || !window.utilsTable){
+        setTimeout(initWhenReady, 50);
+        return;
+      }
+      updateCartBadge();
+      updateGateUI();
+      renderFavorites();
+
+      window.utilsTable.attachTableStartHandler({ startBtnId: 'start-order', inputId: 'manual-table', onSuccess: onStartSuccess, onFail: onStartFail });
+      window.utilsTable.attachTableResetHandler('table-clear', onReset);
+      window.utilsTable.startAutoExpire(onAutoExpire, 30000);
 
       window.addEventListener('storage', (e) => {
         if (!e.key) return;
         if (e.key === 'cart') updateCartBadge();
-        if (e.key === 'MENU_DATA') renderFavorites();
-        if (e.key === 'favorites') renderFavorites();
-        if (e.key === 'table_code' || e.key === 'table_code_time'){
+        if (e.key === 'MENU_DATA' || e.key === 'favorites') renderFavorites();
+        if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
           updateGateUI();
           renderFavorites();
         }
       });
+    }
+    initWhenReady();
 
-    })();
+  })();
   </script>
 </body>
 </html>
