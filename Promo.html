@@ -1,270 +1,446 @@
 <!DOCTYPE html>
-<html class="light" lang="id">
+<html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>Promo & Diskon — Resto Modern</title>
-
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Promo - Resto Modern</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <script>
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           colors: {
-            primary: "#4CAF50",
-            secondary: "#FF9800",
-            "background-light": "#f8f7f5",
-            "light-text": "#333333",
-            "light-border": "#eadecd"
+            "primary": "#4CAF50",
+            "cta": "#FF9800",
+            "background-light": "#FFFFFF",
+            "background-secondary": "#F5F5F5",
+            "text-primary": "#1F2937",
+            "text-secondary": "#6B7280",
+            "promo-orange": "#FF9800"
           },
-          fontFamily: { display: ["Work Sans", "sans-serif"] },
-          boxShadow: { card: "0 6px 18px rgba(0,0,0,0.08)" }
+          fontFamily: { "display": ["Poppins", "sans-serif"] }
         }
       }
     }
   </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
   <style>
-    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     body { min-height: max(884px, 100dvh); }
+    .pb-56-25{padding-bottom:56.25%}
   </style>
 </head>
 
-<body class="bg-background-light font-display text-light-text">
-  <!-- Header -->
-  <header class="sticky top-0 z-20 w-full bg-background-light/95 backdrop-blur-sm border-b border-light-border">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <div class="flex h-16 items-center justify-between">
+<body class="bg-background-light font-display text-text-primary">
+  <div class="flex min-h-screen w-full flex-col">
+    <!-- Header -->
+    <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+      <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 relative">
         <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-[#4CAF50] text-[28px] leading-none">restaurant_menu</span>
-          <h2 class="text-[18px] font-bold tracking-tight">Resto Modern</h2>
+          <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
+          <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
         </div>
 
-        <!-- Desktop nav -->
-        <nav class="hidden md:flex items-center gap-6">
-          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="index.html">Home</a>
-          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Menu.html">Menu</a>
-          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Menu_favorit.html">Favorit</a>
-          <a class="text-[14px] font-semibold hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
-          <button class="relative h-10 w-10 flex items-center justify-center rounded-full text-light-text">
-            <a href="cart.html"><span class="material-symbols-outlined">shopping_cart</span></a>
-          </button>
+        <nav class="hidden items-center gap-8 md:flex">
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="index.html">Beranda</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu.html">Menu</a>
+          <a class="text-base font-medium text-primary" href="Promo.html">Promo</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu_favorit.html">Favorit</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+          <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors relative" href="cart.html">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span id="header-cart-badge" class="hidden absolute -top-2 -right-3 text-xs bg-red-600 text-white rounded-full px-2 h-5 leading-5"></span>
+          </a>
         </nav>
 
-        <!-- Mobile controls: visible on small screens -->
-        <div class="flex items-center gap-2 md:hidden">
-          <!-- Home icon (optional quick access) -->
-          <a href="index.html" class="inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-100" aria-label="Home">
-            <span class="material-symbols-outlined">home</span>
-          </a>
+        <button id="menu-toggle" class="md:hidden" aria-label="Buka menu">
+          <span class="material-symbols-outlined text-3xl">menu</span>
+        </button>
 
-          <!-- Hamburger button -->
-          <button id="mobile-menu-btn" aria-expanded="false" aria-controls="mobile-menu" class="inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-100">
-            <svg id="icon-open" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-            <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-            </svg>
-          </button>
-        </div>
+        <nav id="mobile-menu" class="hidden md:hidden absolute top-full right-4 mt-2 w-56 rounded-xl border border-gray-200 bg-background-light shadow-lg overflow-hidden">
+          <ul class="flex flex-col py-2">
+            <li><a href="index.html" class="block py-2.5 px-4 hover:bg-gray-100">Beranda</a></li>
+            <li><a href="Menu.html" class="block py-2.5 px-4 hover:bg-gray-100">Menu</a></li>
+            <li><a href="Promo.html" class="block py-2.5 px-4 hover:bg-gray-100">Promo</a></li>
+            <li><a href="Menu_favorit.html" class="block py-2.5 px-4 hover:bg-gray-100">Favorit</a></li>
+            <li><a href="Bantuan.html" class="block py-2.5 px-4 hover:bg-gray-100">Bantuan</a></li>
+            <li>
+              <a href="cart.html" class="flex items-center gap-2 py-2.5 px-4 hover:bg-gray-100">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                Keranjang
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
-    </div>
+    </header>
 
-    <!-- Mobile menu (hidden by default) -->
-    <div id="mobile-menu" class="md:hidden hidden border-t border-light-border bg-background-light">
-      <div class="px-4 pt-3 pb-4 space-y-1">
-        <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Home</a>
-        <a href="Menu.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Menu</a>
-        <a href="Menu_favorit.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Favorit</a>
-        <a href="Bantuan.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Bantuan</a>
-        <a href="Promo.html" class="block px-3 py-2 rounded-md text-base font-semibold text-secondary bg-secondary/10 hover:bg-secondary/20">Promo</a>
-      </div>
-    </div>
-  </header>
+    <!-- Main -->
+    <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Gate: kode meja / QR -->
+      <section id="table-gate" class="w-full rounded-xl bg-background-secondary p-8 md:p-12 text-center">
+        <div class="mx-auto max-w-3xl">
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">Akses Promo</h2>
+          <p class="mt-2 text-base md:text-lg text-text-secondary">Masukkan kode meja atau scan QR untuk melihat dan memesan promo (berlaku 2 jam).</p>
 
-  <main class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8">
-    <h1 class="text-[28px] sm:text-[32px] font-bold leading-tight pb-4">Promo & Diskon</h1>
+          <div id="table-status" class="mt-6 hidden">
+            <div class="inline-flex items-center gap-2 rounded-lg bg-white border border-gray-200 px-4 py-2 text-sm">
+              <span class="material-symbols-outlined text-primary">qr_code_2</span>
+              <span>Kode meja aktif: <strong id="table-code-label" class="font-semibold"></strong></span>
+              <span class="text-text-secondary">|</span>
+              <span>Sisa waktu: <strong id="table-remaining" class="font-semibold"></strong></span>
+              <button id="table-clear" class="ml-3 inline-flex items-center gap-1 px-2 py-1 rounded-md border border-gray-200 hover:bg-gray-50">
+                <span class="material-symbols-outlined text-sm">close</span>
+                Reset
+              </button>
+            </div>
+          </div>
 
-    <!-- Hero banner -->
-    <section id="hero" class="relative rounded-xl overflow-hidden mb-8">
-      <div class="w-full h-[220px] sm:h-[280px] lg:h-[320px]">
-        <img id="hero-img" src="Img/Pizza Peperoni.png" alt="Promo Pizza Hari Ini" class="w-full h-full object-cover" />
-      </div>
-      <div class="absolute inset-0 bg-gradient-to-r from-black/45 via-black/35 to-transparent"></div>
-      <div class="absolute inset-0 flex items-center">
-        <div class="px-5 sm:px-8">
-          <div class="text-white">
-            <p id="hero-sub" class="text-[14px] sm:text-[16px] font-semibold opacity-95">Promo penawaran hari ini</p>
-            <p id="hero-title" class="text-[34px] sm:text-[40px] font-extrabold text-yellow-300 leading-tight mt-1">20% OFF</p>
-            <a id="hero-cta" class="mt-3 sm:mt-4 inline-flex items-center justify-center px-4 py-2 rounded-lg bg-secondary text-white text-[13px] sm:text-[14px] font-bold hover:bg-orange-500 transition-colors" href="promo_detail.html">
-              Lihat Detail
-            </a>
+          <div id="table-form" class="mt-6 mx-auto max-w-lg">
+            <label class="flex flex-col min-w-40 h-14 w-full">
+              <div class="flex w-full flex-1 items-stretch rounded-lg h-full shadow-sm">
+                <div class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                  <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
+                </div>
+                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja secara manual" />
+                <button id="start-order" class="flex min-w-[120px] items-center justify-center rounded-r-lg h-full px-5 bg-cta text-white text-base font-bold hover:bg-orange-600 transition-colors">
+                  <span class="truncate">Mulai</span>
+                </button>
+              </div>
+            </label>
+
+            <div class="mt-4">
+              <button id="scan-qr" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition">
+                <span class="material-symbols-outlined">qr_code_scanner</span>
+                Scan QR Meja
+              </button>
+              <p class="mt-2 text-xs text-text-secondary">Catatan: tombol scan QR ini placeholder. Integrasi scanner dapat ditambahkan nanti.</p>
+            </div>
+
+            <p id="table-expired-msg" class="mt-4 hidden text-sm text-red-600">Kode meja Anda kadaluarsa. Silakan masukkan kembali.</p>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- Promo cards -->
-    <section id="promo-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6" aria-live="polite">
-      <!-- cards rendered here by JS -->
-    </section>
-  </main>
+      <!-- Promo content (locked until code valid) -->
+      <section id="promo-section" class="mt-10 relative">
+        <!-- Overlay lock -->
+        <div id="promo-lock-overlay" class="absolute inset-0 hidden bg-white/70 backdrop-blur-sm z-10"></div>
 
-  <footer class="mt-10 border-t border-light-border">
-    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-8 text-sm text-light-text/75">
-      <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
-        <div>
-          <p class="font-semibold text-light-text">Resto Modern</p>
-          <p>Jl. Raya Modern No. 104, Surabaya, Indonesia</p>
+        <div class="relative z-0">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h3 class="text-2xl font-bold text-text-primary">Promo Spesial</h3>
+            <div class="w-full sm:max-w-xs">
+              <label class="flex flex-col min-w-40 h-12 w-full">
+                <div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-background-secondary">
+                  <div class="text-text-secondary flex items-center justify-center pl-4">
+                    <span class="material-symbols-outlined">search</span>
+                  </div>
+                  <input id="search" class="form-input flex w-full min-w-0 px-2 py-2 bg-transparent border-none focus:outline-0" placeholder="Cari promo atau menu" />
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div id="promo-grid" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+            <!-- kartu promo render -->
+          </div>
         </div>
-        <div class="flex gap-6">
-          <a class="hover:text-primary" href="#">Bantuan</a>
-          <a class="hover:text-primary" href="#">FAQ</a>
-        </div>
-        <p>© 2025 Smart Ordering System. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+      </section>
+    </main>
 
-  <!-- data and script -->
-  <script src="data.js" defer></script>
+    <!-- Footer -->
+    <footer class="mt-16 w-full border-t border-gray-200 bg-background-secondary">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between text-center md:text-left gap-2 md:gap-4">
+          <div class="text-xs md:text-sm text-text-secondary">
+            <p class="font-semibold text-text-primary">Resto Modern</p>
+            <p class="mt-1">Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+          </div>
+          <div class="flex gap-4 text-xs md:text-sm mt-2 md:mt-0">
+            <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+            <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+          </div>
+          <p class="text-xs md:text-sm text-text-secondary mt-2 md:mt-0">© 2025 Smart Ordering System</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- data.js menyediakan window.MENU_DATA -->
+  <script src="data.js"></script>
 
   <script>
-  (function(){
-    'use strict';
+    (function(){
+      'use strict';
 
-    // Mobile menu toggle
-    const mobileBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const iconOpen = document.getElementById('icon-open');
-    const iconClose = document.getElementById('icon-close');
-
-    mobileBtn?.addEventListener('click', () => {
-      const isHidden = mobileMenu.classList.contains('hidden');
-      if (isHidden) {
-        mobileMenu.classList.remove('hidden');
-        mobileBtn.setAttribute('aria-expanded', 'true');
-        iconOpen.classList.add('hidden');
-        iconClose.classList.remove('hidden');
-      } else {
-        mobileMenu.classList.add('hidden');
-        mobileBtn.setAttribute('aria-expanded', 'false');
-        iconOpen.classList.remove('hidden');
-        iconClose.classList.add('hidden');
-      }
-    });
-
-    // Promo rendering (same logic as before)
-    const formatRp = n => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
-    const promoGrid = document.getElementById('promo-grid');
-    const heroImg = document.getElementById('hero-img');
-    const heroTitle = document.getElementById('hero-title');
-    const heroSub = document.getElementById('hero-sub');
-    const heroCta = document.getElementById('hero-cta');
-
-    function initWhenReady(){
-      if (!window.MENU_DATA) {
-        setTimeout(initWhenReady, 50);
-        return;
-      }
-      init();
-    }
-
-    function init(){
-      const MENU = Object.values(window.MENU_DATA || {});
-      const promos = MENU.filter(i => i && i.isPromo);
-      const hero = promos[0] || MENU[0] || null;
-      if (hero) {
-        heroImg.src = hero.img || heroImg.src;
-        heroTitle.textContent = hero.promo?.label || (hero.isPromo ? 'Promo' : 'Penawaran');
-        heroSub.textContent = hero.title || heroSub.textContent;
-        heroCta.href = `promo_detail.html?id=${encodeURIComponent(hero.id)}`;
-      } else {
-        heroCta.removeAttribute('href');
-      }
-
-      const list = promos.length ? promos : MENU;
-      promoGrid.innerHTML = '';
-      list.forEach(item => {
-        const card = document.createElement('article');
-        card.className = 'rounded-xl border border-light-border bg-white overflow-hidden shadow-card';
-
-        const imgWrap = document.createElement('div');
-        imgWrap.className = 'w-full aspect-[4/3] bg-gray-100';
-        const img = document.createElement('img');
-        img.className = 'w-full h-full object-cover';
-        img.src = item.img || 'Img/placeholder.png';
-        img.alt = item.title || '';
-        imgWrap.appendChild(img);
-
-        const body = document.createElement('div');
-        body.className = 'p-4';
-
-        const h3 = document.createElement('h3');
-        h3.className = 'text-[16px] font-bold';
-        h3.textContent = item.title || 'Item';
-
-        const desc = document.createElement('p');
-        desc.className = 'text-sm text-subtext-light mt-2';
-        desc.textContent = item.desc || '';
-
-        const priceRow = document.createElement('div');
-        priceRow.className = 'mt-3 flex items-center justify-between';
-
-        const priceWrap = document.createElement('div');
-        priceWrap.className = 'text-sm text-subtext-light';
-        let finalPrice = item.price || 0;
+      /* ---------- Helpers ---------- */
+      function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+      function computePromoPrice(item){
+        let price = Number(item.price || 0);
         if (item.isPromo && item.promo){
-          if (item.promo.type === 'percent') finalPrice = Math.round(finalPrice * (100 - Number(item.promo.value || 0)) / 100);
-          else if (item.promo.type === 'fixed') finalPrice = Math.max(0, finalPrice - Number(item.promo.value || 0));
-          const orig = document.createElement('div');
-          orig.className = 'line-through text-xs text-gray-400';
-          orig.textContent = formatRp(item.price);
-          priceWrap.appendChild(orig);
+          if (item.promo.type === 'percent') {
+            price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
+          } else if (item.promo.type === 'fixed') {
+            price = Math.max(0, price - Number(item.promo.value || 0));
+          }
         }
-        const final = document.createElement('div');
-        final.className = 'font-semibold text-base text-primary';
-        final.textContent = formatRp(finalPrice);
-        priceWrap.appendChild(final);
+        return price;
+      }
+      function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
+      function updateCartBadge(){
+        try {
+          const cart = readCart();
+          const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
+          const badge = document.getElementById('header-cart-badge');
+          if (!badge) return;
+          if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
+          else { badge.textContent = ''; badge.classList.add('hidden'); }
+        } catch(e){}
+      }
+      function safeEncodeUrl(u){
+        if (!u) return '';
+        try {
+          let s = u.replace(/\\/g,'').trim();
+          for (let i=0;i<3;i++){ try { const d = decodeURIComponent(s); if (d===s) break; s = d; } catch { break; } }
+          return encodeURI(s);
+        } catch { return u; }
+      }
 
-        const cta = document.createElement('a');
-        cta.className = 'inline-flex items-center px-3 py-2 bg-secondary text-white rounded-lg text-sm font-semibold hover:opacity-95';
-        cta.href = `promo_detail.html?id=${encodeURIComponent(item.id)}`;
-        cta.textContent = (item.isPromo && item.promo?.label) ? item.promo.label : 'Lihat Detail';
+      /* ---------- Gate: table code with 2h expiry ---------- */
+      const TWO_HOURS = 2 * 60 * 60 * 1000;
+      function getTableCode(){ return localStorage.getItem('table_code') || ''; }
+      function getTableTime(){ return Number(localStorage.getItem('table_code_time') || 0); }
+      function clearTableCode(){
+        localStorage.removeItem('table_code');
+        localStorage.removeItem('table_code_time');
+      }
+      function isCodeValid(){
+        const code = getTableCode();
+        const t = getTableTime();
+        if (!code || !t) return false;
+        return (Date.now() - t) <= TWO_HOURS;
+      }
+      function isPromoLocked(){ return !isCodeValid(); }
+      function formatRemaining(ms){
+        if (ms <= 0) return '0m';
+        const m = Math.floor(ms / 60000);
+        const h = Math.floor(m / 60);
+        const mm = m % 60;
+        return (h ? `${h}j ${mm}m` : `${mm}m`);
+      }
+      function updateGateUI(){
+        const form = document.getElementById('table-form');
+        const status = document.getElementById('table-status');
+        const expiredMsg = document.getElementById('table-expired-msg');
+        const codeLbl = document.getElementById('table-code-label');
+        const remainLbl = document.getElementById('table-remaining');
+        const overlay = document.getElementById('promo-lock-overlay');
 
-        priceRow.appendChild(priceWrap);
-        priceRow.appendChild(cta);
+        if (isCodeValid()){
+          form.classList.add('hidden');
+          status.classList.remove('hidden');
+          expiredMsg.classList.add('hidden');
+          codeLbl.textContent = getTableCode();
+          const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
+          remainLbl.textContent = formatRemaining(remainingMs);
+          overlay.classList.add('hidden');
+        } else {
+          status.classList.add('hidden');
+          form.classList.remove('hidden');
+          expiredMsg.classList.toggle('hidden', !(getTableCode() && getTableTime()));
+          overlay.classList.remove('hidden');
+        }
+      }
 
-        body.appendChild(h3);
-        body.appendChild(desc);
-        body.appendChild(priceRow);
+      // Save code
+      document.getElementById('start-order')?.addEventListener('click', () => {
+        const code = document.getElementById('manual-table')?.value?.trim();
+        if (!code){ alert('Masukkan kode meja terlebih dahulu.'); return; }
+        localStorage.setItem('table_code', code);
+        localStorage.setItem('table_code_time', Date.now());
+        updateGateUI();
+        renderPromos();
+      });
+      document.getElementById('scan-qr')?.addEventListener('click', () => {
+        alert('Fitur scan QR belum diintegrasikan.');
+      });
+      document.getElementById('table-clear')?.addEventListener('click', () => {
+        clearTableCode();
+        updateGateUI();
+        renderPromos(); // terkunci kembali
+      });
+      setInterval(() => {
+        if (isCodeValid()){
+          const remainLbl = document.getElementById('table-remaining');
+          const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
+          remainLbl.textContent = formatRemaining(remainingMs);
+          if (remainingMs <= 0){
+            clearTableCode();
+            updateGateUI();
+            renderPromos();
+          }
+        }
+      }, 30000);
 
-        card.appendChild(imgWrap);
-        card.appendChild(body);
+      /* ---------- Promo rendering ---------- */
+      const promoGrid = document.getElementById('promo-grid');
+      const searchInput = document.getElementById('search');
 
-        card.style.cursor = 'pointer';
-        card.addEventListener('click', (e) => {
-          const target = e.target;
-          if (target && (target.tagName === 'A' || target.closest('a'))) return;
-          window.location.href = `promo_detail.html?id=${encodeURIComponent(item.id)}`;
+      function getMenuArray(){ try { return Object.values(window.MENU_DATA || {}); } catch { return []; } }
+
+      function renderPromos(){
+        const ql = (searchInput.value || '').trim().toLowerCase();
+        const locked = isPromoLocked();
+        const cart = readCart();
+
+        let promos = getMenuArray().filter(Boolean).filter(item => {
+          if (!item || !item.isPromo) return false;
+          if (!ql) return true;
+          return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
         });
 
-        promoGrid.appendChild(card);
+        promoGrid.innerHTML = '';
+        if (!promos.length){
+          promoGrid.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Tidak ada promo ditemukan</div>';
+          return;
+        }
+
+        promos.forEach(item => {
+          const url = safeEncodeUrl(item.img || '');
+          const promoPrice = computePromoPrice(item);
+          const hasPromo = !!item.isPromo && (promoPrice < Number(item.price || 0));
+
+          const article = document.createElement('article');
+          article.className = 'group overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col';
+
+          const addBtnClasses = locked
+            ? 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-gray-300 text-white text-sm font-semibold min-w-[84px] cursor-not-allowed opacity-70'
+            : 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]';
+
+          const linkAttrs = locked
+            ? 'tabindex="-1" aria-disabled="true" class="pointer-events-none block flex flex-col h-full"'
+            : 'class="block flex flex-col h-full"';
+
+          article.innerHTML = `
+            <a ${linkAttrs} href="menu_detail.html?id=${encodeURIComponent(item.id)}">
+              <div class="relative w-full overflow-hidden bg-gray-100">
+                <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
+                  <img alt="${(item.title||'')}" loading="lazy" class="w-full h-full object-cover block" />
+                </div>
+                <div class="absolute top-3 right-3 bg-promo-orange text-white text-xs font-semibold px-3 py-1 rounded-full">
+                  ${(item.promo?.label) || 'Promo'}
+                </div>
+              </div>
+              <div class="p-4 flex flex-col flex-1">
+                <h4 class="text-lg font-semibold text-text-primary">${item.title || ''}</h4>
+                <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
+                <div class="mt-auto flex items-center justify-between gap-3">
+                  <div class="text-right">
+                    ${hasPromo
+                      ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div><div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>`
+                      : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`
+                    }
+                  </div>
+                  <button class="${addBtnClasses}" type="button" data-id="${item.id}">
+                    <span class="material-symbols-outlined">add_shopping_cart</span>
+                    ${locked ? 'Terkunci' : 'Tambah'}
+                  </button>
+                </div>
+              </div>
+            </a>
+          `;
+
+          promoGrid.appendChild(article);
+          const imgEl = article.querySelector('img');
+          imgEl.src = url;
+          imgEl.addEventListener('error', () => {
+            try { const dec = decodeURIComponent(imgEl.src); if (dec !== imgEl.src) { imgEl.src = dec; return; } } catch {}
+            const wrap = imgEl.closest('div.w-full');
+            if (wrap) wrap.innerHTML = '<div class="flex items-center justify-center text-sm text-gray-400 w-full h-full">Gambar tidak ditemukan</div>';
+          });
+
+          if (!locked){
+            const btn = article.querySelector('.add-btn');
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const id = btn.dataset.id;
+              const menuItem = getMenuArray().find(x => x && x.id === id);
+              if (!menuItem) return;
+              const unitPrice = computePromoPrice(menuItem);
+
+              try {
+                const cartArr = readCart();
+                const key = menuItem.id || menuItem.title;
+                let found = false;
+                for (const it of cartArr){
+                  if ((it.id && it.id === key) || (it.title && it.title === menuItem.title)){
+                    it.qty = (Number(it.qty) || 0) + 1;
+                    it.price = unitPrice;
+                    found = true;
+                    break;
+                  }
+                }
+                if (!found){
+                  cartArr.push({ id: key, title: menuItem.title, price: unitPrice, qty: 1, img: menuItem.img || '' });
+                }
+                localStorage.setItem('cart', JSON.stringify(cartArr));
+                updateCartBadge();
+
+                const toast = document.createElement('div');
+                toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
+                toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
+                document.body.appendChild(toast);
+                setTimeout(()=> toast.remove(), 1400);
+              } catch(e){}
+            });
+          }
+
+          if (cart.find(c => c.id === item.id)){
+            const badge = document.createElement('div');
+            badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
+            badge.textContent = 'Dalam keranjang';
+            article.querySelector('.relative')?.appendChild(badge);
+          }
+        });
+      }
+
+      /* ---------- UI wiring ---------- */
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
+      document.addEventListener('click', (e) => { if (mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
+
+      document.getElementById('search')?.addEventListener('input', () => { renderPromos(); });
+
+      function initWhenReady(){
+        if (!window.MENU_DATA){
+          setTimeout(initWhenReady, 50);
+          return;
+        }
+        updateCartBadge();
+        updateGateUI();
+        renderPromos();
+      }
+      initWhenReady();
+
+      window.addEventListener('storage', (e) => {
+        if (!e.key) return;
+        if (e.key === 'cart') updateCartBadge();
+        if (e.key === 'MENU_DATA') renderPromos();
+        if (e.key === 'table_code' || e.key === 'table_code_time'){
+          updateGateUI();
+          renderPromos();
+        }
       });
-    }
 
-    initWhenReady();
-
-    // react to MENU_DATA changes
-    window.addEventListener('storage', (e) => {
-      if (e.key === 'MENU_DATA') initWhenReady();
-    });
-
-  })();
+    })();
   </script>
 </body>
 </html>

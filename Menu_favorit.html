@@ -3,247 +3,454 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Favorit - Resto Modern</title>
-
+  <title>Menu Favorit - Resto Modern</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" crossorigin href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-
   <script>
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           colors: {
-            primary: "#4CAF50",
-            cta: "#FF9800",
-            "background-light": "#F5F5F5",
-            "background-secondary": "#FFFFFF",
+            "primary": "#4CAF50",
+            "cta": "#FF9800",
+            "background-light": "#FFFFFF",
+            "background-secondary": "#F5F5F5",
             "text-primary": "#1F2937",
-            "text-secondary": "#6B7280"
+            "text-secondary": "#6B7280",
+            "promo-orange": "#FF9800"
           },
-          fontFamily: { display: ["Poppins", "sans-serif"] }
+          fontFamily: { "display": ["Poppins", "sans-serif"] }
         }
       }
-    };
+    }
   </script>
-
   <style>
-    /* fallback aspect ratio */
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    body { min-height: max(884px, 100dvh); }
     .pb-56-25{padding-bottom:56.25%}
   </style>
 </head>
-<body class="min-h-screen flex flex-col bg-background-light font-display text-text-primary">
-  <div class="flex flex-col flex-1">
+
+<body class="bg-background-light font-display text-text-primary">
+  <div class="flex min-h-screen w-full flex-col">
     <!-- Header -->
-    <header class="sticky top-0 z-20 w-full border-b bg-background-light border-gray-200">
-      <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
+      <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8 relative">
         <div class="flex items-center gap-3">
           <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
-          <h1 class="text-2xl font-bold">Resto Modern</h1>
+          <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
         </div>
 
-        <nav class="hidden md:flex items-center gap-6">
-          <a class="text-base hover:text-primary" href="index.html">Home</a>
-          <a class="text-base hover:text-primary" href="Menu.html">Menu</a>
-          <a class="text-base hover:text-primary" href="Promo.html">Promo</a>
-          <a class="text-base hover:text-primary" href="Bantuan.html">Bantuan</a>
-
-          <a id="header-cart-link" aria-label="Keranjang Belanja" class="inline-flex items-center gap-2 hover:text-primary" href="cart.html">
-            <span class="material-symbols-outlined text-2xl">shopping_cart</span>
+        <nav class="hidden items-center gap-8 md:flex">
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="index.html">Beranda</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Menu.html">Menu</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Promo.html">Promo</a>
+          <a class="text-base font-medium text-primary" href="Menu_favorit.html">Favorit</a>
+          <a class="text-base font-medium text-text-primary hover:text-primary transition-colors" href="Bantuan.html">Bantuan</a>
+          <a aria-label="Keranjang Belanja" class="text-text-primary hover:text-primary transition-colors relative" href="cart.html">
+            <span class="material-symbols-outlined">shopping_cart</span>
+            <span id="header-cart-badge" class="hidden absolute -top-2 -right-3 text-xs bg-red-600 text-white rounded-full px-2 h-5 leading-5"></span>
           </a>
         </nav>
 
-        <button id="menu-toggle" class="md:hidden p-2 rounded-md" aria-label="Buka menu">
+        <button id="menu-toggle" class="md:hidden" aria-label="Buka menu">
           <span class="material-symbols-outlined text-3xl">menu</span>
         </button>
 
-        <nav id="mobile-menu" class="hidden absolute right-4 top-full mt-2 w-56 rounded-xl border bg-white shadow-lg overflow-hidden md:hidden">
+        <nav id="mobile-menu" class="hidden md:hidden absolute top-full right-4 mt-2 w-56 rounded-xl border border-gray-200 bg-background-light shadow-lg overflow-hidden">
           <ul class="flex flex-col py-2">
-            <li><a class="block px-4 py-2 hover:bg-gray-100" href="index.html">Home</a></li>
-            <li><a class="block px-4 py-2 hover:bg-gray-100" href="Menu.html">Menu</a></li>
-            <li><a class="block px-4 py-2 hover:bg-gray-100" href="Promo.html">Promo</a></li>
-            <li><a class="block px-4 py-2 hover:bg-gray-100" href="Bantuan.html">Bantuan</a></li>
-            <li><a class="flex items-center gap-2 px-4 py-2 hover:bg-gray-100" href="cart.html"><span class="material-symbols-outlined">shopping_cart</span>Keranjang</a></li>
+            <li><a href="index.html" class="block py-2.5 px-4 hover:bg-gray-100">Beranda</a></li>
+            <li><a href="Menu.html" class="block py-2.5 px-4 hover:bg-gray-100">Menu</a></li>
+            <li><a href="Promo.html" class="block py-2.5 px-4 hover:bg-gray-100">Promo</a></li>
+            <li><a href="Menu_favorit.html" class="block py-2.5 px-4 hover:bg-gray-100">Favorit</a></li>
+            <li><a href="Bantuan.html" class="block py-2.5 px-4 hover:bg-gray-100">Bantuan</a></li>
+            <li>
+              <a href="cart.html" class="flex items-center gap-2 py-2.5 px-4 hover:bg-gray-100">
+                <span class="material-symbols-outlined">shopping_cart</span>
+                Keranjang
+              </a>
+            </li>
           </ul>
         </nav>
       </div>
     </header>
 
     <!-- Main -->
-    <main class="container mx-auto p-4 flex-grow">
-      <h2 class="text-3xl font-bold mb-4">Menu Favorit</h2>
+    <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Gate: kode meja / QR -->
+      <section id="table-gate" class="w-full rounded-xl bg-background-secondary p-8 md:p-12 text-center">
+        <div class="mx-auto max-w-3xl">
+          <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">Akses Menu Favorit</h2>
+          <p class="mt-2 text-base md:text-lg text-text-secondary">Masukkan kode meja atau scan QR untuk melihat dan memesan favorit (berlaku 2 jam).</p>
 
-      <!-- Search (single-line) -->
-      <div class="mb-4">
-        <label for="search" class="sr-only">Cari menu</label>
-        <div class="relative max-w-xl">
-          <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400 pointer-events-none">
-            <span class="material-symbols-outlined">search</span>
-          </span>
-          <input id="search" type="search" autocomplete="off"
-            class="w-full pl-11 pr-10 py-3 rounded-lg border border-gray-300 bg-white text-sm text-text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
-            placeholder="Cari menu..." />
-          <button id="search-clear" type="button" aria-label="Hapus pencarian"
-            class="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-400 hidden focus:outline-none">
-            <span class="material-symbols-outlined">close</span>
-          </button>
+          <div id="table-status" class="mt-6 hidden">
+            <div class="inline-flex items-center gap-2 rounded-lg bg-white border border-gray-200 px-4 py-2 text-sm">
+              <span class="material-symbols-outlined text-primary">qr_code_2</span>
+              <span>Kode meja aktif: <strong id="table-code-label" class="font-semibold"></strong></span>
+              <span class="text-text-secondary">|</span>
+              <span>Sisa waktu: <strong id="table-remaining" class="font-semibold"></strong></span>
+              <button id="table-clear" class="ml-3 inline-flex items-center gap-1 px-2 py-1 rounded-md border border-gray-200 hover:bg-gray-50">
+                <span class="material-symbols-outlined text-sm">close</span>
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <div id="table-form" class="mt-6 mx-auto max-w-lg">
+            <label class="flex flex-col min-w-40 h-14 w-full">
+              <div class="flex w-full flex-1 items-stretch rounded-lg h-full shadow-sm">
+                <div class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
+                  <span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
+                </div>
+                <input id="manual-table" class="form-input flex w-full min-w-0 flex-1 rounded-none text-text-primary focus:outline-0 focus:ring-2 focus:ring-primary/50 border-y border-gray-200 bg-white h-full placeholder:text-text-secondary px-4 text-base" placeholder="Masukkan kode meja secara manual" />
+                <button id="start-order" class="flex min-w-[120px] items-center justify-center rounded-r-lg h-full px-5 bg-cta text-white text-base font-bold hover:bg-orange-600 transition-colors">
+                  <span class="truncate">Mulai</span>
+                </button>
+              </div>
+            </label>
+
+            <div class="mt-4">
+              <button id="scan-qr" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition">
+                <span class="material-symbols-outlined">qr_code_scanner</span>
+                Scan QR Meja
+              </button>
+              <p class="mt-2 text-xs text-text-secondary">Catatan: tombol scan QR ini placeholder. Integrasi scanner dapat ditambahkan nanti.</p>
+            </div>
+
+            <p id="table-expired-msg" class="mt-4 hidden text-sm text-red-600">Kode meja Anda kadaluarsa. Silakan masukkan kembali.</p>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <!-- Categories (under search, centered row) -->
-      <div class="mb-6">
-        <div class="flex gap-3 flex-wrap">
-          <button id="cat-all" data-cat="all" class="cat-btn inline-flex h-10 items-center justify-center rounded-full px-5 bg-primary text-white text-sm font-medium">Semua</button>
-          <button data-cat="makanan" class="cat-btn inline-flex h-10 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium">Makanan</button>
-          <button data-cat="minuman" class="cat-btn inline-flex h-10 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium">Minuman</button>
-          <button data-cat="paket" class="cat-btn inline-flex h-10 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium">Paket</button>
-          <button data-cat="snack" class="cat-btn inline-flex h-10 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium">Snack</button>
+      <!-- Favorit content (locked until code valid) -->
+      <section id="fav-section" class="mt-10 relative">
+        <!-- Overlay lock -->
+        <div id="fav-lock-overlay" class="absolute inset-0 hidden bg-white/70 backdrop-blur-sm z-10"></div>
+
+        <div class="relative z-0">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h3 class="text-2xl font-bold text-text-primary">Menu Favorit Anda</h3>
+            <div class="w-full sm:max-w-xs">
+              <label class="flex flex-col min-w-40 h-12 w-full">
+                <div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-background-secondary">
+                  <div class="text-text-secondary flex items-center justify-center pl-4">
+                    <span class="material-symbols-outlined">search</span>
+                  </div>
+                  <input id="search" class="form-input flex w-full min-w-0 px-2 py-2 bg-transparent border-none focus:outline-0" placeholder="Cari favorit atau menu" />
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div id="fav-grid" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
+            <!-- kartu favorit render -->
+          </div>
         </div>
-      </div>
-
-      <!-- Grid -->
-      <div id="cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <!-- rendered by JS -->
-      </div>
+      </section>
     </main>
 
-    <footer class="w-full border-t border-gray-200 bg-background-secondary">
-      <div class="container mx-auto px-4 py-6 text-sm text-text-secondary">© 2025 Resto Modern</div>
+    <!-- Footer -->
+    <footer class="mt-16 w-full border-t border-gray-200 bg-background-secondary">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between text-center md:text-left gap-2 md:gap-4">
+          <div class="text-xs md:text-sm text-text-secondary">
+            <p class="font-semibold text-text-primary">Resto Modern</p>
+            <p class="mt-1">Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+          </div>
+          <div class="flex gap-4 text-xs md:text-sm mt-2 md:mt-0">
+            <a class="text-text-secondary hover:text-primary" href="Bantuan.html">Bantuan</a>
+            <a class="text-text-secondary hover:text-primary" href="FAQ.html">FAQ</a>
+          </div>
+          <p class="text-xs md:text-sm text-text-secondary mt-2 md:mt-0">© 2025 Smart Ordering System</p>
+        </div>
+      </div>
     </footer>
   </div>
 
-  <!-- shared data -->
+  <!-- data.js menyediakan window.MENU_DATA -->
   <script src="data.js"></script>
 
   <script>
-    /* helpers */
-    function formatRp(n){ return 'Rp ' + Number(n||0).toLocaleString('id-ID'); }
-    function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-    function normalizeUrl(u){ if(!u) return ''; try{ let s=u.replace(/\\/g,'').trim(); for(let i=0;i<3;i++){try{const d=decodeURIComponent(s); if(d===s) break; s=d;}catch{break}}; const isAbs=/^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(s); return isAbs?encodeURI(s):s.split('/').map(p=>encodeURIComponent(p)).join('/'); }catch{return u} }
+    (function(){
+      'use strict';
 
-    /* cart storage */
-    function readCart(){ try{return JSON.parse(localStorage.getItem('cart')||'[]')}catch{return[]} }
-    function writeCart(v){ localStorage.setItem('cart', JSON.stringify(v)) }
-    function findCartIndexById(cart,id){ return cart.findIndex(x=>x.id===id) }
-    function hasInCart(id){ return findCartIndexById(readCart(), id) !== -1 }
-
-    const MENU = window.MENU_DATA || {};
-    const cardsEl = document.getElementById('cards');
-    const catAllBtn = document.getElementById('cat-all');
-    const catBtns = Array.from(document.querySelectorAll('.cat-btn'));
-    const searchInput = document.getElementById('search');
-    const searchClear = document.getElementById('search-clear');
-
-    /* search UI */
-    function updateSearchClearVisibility(){ if(!searchInput) return; const v=(searchInput.value||'').trim(); if(v.length) searchClear.classList.remove('hidden'); else searchClear.classList.add('hidden'); }
-    searchClear?.addEventListener('click', ()=>{ searchInput.value=''; searchInput.focus(); updateSearchClearVisibility(); renderCards({q:'', category: currentCategory}); });
-    searchInput?.addEventListener('input', ()=>{ updateSearchClearVisibility(); lastQ = searchInput.value; renderCards({ q: lastQ, category: currentCategory }); });
-    searchInput?.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ searchInput.value=''; updateSearchClearVisibility(); renderCards({q:'', category: currentCategory}); } });
-
-    function createCartLabel(){ const d=document.createElement('div'); d.className='absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none'; d.textContent='Dalam keranjang'; return d; }
-
-    function renderCards({ q = '', category = 'all' } = {}){
-      const ql = (q||'').trim().toLowerCase();
-      cardsEl.innerHTML = '';
-      const items = Object.values(MENU).filter(it => it.isFavorite).filter(it => {
-        if(category!=='all' && it.category!==category) return false;
-        if(!ql) return true;
-        return (it.title + ' ' + (it.desc||'')).toLowerCase().includes(ql);
-      });
-      if(items.length===0){ cardsEl.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Tidak ada item favorit ditemukan</div>'; return; }
-      const cart = readCart();
-      items.forEach(item=>{
-        const url = normalizeUrl(item.img||'');
-        const art = document.createElement('article');
-        art.className = 'group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm hover:shadow-lg transition flex flex-col';
-        art.innerHTML = `
-          <a href="menu_detail.html?id=${encodeURIComponent(item.id)}" class="block flex flex-col h-full">
-            <div class="relative w-full overflow-hidden bg-gray-100">
-              <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
-                <img alt="${escapeHtml(item.title)}" loading="lazy" class="w-full h-full object-cover block" />
-              </div>
-            </div>
-            <div class="p-4 flex flex-col flex-1">
-              <h3 class="text-lg font-semibold">${escapeHtml(item.title)}</h3>
-              <p class="text-sm text-text-secondary mt-1 break-words">${escapeHtml(item.desc||'')}</p>
-              <div class="mt-auto flex items-center justify-between gap-3">
-                <p class="text-lg font-bold whitespace-nowrap">${formatRp(item.price)}</p>
-                <button class="add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold" type="button">
-                  <span class="material-symbols-outlined">add_shopping_cart</span>
-                  Tambah
-                </button>
-              </div>
-            </div>
-          </a>`;
-        cardsEl.appendChild(art);
-        const imgEl = art.querySelector('img');
-        imgEl.src = url;
-        imgEl.addEventListener('error', ()=>{ try{ const dec=decodeURIComponent(imgEl.src); if(dec!==imgEl.src){ imgEl.src = dec; return; } }catch{} const wrap = imgEl.closest('div.w-full'); if(wrap) wrap.innerHTML = '<div class="flex items-center justify-center text-sm text-gray-400 w-full h-full">Gambar tidak ditemukan</div>'; });
-        if(cart.find(c=>c.id===item.id)) art.querySelector('.relative')?.appendChild(createCartLabel());
-      });
-
-      // attach add handlers
-      cardsEl.querySelectorAll('.add-btn').forEach(btn=>{
-        btn.addEventListener('click', (e)=>{
-          e.preventDefault(); e.stopPropagation();
-          const article = btn.closest('article');
-          const idParam = article?.querySelector('a')?.getAttribute('href')?.split('id=')[1];
-          const id = idParam || article?.querySelector('h3')?.textContent?.trim().toLowerCase().replace(/\s+/g,'-');
-          const title = article?.querySelector('h3')?.textContent?.trim() || 'Item';
-          const priceText = article?.querySelector('.text-lg.font-bold')?.textContent || '';
-          const price = parseInt((priceText||'').replace(/\D/g,'')) || 0;
-          const imgSrc = article.querySelector('img')?.src || '';
+      /* ---------- Helpers ---------- */
+      function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+      function computePromoPrice(item){
+        let price = Number(item.price || 0);
+        if (item.isPromo && item.promo){
+          if (item.promo.type === 'percent') {
+            price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
+          } else if (item.promo.type === 'fixed') {
+            price = Math.max(0, price - Number(item.promo.value || 0));
+          }
+        }
+        return price;
+      }
+      function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
+      function updateCartBadge(){
+        try {
           const cart = readCart();
-          const idx = findCartIndexById(cart, id);
-          if(idx===-1){ cart.push({id, title, price, qty:1, img: imgSrc}); writeCart(cart); const existing = article.querySelector('.absolute.top-2.left-2'); if(!existing) article.querySelector('.relative')?.appendChild(createCartLabel()); }
-          else { cart[idx].qty = (Number(cart[idx].qty)||1)+1; cart[idx].img = cart[idx].img || imgSrc; writeCart(cart); }
-          const toast = document.createElement('div'); toast.textContent = `${title} ditambahkan ke keranjang`; toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg'; document.body.appendChild(toast); setTimeout(()=>toast.remove(),1400);
-          updateCartCountIndicator();
-        });
+          const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
+          const badge = document.getElementById('header-cart-badge');
+          if (!badge) return;
+          if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
+          else { badge.textContent = ''; badge.classList.add('hidden'); }
+        } catch(e){}
+      }
+      function safeEncodeUrl(u){
+        if (!u) return '';
+        try {
+          let s = u.replace(/\\/g,'').trim();
+          for (let i=0;i<3;i++){ try { const d = decodeURIComponent(s); if (d===s) break; s = d; } catch { break; } }
+          return encodeURI(s);
+        } catch { return u; }
+      }
+
+      /* ---------- Gate: table code with expiry ---------- */
+      const TWO_HOURS = 2 * 60 * 60 * 1000;
+      function getTableCode(){ return localStorage.getItem('table_code') || ''; }
+      function getTableTime(){ return Number(localStorage.getItem('table_code_time') || 0); }
+      function clearTableCode(){
+        localStorage.removeItem('table_code');
+        localStorage.removeItem('table_code_time');
+      }
+      function isCodeValid(){
+        const code = getTableCode();
+        const t = getTableTime();
+        if (!code || !t) return false;
+        return (Date.now() - t) <= TWO_HOURS;
+      }
+      function isFavLocked(){ return !isCodeValid(); }
+      function formatRemaining(ms){
+        if (ms <= 0) return '0m';
+        const m = Math.floor(ms / 60000);
+        const h = Math.floor(m / 60);
+        const mm = m % 60;
+        return (h ? `${h}j ${mm}m` : `${mm}m`);
+      }
+      function updateGateUI(){
+        const form = document.getElementById('table-form');
+        const status = document.getElementById('table-status');
+        const expiredMsg = document.getElementById('table-expired-msg');
+        const codeLbl = document.getElementById('table-code-label');
+        const remainLbl = document.getElementById('table-remaining');
+        const overlay = document.getElementById('fav-lock-overlay');
+
+        if (isCodeValid()){
+          form.classList.add('hidden');
+          status.classList.remove('hidden');
+          expiredMsg.classList.add('hidden');
+          codeLbl.textContent = getTableCode();
+          const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
+          remainLbl.textContent = formatRemaining(remainingMs);
+          overlay.classList.add('hidden');
+        } else {
+          status.classList.add('hidden');
+          form.classList.remove('hidden');
+          expiredMsg.classList.toggle('hidden', !(getTableCode() && getTableTime()));
+          overlay.classList.remove('hidden');
+        }
+      }
+
+      // Save code
+      document.getElementById('start-order')?.addEventListener('click', () => {
+        const code = document.getElementById('manual-table')?.value?.trim();
+        if (!code){ alert('Masukkan kode meja terlebih dahulu.'); return; }
+        localStorage.setItem('table_code', code);
+        localStorage.setItem('table_code_time', Date.now());
+        updateGateUI();
+        renderFavorites();
       });
-    }
+      document.getElementById('scan-qr')?.addEventListener('click', () => {
+        alert('Fitur scan QR belum diintegrasikan.');
+      });
+      document.getElementById('table-clear')?.addEventListener('click', () => {
+        clearTableCode();
+        updateGateUI();
+        renderFavorites(); // terkunci kembali
+      });
+      setInterval(() => {
+        if (isCodeValid()){
+          const remainLbl = document.getElementById('table-remaining');
+          const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
+          remainLbl.textContent = formatRemaining(remainingMs);
+          if (remainingMs <= 0){
+            clearTableCode();
+            updateGateUI();
+            renderFavorites();
+          }
+        }
+      }, 30000);
 
-    /* categories active */
-    const allCategoryButtons = [catAllBtn].concat(catBtns);
-    function setActiveCategoryButton(cat){
-      allCategoryButtons.forEach(b=>{ b.classList.remove('bg-primary','text-white'); b.classList.add('bg-background-secondary','text-text-primary'); });
-      if(cat==='all'){ catAllBtn.classList.remove('bg-background-secondary','text-text-primary'); catAllBtn.classList.add('bg-primary','text-white'); }
-      else { const match = catBtns.find(b => (b.dataset?.cat||'') === cat); if(match){ match.classList.remove('bg-background-secondary','text-text-primary'); match.classList.add('bg-primary','text-white'); } }
-    }
+      /* ---------- Favorites rendering ---------- */
+      const favGrid = document.getElementById('fav-grid');
+      const searchInput = document.getElementById('search');
 
-    /* header badge */
-    function updateCartCountIndicator(){
-      const cart = readCart(); const cnt = cart.reduce((s,x)=>s+(Number(x.qty)||0),0);
-      const headerCartLink = document.getElementById('header-cart-link');
-      if(!headerCartLink) return;
-      let badge = headerCartLink.querySelector('#header-cart-badge');
-      if(!badge){ badge = document.createElement('span'); badge.id='header-cart-badge'; badge.className='hidden items-center justify-center bg-red-600 text-white text-xs font-semibold rounded-full px-2 h-5'; headerCartLink.insertBefore(badge, headerCartLink.firstChild); }
-      if(cnt>0){ badge.textContent = cnt>99?'99+':String(cnt); badge.classList.remove('hidden'); } else { badge.textContent=''; badge.classList.add('hidden'); }
-    }
-    (function initHeaderCartBadge(){ const headerCartLink=document.getElementById('header-cart-link'); if(!headerCartLink) return; headerCartLink.classList.add('inline-flex','items-center','gap-2'); updateCartCountIndicator(); })();
+      function getMenuArray(){ try { return Object.values(window.MENU_DATA || {}); } catch { return []; } }
+      function readFavorites(){ try { return JSON.parse(localStorage.getItem('favorites') || '[]'); } catch { return []; } }
 
-    /* init & wiring */
-    let currentCategory = 'all';
-    setActiveCategoryButton(currentCategory);
-    updateSearchClearVisibility();
-    let lastQ = '';
-    renderCards({ q:'', category: currentCategory });
+      function collectFavorites(){
+        const menu = getMenuArray().filter(Boolean);
+        const favIds = new Set(readFavorites().filter(Boolean));
+        return menu.filter(item => item && (item.isFavorite || favIds.has(item.id)));
+      }
 
-    catAllBtn.addEventListener('click', ()=>{ currentCategory='all'; setActiveCategoryButton(currentCategory); renderCards({ q: lastQ, category: currentCategory }); });
-    catBtns.forEach(btn=> btn.addEventListener('click', ()=>{ const cat = btn.dataset?.cat||'all'; currentCategory=cat; setActiveCategoryButton(currentCategory); renderCards({ q: lastQ, category: currentCategory }); }));
+      function renderFavorites(){
+        const ql = (searchInput.value || '').trim().toLowerCase();
+        const locked = isFavLocked();
+        const cart = readCart();
 
-    const menuToggle = document.getElementById('menu-toggle'); const mobileMenu = document.getElementById('mobile-menu');
-    menuToggle?.addEventListener('click',(e)=>{ e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
-    document.addEventListener('click', (e)=>{ if(mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') mobileMenu.classList.add('hidden'); });
+        let favs = collectFavorites().filter(item => {
+          if (!ql) return true;
+          return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
+        });
 
-    window.addEventListener('storage', (e)=>{ if(e.key==='cart'){ renderCards({ q: lastQ, category: currentCategory }); updateCartCountIndicator(); } });
+        favGrid.innerHTML = '';
+        if (!favs.length){
+          favGrid.innerHTML = '<div class="col-span-full text-center text-text-secondary py-12">Belum ada item favorit</div>';
+          return;
+        }
 
-    // debug
-    window.MENU = MENU;
+        favs.forEach(item => {
+          const url = safeEncodeUrl(item.img || '');
+          const promoPrice = computePromoPrice(item);
+          const hasPromo = !!item.isPromo && (promoPrice < Number(item.price || 0));
+
+          const article = document.createElement('article');
+          article.className = 'group overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col';
+
+          const addBtnClasses = locked
+            ? 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-gray-300 text-white text-sm font-semibold min-w-[84px] cursor-not-allowed opacity-70'
+            : 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]';
+
+          const linkAttrs = locked
+            ? 'tabindex="-1" aria-disabled="true" class="pointer-events-none block flex flex-col h-full"'
+            : 'class="block flex flex-col h-full"';
+
+          article.innerHTML = `
+            <a ${linkAttrs} href="menu_detail.html?id=${encodeURIComponent(item.id)}">
+              <div class="relative w-full overflow-hidden bg-gray-100">
+                <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
+                  <img alt="${(item.title||'')}" loading="lazy" class="w-full h-full object-cover block" />
+                </div>
+                ${hasPromo ? `<div class="absolute top-3 right-3 bg-promo-orange text-white text-xs font-semibold px-3 py-1 rounded-full">${(item.promo?.label)||'Promo'}</div>` : ''}
+              </div>
+              <div class="p-4 flex flex-col flex-1">
+                <div class="flex items-center justify-between">
+                  <h4 class="text-lg font-semibold text-text-primary">${item.title || ''}</h4>
+                  <span class="inline-flex items-center gap-1 text-primary text-xs font-semibold">
+                    <span class="material-symbols-outlined text-sm">favorite</span> Favorit
+                  </span>
+                </div>
+                <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
+                <div class="mt-auto flex items-center justify-between gap-3">
+                  <div class="text-right">
+                    ${hasPromo
+                      ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div><div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>`
+                      : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`
+                    }
+                  </div>
+                  <button class="${addBtnClasses}" type="button" data-id="${item.id}">
+                    <span class="material-symbols-outlined">add_shopping_cart</span>
+                    ${locked ? 'Terkunci' : 'Tambah'}
+                  </button>
+                </div>
+              </div>
+            </a>
+          `;
+
+          favGrid.appendChild(article);
+          const imgEl = article.querySelector('img');
+          imgEl.src = url;
+          imgEl.addEventListener('error', () => {
+            try { const dec = decodeURIComponent(imgEl.src); if (dec !== imgEl.src) { imgEl.src = dec; return; } } catch {}
+            const wrap = imgEl.closest('div.w-full');
+            if (wrap) wrap.innerHTML = '<div class="flex items-center justify-center text-sm text-gray-400 w-full h-full">Gambar tidak ditemukan</div>';
+          });
+
+          if (!locked){
+            const btn = article.querySelector('.add-btn');
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              const id = btn.dataset.id;
+              const menuItem = getMenuArray().find(x => x && x.id === id);
+              if (!menuItem) return;
+              const unitPrice = computePromoPrice(menuItem);
+
+              try {
+                const cartArr = readCart();
+                const key = menuItem.id || menuItem.title;
+                let found = false;
+                for (const it of cartArr){
+                  if ((it.id && it.id === key) || (it.title && it.title === menuItem.title)){
+                    it.qty = (Number(it.qty) || 0) + 1;
+                    it.price = unitPrice;
+                    found = true;
+                    break;
+                  }
+                }
+                if (!found){
+                  cartArr.push({ id: key, title: menuItem.title, price: unitPrice, qty: 1, img: menuItem.img || '' });
+                }
+                localStorage.setItem('cart', JSON.stringify(cartArr));
+                updateCartBadge();
+
+                const toast = document.createElement('div');
+                toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
+                toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
+                document.body.appendChild(toast);
+                setTimeout(()=> toast.remove(), 1400);
+              } catch(e){}
+            });
+          }
+
+          if (cart.find(c => c.id === item.id)){
+            const badge = document.createElement('div');
+            badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
+            badge.textContent = 'Dalam keranjang';
+            article.querySelector('.relative')?.appendChild(badge);
+          }
+        });
+      }
+
+      /* ---------- UI wiring ---------- */
+      const menuToggle = document.getElementById('menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      menuToggle?.addEventListener('click', (e) => { e.stopPropagation(); mobileMenu.classList.toggle('hidden'); });
+      document.addEventListener('click', (e) => { if (mobileMenu && !mobileMenu.contains(e.target) && !menuToggle.contains(e.target)) mobileMenu.classList.add('hidden'); });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') mobileMenu.classList.add('hidden'); });
+
+      document.getElementById('search')?.addEventListener('input', () => { renderFavorites(); });
+
+      function initWhenReady(){
+        if (!window.MENU_DATA){
+          setTimeout(initWhenReady, 50);
+          return;
+        }
+        updateCartBadge();
+        updateGateUI();
+        renderFavorites();
+      }
+      initWhenReady();
+
+      window.addEventListener('storage', (e) => {
+        if (!e.key) return;
+        if (e.key === 'cart') updateCartBadge();
+        if (e.key === 'MENU_DATA') renderFavorites();
+        if (e.key === 'favorites') renderFavorites();
+        if (e.key === 'table_code' || e.key === 'table_code_time'){
+          updateGateUI();
+          renderFavorites();
+        }
+      });
+
+    })();
   </script>
 </body>
 </html>

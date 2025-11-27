@@ -82,11 +82,28 @@
 
     <!-- Main -->
     <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
-      <section class="w-full rounded-xl bg-background-secondary p-8 md:p-12 text-center">
+      <!-- Gate: wajib masukkan kode meja atau scan QR -->
+      <section id="table-gate" class="w-full rounded-xl bg-background-secondary p-8 md:p-12 text-center">
         <div class="mx-auto max-w-3xl">
           <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-text-primary">Selamat Datang di Smart Ordering</h2>
-          <p class="mt-4 text-base md:text-lg text-text-secondary">Pindai kode QR di meja Anda untuk memulai pesanan.</p>
-          <div class="mt-8 mx-auto max-w-lg">
+          <p class="mt-4 text-base md:text-lg text-text-secondary">Pindai kode QR di meja Anda atau masukkan kode untuk memulai pesanan.</p>
+
+          <!-- Info status kode: muncul saat kode valid -->
+          <div id="table-status" class="mt-6 hidden">
+            <div class="inline-flex items-center gap-2 rounded-lg bg-white border border-gray-200 px-4 py-2 text-sm">
+              <span class="material-symbols-outlined text-primary">qr_code_2</span>
+              <span>Kode meja aktif: <strong id="table-code-label" class="font-semibold"></strong></span>
+              <span class="text-text-secondary">|</span>
+              <span>Sisa waktu: <strong id="table-remaining" class="font-semibold"></strong></span>
+              <button id="table-clear" class="ml-3 inline-flex items-center gap-1 px-2 py-1 rounded-md border border-gray-200 hover:bg-gray-50">
+                <span class="material-symbols-outlined text-sm">close</span>
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Form input kode -->
+          <div id="table-form" class="mt-8 mx-auto max-w-lg">
             <label class="flex flex-col min-w-40 h-14 w-full">
               <div class="flex w-full flex-1 items-stretch rounded-lg h-full shadow-sm">
                 <div class="text-text-secondary flex bg-gray-100 items-center justify-center pl-4 rounded-l-lg border-r-0">
@@ -98,12 +115,24 @@
                 </button>
               </div>
             </label>
+
+            <!-- Optional: tombol scan QR (placeholder) -->
+            <div class="mt-4">
+              <button id="scan-qr" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white border border-gray-200 text-sm font-semibold hover:bg-gray-50 transition">
+                <span class="material-symbols-outlined">qr_code_scanner</span>
+                Scan QR Meja
+              </button>
+              <p class="mt-2 text-xs text-text-secondary">Catatan: tombol scan QR ini placeholder. Integrasi scanner dapat ditambahkan nanti.</p>
+            </div>
+
+            <!-- Pesan kadaluarsa -->
+            <p id="table-expired-msg" class="mt-4 hidden text-sm text-red-600">Kode meja Anda telah kadaluarsa. Silakan masukkan kembali.</p>
           </div>
         </div>
       </section>
 
-      <!-- Menu header + search + categories -->
-      <div class="mt-10">
+      <!-- Menu header + search + categories (terkunci hingga kode valid) -->
+      <div id="menu-block" class="mt-10">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h3 class="text-2xl font-bold text-text-primary">Menu</h3>
           <div class="w-full sm:max-w-xs">
@@ -112,7 +141,8 @@
                 <div class="text-text-secondary flex items-center justify-center pl-4">
                   <span class="material-symbols-outlined">search</span>
                 </div>
-                <input id="search" class="form-input flex w-full min-w-0 px-2 py-2 bg-transparent border-none focus:outline-0" placeholder="Cari makanan atau minuman" />              </div>
+                <input id="search" class="form-input flex w-full min-w-0 px-2 py-2 bg-transparent border-none focus:outline-0" placeholder="Cari makanan atau minuman" />
+              </div>
             </label>
           </div>
         </div>
@@ -124,6 +154,11 @@
         <div id="cards-grid" class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
           <!-- kartu menu akan di-render di sini -->
         </div>
+
+        <!-- Overlay pengunci jika belum ada kode -->
+        <div id="menu-lock" class="relative">
+          <div class="pointer-events-none absolute inset-0 hidden bg-white/60 backdrop-blur-sm"></div>
+        </div>
       </div>
 
       <!-- Rekomendasi Menu Spesial -->
@@ -133,9 +168,10 @@
           <p class="mt-2 text-base text-text-secondary">Jangan lewatkan promo dan menu terbaik dari kami!</p>
         </div>
         <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          <!-- (konten tetap seperti sebelumnya) -->
           <div class="group relative overflow-hidden rounded-xl">
-            <img alt="Nasi Goreng Spesial" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3HTY0atfdxw-4lnPVANEqgNqbiKCmEnBFRz2ZG4F3SG5iF4CCz7oyEDQi5ZqH4sKKD8U2dMH4uD5nnGF8mzbV69OkTYKN8d4xTbFIrllFko550ZHw43hfLWN0HMZVWdOa4I6whwvDkvxicD30f6dna_xunCLAc7AgOhCjkQcZdGi33_t3c_7DV8yp7GJ-t_M-JXMM-SCCYQtPa8Ae4Jzr5iovcIJDnSO_oiQINalSnXUmfrFuWGpvMAn6ZtX8-B2dhjB58FR3uk4" />
+            <img alt="Nasi Goreng Spesial"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3HTY0atfdxw-4lnPVANEqgNqbiKCmEnBFRz2ZG4F3SG5iF4CCz7oyEDQi5ZqH4sKKD8U2dMH4uD5nnGF8mzbV69OkTYKN8d4xTbFIrllFko550ZHw43hfLWN0HMZVWdOa4I6whwvDkvxicD30f6dna_xunCLAc7AgOhCjkQcZdGi33_t3c_7DV8yp7GJ-t_M-JXMM-SCCYQtPa8Ae4Jzr5iovcIJDnSO_oiQINalSnXUmfrFuWGpvMAn6ZtX8-B2dhjB58FR3uk4" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6">
               <span class="rounded-full bg-cta px-3 py-1 text-sm font-semibold text-white">Promo</span>
@@ -145,7 +181,9 @@
           </div>
 
           <div class="group relative overflow-hidden rounded-xl">
-            <img alt="Pizza Meat Lovers" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLtEhMvTdah4JmPNHGcR_1HQroDQigf9AQdU6TwI8ZFVLNJaAR_clOBlri7qeQf93-HjxVuR6qCjZ_QJUt_34Rfxb61vj5mzhQo1ez7H4ceJjuL16wEGyZh3SfUzAhI_xnIYYKtUbmDxFnwfCY7hArxqHOpUtxEuS_JeyBQUjLlcCCpECthr4LYG4wH3B7r_UcT11OkiH4z3pHCPLV_YEy8zOlu8FDGfeOA6U_npC0bKLezmPoBdHla6bZEd8Li0kdFagy5Y-_00M" />
+            <img alt="Pizza Meat Lovers"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLtEhMvTdah4JmPNHGcR_1HQroDQigf9AQdU6TwI8ZFVLNJaAR_clOBlri7qeQf93-HjxVuR6qCjZ_QJUt_34Rfxb61vj5mzhQo1ez7H4ceJjuL16wEGyZh3SfUzAhI_xnIYYKtUbmDxFnwfCY7hArxqHOpUtxEuS_JeyBQUjLlcCCpECthr4LYG4wH3B7r_UcT11OkiH4z3pHCPLV_YEy8zOlu8FDGfeOA6U_npC0bKLezmPoBdHla6bZEd8Li0kdFagy5Y-_00M" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6">
               <span class="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">Menu Baru</span>
@@ -155,7 +193,9 @@
           </div>
 
           <div class="group relative overflow-hidden rounded-xl md:col-span-2 lg:col-span-1">
-            <img alt="Menu Baru" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnKiemIDOp47UkA3y-KvbFTgtoInXDNG4IBJtBINJ34a-5raOIVv4xfGp8i_lkSB0NhkAGjoQLM8uXYwDh1snaJ2IRaPZT66mov6Wt0ONBHEXCAZAtLAmdo0u05fgNToz6Sq7M1ETrkE72S8ri4Yv9Igoc7SeqO75dNSDg9Fwm9QIS7HFHTsx4ywnnr0WfdMdaM5Gb8G46DplSUJxz7rpWczBmq5GZFNfUtAriu34LwG-vbfPzaYQFiLM6do3dyMencSmzLjeXCr8" />
+            <img alt="Menu Baru"
+                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnKiemIDOp47UkA3y-KvbFTgtoInXDNG4IBJtBINJ34a-5raOIVv4xfGp8i_lkSB0NhkAGjoQLM8uXYwDh1snaJ2IRaPZT66mov6Wt0ONBHEXCAZAtLAmdo0u05fgNToz6Sq7M1ETrkE72S8ri4Yv9Igoc7SeqO75dNSDg9Fwm9QIS7HFHTsx4ywnnr0WfdMdaM5Gb8G46DplSUJxz7rpWczBmq5GZFNfUtAriu34LwG-vbfPzaYQFiLM6do3dyMencSmzLjeXCr8" />
             <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
             <div class="absolute bottom-0 left-0 p-6">
               <span class="rounded-full bg-primary px-3 py-1 text-sm font-semibold text-white">Terbaru</span>
@@ -166,13 +206,13 @@
         </div>
       </section>
 
-      <!-- Ulasan Pelanggan -->
+      <!-- Ulasan Pelanggan (3 ulasan statis ditampilkan) -->
       <section class="mt-16 w-full">
         <div class="flex flex-col items-center">
           <h3 class="text-2xl font-bold text-text-primary">Ulasan Pelanggan</h3>
           <p class="mt-2 text-base text-text-secondary">Apa kata mereka yang sudah mencoba?</p>
 
-          <!-- Tulis Ulasan button: buka halaman terpisah -->
+          <!-- Tulis Ulasan button -->
           <div class="mt-4">
             <a href="Review.html" id="open-review-btn" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-emerald-600 transition">
               <span class="material-symbols-outlined">edit</span>
@@ -181,12 +221,12 @@
           </div>
         </div>
 
-        <!-- Grid ulasan (tetap mempertahankan ulasan statis) -->
+        <!-- Grid ulasan: tiga ulasan statis seperti sebelumnya -->
         <div id="reviews-grid" class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           <div class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-4">
-                <img alt="Andi" class="h-12 w-12 rounded-full object-cover" src="Img/Lisa.png" />
+                <img alt="Lisa" class="h-12 w-12 rounded-full object-cover" src="Img/Lisa.png" />
                 <div>
                   <p class="font-semibold text-text-primary">Lisa S.</p>
                   <p class="text-sm text-text-secondary">2 hari lalu</p>
@@ -415,6 +455,7 @@
       }
 
       const cart = readCart();
+      const menusLocked = isMenuLocked();
 
       toShow.forEach(item => {
         const url = safeEncodeUrl(item.img || '');
@@ -425,8 +466,13 @@
         const article = document.createElement('article');
         article.className = 'group block overflow-hidden rounded-xl border border-gray-200 bg-background-light shadow-sm transition-shadow hover:shadow-lg flex flex-col';
 
+        // Button state: disabled if locked
+        const addBtnClasses = menusLocked
+          ? 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-gray-300 text-white text-sm font-semibold min-w-[84px] cursor-not-allowed opacity-70'
+          : 'add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]';
+
         article.innerHTML = `
-          <a href="menu_detail.html?id=${encodeURIComponent(item.id)}" class="block flex flex-col h-full">
+          <a ${menusLocked ? 'tabindex="-1" aria-disabled="true" class="pointer-events-none"' : 'class="block flex flex-col h-full"'} href="menu_detail.html?id=${encodeURIComponent(item.id)}">
             <div class="relative w-full overflow-hidden bg-gray-100">
               <div class="${CSS && CSS.supports && CSS.supports('aspect-ratio:16/9') ? 'aspect-[16/9]' : 'pb-56-25'} w-full bg-center bg-cover">
                 <img alt="${(item.title||'')}" loading="lazy" class="w-full h-full object-cover block" />
@@ -440,9 +486,9 @@
                 <div class="text-right">
                   ${hasPromo ? `<div class="text-sm text-gray-400 line-through">${formatRp(item.price)}</div><div class="text-lg font-bold text-promo-orange">${formatRp(promoPrice)}</div>` : `<div class="text-lg font-bold text-text-primary">${formatRp(item.price)}</div>`}
                 </div>
-                <button class="add-btn inline-flex items-center gap-2 rounded-lg h-10 px-4 bg-cta text-white text-sm font-semibold min-w-[84px]" type="button" data-id="${item.id}">
+                <button class="${addBtnClasses}" type="button" data-id="${item.id}">
                   <span class="material-symbols-outlined">add_shopping_cart</span>
-                  Tambah
+                  ${menusLocked ? 'Terkunci' : 'Tambah'}
                 </button>
               </div>
             </div>
@@ -466,31 +512,33 @@
         }
       });
 
-      cardsGrid.querySelectorAll('.add-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          const id = btn.dataset.id;
-          const menuItem = getMenuArray().find(x => x && x.id === id);
-          if (!menuItem) return;
-          const unitPrice = computePromoPrice(menuItem);
-          const success = addToCart(menuItem, 1, unitPrice);
-          if (success){
-            const toast = document.createElement('div');
-            toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
-            toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
-            document.body.appendChild(toast);
-            setTimeout(()=> toast.remove(), 1400);
-            const article = btn.closest('article');
-            if (article && !article.querySelector('.absolute.top-2.left-2')){
-              const badge = document.createElement('div');
-              badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
-              badge.textContent = 'Dalam keranjang';
-              article.querySelector('.relative')?.appendChild(badge);
+      if (!menusLocked){
+        cardsGrid.querySelectorAll('.add-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const menuItem = getMenuArray().find(x => x && x.id === id);
+            if (!menuItem) return;
+            const unitPrice = computePromoPrice(menuItem);
+            const success = addToCart(menuItem, 1, unitPrice);
+            if (success){
+              const toast = document.createElement('div');
+              toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
+              toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
+              document.body.appendChild(toast);
+              setTimeout(()=> toast.remove(), 1400);
+              const article = btn.closest('article');
+              if (article && !article.querySelector('.absolute.top-2.left-2')){
+                const badge = document.createElement('div');
+                badge.className = 'absolute top-2 left-2 bg-primary text-white text-xs font-semibold px-2 py-0.5 rounded-full pointer-events-none';
+                badge.textContent = 'Dalam keranjang';
+                article.querySelector('.relative')?.appendChild(badge);
+              }
             }
-          }
+          });
         });
-      });
+      }
     }
 
     /* UI wiring */
@@ -506,16 +554,112 @@
       renderCards({ q: e.target.value || '', category: cat });
     });
 
+    /* Gate: table code with 2h expiry */
+    const TWO_HOURS = 2 * 60 * 60 * 1000;
+    function getTableCode(){ return localStorage.getItem('table_code') || ''; }
+    function getTableTime(){ return Number(localStorage.getItem('table_code_time') || 0); }
+    function clearTableCode(){
+      localStorage.removeItem('table_code');
+      localStorage.removeItem('table_code_time');
+    }
+    function isCodeValid(){
+      const code = getTableCode();
+      const t = getTableTime();
+      if (!code || !t) return false;
+      const elapsed = Date.now() - t;
+      return elapsed <= TWO_HOURS;
+    }
+    function isMenuLocked(){ return !isCodeValid(); }
+
+    function formatRemaining(ms){
+      if (ms <= 0) return '0m';
+      const m = Math.floor(ms / 60000);
+      const h = Math.floor(m / 60);
+      const mm = m % 60;
+      return (h ? `${h}j ${mm}m` : `${mm}m`);
+    }
+
+    function updateGateUI(){
+      const form = document.getElementById('table-form');
+      const status = document.getElementById('table-status');
+      const expiredMsg = document.getElementById('table-expired-msg');
+      const codeLbl = document.getElementById('table-code-label');
+      const remainLbl = document.getElementById('table-remaining');
+      const lockOverlay = document.querySelector('#menu-block #menu-lock > div');
+
+      // enable/disable search input based on lock state
+      if (searchInput) searchInput.disabled = isMenuLocked();
+
+      if (isCodeValid()){
+        form.classList.add('hidden');
+        status.classList.remove('hidden');
+        expiredMsg.classList.add('hidden');
+        codeLbl.textContent = getTableCode();
+
+        // remaining
+        const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
+        remainLbl.textContent = formatRemaining(remainingMs);
+
+        // unlock menu
+        lockOverlay.classList.add('hidden');
+      } else {
+        status.classList.add('hidden');
+        form.classList.remove('hidden');
+        // show expired if there was a code but now invalid
+        expiredMsg.classList.toggle('hidden', !(getTableCode() && getTableTime()));
+        // lock menu
+        lockOverlay.classList.remove('hidden');
+      }
+    }
+
+    // Start/order button
     document.getElementById('start-order')?.addEventListener('click', () => {
       const code = document.getElementById('manual-table')?.value?.trim();
       if (code) {
         localStorage.setItem('table_code', code);
-        alert('Kode meja disimpan: ' + code);
+        localStorage.setItem('table_code_time', Date.now());
+        updateGateUI();
+        // Re-render menu to enable actions
+        const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+        const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+        renderCards({ q: searchInput.value || '', category: cat });
       } else {
         alert('Masukkan kode meja terlebih dahulu.');
       }
     });
 
+    // Placeholder scan QR
+    document.getElementById('scan-qr')?.addEventListener('click', () => {
+      alert('Fitur scan QR belum diintegrasikan. Gunakan input kode meja terlebih dahulu.');
+    });
+
+    // Clear/reset code (LOCK menu again)
+    document.getElementById('table-clear')?.addEventListener('click', () => {
+      clearTableCode();
+      updateGateUI();
+      const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+      const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+      renderCards({ q: searchInput.value || '', category: cat }); // tombol/link terkunci lagi
+    });
+
+    // Tick remaining time label and auto-expire
+    setInterval(() => {
+      if (isCodeValid()){
+        const remainLbl = document.getElementById('table-remaining');
+        const remainingMs = TWO_HOURS - (Date.now() - getTableTime());
+        remainLbl.textContent = formatRemaining(remainingMs);
+        if (remainingMs <= 0){
+          // auto-expire
+          clearTableCode();
+          updateGateUI();
+          const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+          const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+          renderCards({ q: searchInput.value || '', category: cat });
+        }
+      }
+    }, 30000); // update tiap 30 detik
+
+    /* Init */
     function initWhenReady(){
       if (!window.MENU_DATA){
         setTimeout(initWhenReady, 50);
@@ -523,28 +667,30 @@
       }
       renderCategoryButtons();
       updateCartBadge();
-      renderStoredUserReviews(); // tampilkan ulasan yang tersimpan
+      renderStoredUserReviews();
+      updateGateUI();
+
+      // Render cards initial reflecting locked/unlocked
+      const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+      const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+      renderCards({ q: searchInput.value || '', category: cat });
     }
     initWhenReady();
 
     window.addEventListener('storage', (e) => {
       if (!e.key) return;
       if (e.key === 'cart') updateCartBadge();
-      if (e.key === 'MENU_DATA') {
-        renderCategoryButtons();
-      }
-      if (e.key === 'user_reviews') {
-        // jika ada perubahan ulasan di tab lain, tambahkan yang baru
-        renderStoredUserReviews();
+      if (e.key === 'MENU_DATA') renderCategoryButtons();
+      if (e.key === 'user_reviews') renderStoredUserReviews();
+      if (e.key === 'table_code' || e.key === 'table_code_time'){
+        updateGateUI();
+        const activeBtn = categoryBar.querySelector('.cat-btn.bg-primary');
+        const cat = activeBtn ? (activeBtn.dataset.cat || 'all') : 'all';
+        renderCards({ q: searchInput.value || '', category: cat });
       }
     });
 
-    /* ===========================
-       Review rendering (stored user reviews)
-       - reads localStorage key 'user_reviews'
-       - appends cards to #reviews-grid (ke bawah ulasan statis)
-       =========================== */
-
+    /* Reviews rendering from localStorage (user_reviews) */
     const REVIEWS_KEY = 'user_reviews';
 
     function readUserReviews(){
@@ -556,26 +702,32 @@
       return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#39;');
     }
 
-    function createReviewCard({ name, rating, text, time }){
+    function createReviewCard({ name, rating, text, time, photo, tags }){
       const wrapper = document.createElement('div');
       wrapper.className = 'rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm';
       const date = new Date(time || Date.now());
       const dateStr = date.toLocaleDateString('id-ID');
-      const stars = '★★★★★'.slice(0, Number(rating || 0)) + '☆☆☆☆☆'.slice(0, 5 - Number(rating || 0));
+      const starsCount = Math.max(0, Math.min(5, Number(rating || 0)));
+      const stars = '★★★★★'.slice(0, starsCount);
+      const avatar = (name && name[0]) ? name[0].toUpperCase() : '?';
+      wrapper.setAttribute('data-user-review-time', String(time || ''));
+
       wrapper.innerHTML = `
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
-            <div class="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-600">${(name && name[0]) ? name[0].toUpperCase() : '?'}</div>
+            <div class="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-600">${avatar}</div>
             <div>
               <p class="font-semibold text-text-primary">${escapeHtml(name || 'Anonim')}</p>
               <p class="text-sm text-text-secondary">${dateStr}</p>
             </div>
           </div>
-          <div class="flex items-center gap-1 text-cta">
-            <span class="text-amber-500 text-sm">${escapeHtml(stars)}</span>
+          <div class="flex items-center gap-1 text-amber-500">
+            ${stars.split('').map(()=>'<span class="material-symbols-outlined text-lg">star</span>').join('')}
           </div>
         </div>
         <p class="mt-4 text-text-secondary">${escapeHtml(text || '')}</p>
+        ${photo ? `<div class="mt-3"><img src="${photo}" alt="Foto ulasan" class="w-full h-40 object-cover rounded-lg"/></div>` : ''}
+        ${Array.isArray(tags) && tags.length ? `<div class="mt-3 flex flex-wrap gap-2">${tags.map(t => `<span class="px-2 py-1 text-xs rounded-full border border-gray-200">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
       `;
       return wrapper;
     }
@@ -584,14 +736,11 @@
       const list = readUserReviews();
       if (!list || !list.length) return;
       const grid = document.getElementById('reviews-grid');
-      // append only new ones (avoid duplicates by timestamp)
       const existingTimes = new Set(Array.from(grid.querySelectorAll('[data-user-review-time]')).map(n => n.getAttribute('data-user-review-time')));
       list.forEach(r => {
         const key = String(r.time || '');
         if (existingTimes.has(key)) return;
         const card = createReviewCard(r);
-        // mark to avoid duplicates
-        card.setAttribute('data-user-review-time', key);
         grid.appendChild(card);
       });
     }
