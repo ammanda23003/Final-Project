@@ -351,6 +351,140 @@ window.MENU_DATA = {
     sauces: ["Tomat", "Keju"],
     extras: [{ name: "Keju Extra", price: 6000 }]
   },
+  "ayam-gulai-padang": {
+    id: "ayam-gulai-padang",
+    title: "Ayam Gulai Padang",
+    price: 48000,
+    img: "Img/ayamgulaipadang.png",
+    desc: "Potongan ayam berkuah santan dengan rempah khas padang",
+    category: "makanan",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 20,
+    sauces: [],
+    extras: []
+  },
+  "bakmi-goreng-spesial": {
+    id: "bakmi-goreng-spesial",
+    title: "Bakmi Goreng Spesial",
+    price: 28000,
+    img: "Img/bakmigorengspesial.png",
+    desc: "Bakmi tumis dengan sayur, telur, dan irisan ayam",
+    category: "makanan",
+    isFavorite: true,
+    isPromo: false,
+    prepTime: 23,
+    sauces: [],
+    extras: []
+  },
+  "ikan-asam-manis":{
+    id: "ikan-asam-manis",
+    title: "Ikan Asam Manis",
+    price: 42000,
+    img: "Img/ikanasammanis.png",
+    desc: "Fillet ikan goreng dengan saus asam manis",
+    category: "makanan",
+    isFavorite: false,
+    isPromo: true,
+    promo: {type: "percent", value: 20, label: "20% OFF"},
+    prepTime: 30,
+    sauces: [],
+    extras: []
+  },
+  "tahu-tempe-kriuk": {
+    id: "tahu-tempe-kriuk",
+    title: "Tahu Tempe Kriuk",
+    price: 15000,
+    img: "Img/tahutempekriuk.png",
+    desc: "Paket gorengan tahu dan tempa renyah dengan sambal",
+    category: "makanan",
+    isFavorite: true,
+    isPromo: false,
+    prepTime: 15,
+    sauces: [],
+    extras: []
+  },
+  "nasi-uduk-komplit": {
+    id: "nasi-uduk-komplit",
+    title: "Nasi Uduk Komplit",
+    price: 30000,
+    img: "Img/nasiudukkomplit.png",
+    desc: "Nasi uduk dengan ayam suwir, telur, dan sambal",
+    category: "makanan",
+    isFavorite: true,
+    isPromo: true,
+    promo: {type: "percent", value: 20, label: "20% OFF"},
+    prepTime: 20,
+    sauces: [],
+    extras: [{ name: "Telur Mata sapi", price: 5000 },
+      {name: "Ayam suwir", price: 8000}
+     ]
+  },
+  "sop-kacang-merah":{
+    id: "sop-kacang-merah",
+    title: "Sop Kacang Merah",
+    price: 26000,
+    img: "Img/sopkacangmerah.png",
+    desc: "Sup hangan dengan kacang merah dan daging cincang",
+    category: "makanan",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 10,
+    sauces: [],
+    extras: []
+  },
+  "ikan-asin-tumis-cabe": {
+    id: "ikan-asin-tumis-cabe",
+    title: "Ikan Asin Tumis Cabe",
+    price: 32000,
+    img : "Img/ikanasintumiscabe.png",
+    desc: "Ikan asin tumis pedas dengan bawang dan tomat",
+    category: "makanan",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 20,
+    sauces: [],
+    extras: []
+  },
+  "pepes-jagung-keju": {
+    id: "pepes-jagung-keju",
+    title: "Pepes Jagung Keju",
+    price: 22000,
+    img: "Img/pepesjagungkeju.png",
+    desc: "Pepes jagung manis dengan taburan keju panggang",
+    category: "makanan",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 25,
+    sauces: [],
+    extras: []
+  },
+  "lontong-cap-gomeh":{
+    id: "lontong-cap-gomeh",
+    title: "Lontong Cap Gomeh",
+    price: 35000,
+    img: "Img/lontongcapgomeh.png",
+    desc: "Lontong dengan sayur, telur, dan kuah kental rempah.",
+    category: "makanan",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 20,
+    sauces: [],
+    extras: []
+  },
+  "ayam-kremes-lada-hitam": {
+    id: "ayam-keras-lada-hitam",
+    title: "Ayam Kremes Lada Hitam",
+    price: 39000,
+    img: "Img/ayamkremesladahitam.png",
+    desc: "Ayam kremes dengan saus lada hitam gurih",
+    category: "makanan",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 22,
+    sauces: [],
+    extras: []
+  },
 
   // === MINUMAN ===
   "es-kopi-latte": {
@@ -473,5 +607,234 @@ window.MENU_DATA = {
       { name: "Biji Chia", price: 3000 },
       { name: "Whipped Cream", price: 4000 }
     ]
-  }
+  },
+  "teh-jahe-madu": {
+    id: "teh-jahe-madu",
+    title: "Teh Jahe Madu",
+    price: 12000,
+    img: "Img/tehjahemadu.png",
+    desc: "Teh hangan berpadu jahe segar dan madu",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 10,
+    toppings:[]
+  },
+  "kopi-vietnamese-iced":{
+    id: "kopi-vietnamese-iced",
+    title: "Kopi Vietnamese Iced",
+    price: 25000,
+    img: "Img/kopivietnameseiced.png",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    prepTime: 10,
+    toppings: []
+  },
+  "smoothie-mangga":{
+    id: "smoothie-mangga",
+    title: "Smoothie Mangga",
+    price: 28000,
+    img: "Img/smoothiemangga.png",
+    desc: "Smoothie mangga dengan kefir untuk rasa lebih segar",
+    category: "minuman",
+    isFavorite: true,
+    isPromo: true,
+    promo: {type: "percent", value: 20, label: "20% OFF"},
+    prepTime: 15,
+    toppings: []
+  },
+  "cokelat-olahan-tinggi":{
+    id: "coklat-olahan-tinggi",
+    title: "Coklat Olahan Tinggi",
+    price: 22000,
+    img: "Img/cokelatolahantinggi.png",
+    desc: "Minuman coklat pekat dengan campuran susu panas.",
+    category: "minuman",
+    isFavorite: true,
+    isPromo: false,
+    prepTime: 10,
+    toppings: []
+  },
+  "infused-water-buah": {
+    id: "infused-water-buah",
+    title: "Infused Water Buah",
+    price: 9000,
+    img: "Img/infusedwaterbuah.png",
+    desc: "Air mineral dengan irisan lemon dan mentimun",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "teh-oolong-vanilla":{
+    id: "teh-oolong-vanilla",
+    title: "Teh Oolong Vanilla",
+    price: 18000,
+    img: "Img/tehoolongvanilla.png",
+    desc: "Teh oolong dengan aroma vanilla yang lembut",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "mocktail-berry-sparkle":{
+    id: "mocktail-berry-sparkle",
+    title: "Mocktail Berry Sparkle",
+    price: 26000,
+    img: "Img/mocktailberrysparkle.png",
+    desc: "Campuran berry, soda, dan sedikit jeruk nipis",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "latte-kunyit": {
+    id: "latte-kunyit",
+    title: "Latte Kunyit",
+    price: 20000,
+    img: "Img/lattekunyit.png",
+    desc: "Latte berbasis susu dengan kunyit dan rempah",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "es-susu-kelapa":{
+    id: "es-susu-kelapa",
+    title: "Es Susu Kelapa",
+    price: 21000,
+    img: "Img/essusukelapa.png",
+    desc: "Susu dingin dengan sirup kelapa dan es",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "teh-lavender-honey":{
+    id: "teh-lavender-honey",
+    title: "Teh Lavender Honey",
+    price: 23000,
+    img: "Img/tehlavenderhoney.png",
+    desc: "Teh bunga lavender dengan madu alami",
+    category: "minuman",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  // Paket
+  "paket-hemat-2-orang":{
+    id: "paket-hemat-2-orang",
+    title: "Paket Hemat 2 Orang",
+    price: 85000,
+    img: "Img/pakethemat2orang.png",
+    desc: "Nasi + 2 lauk + 2 minuman ukuran sedang",
+    category: "paket",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "paket-hemat-4-orang": {
+    id: "paket-hemat-4-orang",
+    title: "Paket Hemat 4 Orang",
+    price: 240000,
+    img: "Img/pakethemat4orang.png",
+    desc: "4 Porsi nasi + 4 lauk + 2 porsi sayur",
+    category: "paket",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "paket-sarapan":{
+    id: "paket-sarapan",
+    title: "Paket Sarapan",
+    price: 35000,
+    img: "Img/paketsarapan.png",
+    desc: "Nasi uduk + telur + Kopi/Teh",
+    category: "paket",
+    isfavorite: true,
+    isPromo: false,
+    toppings: [{ name: "Kopi", price: 0 },{name: "Teh", price: 0}]
+  },
+  "paket-vegetarian-2": {
+    id: "paket-vegetarian-2",
+    title: "Paket Vegetarian 2",
+    price: 90000,
+    img: "Img/paketvegetarian2.png",
+    desc: " 2 Porsi menu sayur + 2 minuman sehat",
+    category: "paket",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  // Snack
+  "risol-keju-bakar":{
+    id: "risol-keju-bakar",
+    title: "Risol Keju Bakar",
+    price: 12000,
+    img: "Img/risolkejubakar.png",
+    desc: "Risol isi sayur dan keju dipanggang renyah",
+    category: "snack",
+    isFavorite: true,
+    isPromo: false,
+    toppings: [{name: "Saus keju", price: 2000}, {name: "mayonaise", price: 2500},
+      {name: "Saus sambal", price: 0}, {name: "Chili Oil", price: 3000}
+    ]
+  },
+  "pastel-udang-mini":{
+    id: "pastel-udang-mini",
+    title: "Pastel Udang Mini",
+    price: 15000,
+    img: "Img/pasteludangmini.png",
+    desc: "Pastel kecil isi udang dan sayur",
+    category: "snack",
+    isFavorite: false,
+    isPromo: false,
+    toppings: [{name: "Saus keju", price: 2000}, {name: "mayonaise", price: 2500},
+      {name: "Saus sambal", price: 0}, {name: "Chili Oil", price: 3000}
+    ]
+  },
+  "keripik-singkong-balado":{
+    id: "kripik-singkong-balado",
+    title: "Kripik Singkong Balado",
+    price: 12000,
+    img: "Img/keripiksingkongbalado.png",
+    desc: "Kripik singkong renyah, gurih dan pedas manis yang khas",
+    category: "snack",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "bola-ubi-goreng":{
+    id: "bola-ubi-goreng",
+    title: "Bola Ubi Goreng",
+    price: 10000,
+    img: "Img/bolaubigoreng.png",
+    desc: "Bola ubi manis dengan taburan gula palem",
+    category: "snack",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "lumpia-semarang":{
+    id: "lumpia-semarang",
+    title: "Lumpia Semarang",
+    price: 18000,
+    img: "Img/lumpiasemarang.png",
+    desc: "Lumpia isi rebung dan daging cincang",
+    category: "snack",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
+  "nachos-keju-sambal":{
+    id:"nachos-keju-sambal",
+    title: "Nachos Keju Sambal",
+    price: 18000,
+    img: "Img/nachoskejusambal.png",
+    category: "snack",
+    isFavorite: false,
+    isPromo: false,
+    toppings: []
+  },
 };
