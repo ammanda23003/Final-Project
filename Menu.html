@@ -260,41 +260,112 @@
       }
     }
 
-    /* ---------- Menu rendering ---------- */
+    /* ---------- Menu rendering (ensure "Semua" truly shows all items) ---------- */
+
+    // Category normalization and helpers
+    const CATEGORY_ALIASES = {
+      'makanan': 'makanan',
+      'makan': 'makanan',
+      'food': 'makanan',
+      'minuman': 'minuman',
+      'drink': 'minuman',
+      'drinks': 'minuman',
+      'beverage': 'minuman',
+      'paket': 'paket',
+      'package': 'paket',
+      'snack': 'snack',
+      'camilan': 'snack'
+    };
+
+    function normalizeCategoryKey(raw){
+      if (!raw && raw !== 0) return '';
+      const s = String(raw).trim().toLowerCase();
+      if (!s) return '';
+      if (CATEGORY_ALIASES[s]) return CATEGORY_ALIASES[s];
+      if (s.endsWith('s') && CATEGORY_ALIASES[s.slice(0,-1)]) return CATEGORY_ALIASES[s.slice(0,-1)];
+      return s;
+    }
+
+    function getItemCategories(item){
+      if (!item) return [];
+      const raw = item.category || item.categories || item.type || item.types || '';
+      if (Array.isArray(raw)){
+        return raw.map(r => normalizeCategoryKey(r)).filter(Boolean);
+      }
+      if (typeof raw === 'string' && raw.includes(',')){
+        return raw.split(',').map(r => normalizeCategoryKey(r)).filter(Boolean);
+      }
+      const single = normalizeCategoryKey(raw);
+      return single ? [single] : [];
+    }
+
     function getMenuArray(){ try { return Object.values(window.MENU_DATA || {}); } catch { return []; } }
+
     function uniqueCategories(menuArr){
       const set = new Set();
-      menuArr.forEach(it => { if (it && it.category) set.add(it.category); });
+      menuArr.forEach(it => {
+        const cats = getItemCategories(it);
+        cats.forEach(c => set.add(c));
+      });
+      // keep common categories visible
+      ['makanan','minuman','paket','snack'].forEach(k => { if (!set.has(k)) set.add(k); });
       return Array.from(set);
+    }
+
+    function displayLabelForKey(key){
+      if (!key) return '';
+      const map = { 'makanan':'Makanan', 'minuman':'Minuman', 'paket':'Paket', 'snack':'Snack' };
+      return map[key] || (key.charAt(0).toUpperCase() + key.slice(1));
     }
 
     function renderCategoryButtons(){
       const cats = uniqueCategories(getMenuArray());
       categoryBar.innerHTML = '';
+
+      // "Semua" button (explicit)
       const allBtn = document.createElement('button');
       allBtn.className = 'cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-primary text-white text-sm font-medium';
       allBtn.textContent = 'Semua';
       allBtn.dataset.cat = 'all';
       categoryBar.appendChild(allBtn);
 
-      cats.forEach(cat => {
+      // Preferred order then others
+      const preferred = ['makanan','minuman','paket','snack'];
+      const others = cats.filter(c => !preferred.includes(c)).sort();
+      const ordered = preferred.filter(c => cats.includes(c)).concat(others);
+
+      ordered.forEach(cat => {
         const b = document.createElement('button');
         b.className = 'cat-btn flex h-10 shrink-0 items-center justify-center rounded-full px-5 bg-background-secondary text-text-primary text-sm font-medium';
-        b.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+        b.textContent = displayLabelForKey(cat);
         b.dataset.cat = cat;
         categoryBar.appendChild(b);
       });
 
+      // Click handler
       categoryBar.querySelectorAll('.cat-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          categoryBar.querySelectorAll('.cat-btn').forEach(x => { x.classList.remove('bg-primary','text-white'); x.classList.add('bg-background-secondary','text-text-primary'); });
+          categoryBar.querySelectorAll('.cat-btn').forEach(x => {
+            x.classList.remove('bg-primary','text-white');
+            x.classList.add('bg-background-secondary','text-text-primary');
+          });
           btn.classList.remove('bg-background-secondary','text-text-primary');
           btn.classList.add('bg-primary','text-white');
-          renderCards({ q: searchInput.value || '', category: btn.dataset.cat || 'all' });
+
+          const catKey = btn.dataset.cat || 'all';
+          // If 'all' selected, render all items regardless of their category
+          if (catKey === 'all') {
+            renderCards({ q: searchInput.value || '', category: 'all' });
+          } else {
+            renderCards({ q: searchInput.value || '', category: catKey });
+          }
         });
       });
 
-      categoryBar.querySelector('.cat-btn')?.click();
+      // Activate "Semua" explicitly and render all items
+      allBtn.classList.remove('bg-background-secondary','text-text-primary');
+      allBtn.classList.add('bg-primary','text-white');
+      renderCards({ q: searchInput.value || '', category: 'all' });
     }
 
     function currentState(){
@@ -302,14 +373,37 @@
       return { q: searchInput.value || '', category: activeBtn ? (activeBtn.dataset.cat || 'all') : 'all' };
     }
 
+    function itemMatchesCategory(item, categoryKey){
+      if (!item) return false;
+      if (!categoryKey || categoryKey === 'all') return true;
+      const cats = getItemCategories(item);
+      return cats.includes(categoryKey);
+    }
+
     function renderCards({ q = '', category = 'all', maxCount = 12 } = {}){
       const ql = (q || '').trim().toLowerCase();
-      let filtered = getMenuArray().filter(Boolean).filter(item => {
-        if (!item) return false;
-        if (category !== 'all' && item.category !== category) return false;
-        if (!ql) return true;
-        return (item.title + ' ' + (item.desc || '')).toLowerCase().includes(ql);
-      });
+
+      // Get all items
+      const allItems = getMenuArray().filter(Boolean);
+
+      // When category === 'all' we include ALL items (only filtered by search)
+      let filtered;
+      if (category === 'all') {
+        if (!ql) {
+          filtered = allItems.slice(); // copy all items
+        } else {
+          filtered = allItems.filter(item => {
+            return ((item.title||'') + ' ' + (item.desc||'') + ' ' + (Array.isArray(item.tags)?item.tags.join(' '):'')).toLowerCase().includes(ql);
+          });
+        }
+      } else {
+        filtered = allItems.filter(item => {
+          if (!item) return false;
+          if (!itemMatchesCategory(item, category)) return false;
+          if (!ql) return true;
+          return ((item.title||'') + ' ' + (item.desc||'') + ' ' + (Array.isArray(item.tags)?item.tags.join(' '):'')).toLowerCase().includes(ql);
+        });
+      }
 
       cardsGrid.innerHTML = '';
       if (!filtered.length){
@@ -320,7 +414,10 @@
       const cart = readCart();
       const locked = !window.utilsTable.isCodeValid();
 
-      filtered.slice(0, maxCount).forEach(item => {
+      // If category === 'all' show all filtered items (no artificial cap)
+      const itemsToShow = (category === 'all') ? filtered : filtered.slice(0, maxCount);
+
+      itemsToShow.forEach(item => {
         const url = safeEncodeUrl(item.img || '');
         const promoPrice = computePromoPrice(item);
         const hasPromo = !!item.isPromo && (promoPrice < Number(item.price || 0));
@@ -347,6 +444,7 @@
             <div class="p-4 flex flex-col flex-1">
               <h4 class="text-lg font-semibold text-text-primary">${item.title || ''}</h4>
               <p class="mt-1 text-sm text-text-secondary break-words">${item.desc || ''}</p>
+              <div class="mt-2 text-xs text-text-secondary">${getItemCategories(item).map(displayLabelForKey).join(' • ')}</div>
               <div class="mt-auto flex items-center justify-between gap-3">
                 <div class="text-right">
                   ${hasPromo
