@@ -2,407 +2,334 @@
 <html lang="id">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Detail Menu - Resto Modern</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "primary": "#4CAF50",
-            "cta": "#FF9800",
-            "background-light": "#FFFFFF",
-            "background-secondary": "#F5F5F5",
-            "text-primary": "#1F2937",
-            "text-secondary": "#6B7280",
-            "promo-orange": "#FF9800"
-          },
-          fontFamily: { "display": ["Poppins", "sans-serif"] }
-        }
-      }
-    }
-  </script>
   <style>
+    :root{
+      --bg-light:#ffffff;
+      --bg-secondary:#F5F5F5;
+      --primary:#4CAF50;
+      --cta:#FF9800;
+      --text-primary:#1F2937;
+      --text-secondary:#6B7280;
+    }
+    body { font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: var(--bg-secondary); color: var(--text-primary); min-height:100dvh; }
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    body { min-height: max(884px, 100dvh); }
+    .container { max-width: 1024px; margin-left:auto; margin-right:auto; padding-left:1rem; padding-right:1rem; }
+    .muted { color:var(--text-secondary); }
+    .card { background:var(--bg-light); border-radius: .75rem; box-shadow: 0 1px 2px rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.04); }
+    .option-row { display:flex; align-items:center; gap:.75rem; padding:.5rem .5rem; border-radius:.5rem; }
+    .option-row:hover { background: #f8faf8; }
+    .price-tag { font-weight:700; color:var(--text-primary); }
   </style>
 </head>
-
-<body class="bg-background-light font-display text-text-primary">
-  <div class="flex min-h-screen w-full flex-col">
-    <!-- Header -->
-    <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
-      <div class="container mx-auto flex h-20 items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center gap-3">
-          <span class="material-symbols-outlined text-primary text-4xl">restaurant_menu</span>
-          <h1 class="text-2xl font-bold text-text-primary">Resto Modern</h1>
-        </div>
-
-        <nav class="hidden items-center gap-6 md:flex">
-          <a class="text-base font-medium text-text-primary hover:text-primary" href="index.html">Beranda</a>
-          <a class="text-base font-medium text-text-primary hover:text-primary" href="Menu.html">Menu</a>
-          <a class="text-base font-medium text-text-primary hover:text-primary" href="Promo.html">Promo</a>
-          <a class="text-base font-medium text-text-primary hover:text-primary" href="Menu_favorit.html">Favorit</a>
-          <a class="text-base font-medium text-text-primary hover:text-primary" href="cart.html" aria-label="Keranjang">
-            <span class="material-symbols-outlined">shopping_cart</span>
-            <span id="header-cart-badge" class="hidden absolute -top-2 -right-3 text-xs bg-red-600 text-white rounded-full px-2 h-5 leading-5"></span>
-          </a>
-        </nav>
-
-        <button id="menu-toggle" class="md:hidden" aria-label="Buka menu">
-          <span class="material-symbols-outlined text-3xl">menu</span>
-        </button>
+<body>
+  <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-white">
+    <div class="container flex h-16 items-center justify-between">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-primary" style="color:var(--primary); font-size:28px;">restaurant_menu</span>
+        <h1 class="text-lg font-semibold">Resto Modern</h1>
       </div>
-    </header>
+      <a href="Menu.html" class="text-text-secondary hover:text-primary">Kembali</a>
+    </div>
+  </header>
 
-    <!-- Main -->
-    <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
-      <div id="detail-block" class="max-w-4xl mx-auto">
-        <!-- Gate status (reuse same UI pattern) -->
-        <div id="table-status" class="mb-6 hidden">
-          <div class="inline-flex items-center gap-2 rounded-lg bg-background-secondary border border-gray-200 px-4 py-2 text-sm">
-            <span class="material-symbols-outlined text-primary">qr_code_2</span>
-            <span>Kode meja aktif: <strong id="table-code-label" class="font-semibold"></strong></span>
-            <span class="text-text-secondary">|</span>
-            <span>Sisa waktu: <strong id="table-remaining" class="font-semibold"></strong></span>
-            <button id="table-clear" class="ml-3 inline-flex items-center gap-1 px-2 py-1 rounded-md border border-gray-200 hover:bg-gray-50">
-              <span class="material-symbols-outlined text-sm">close</span>
-              Reset
-            </button>
-          </div>
+  <main class="container py-6">
+    <div id="root" class="max-w-3xl mx-auto"></div>
+  </main>
+
+  <footer class="w-full border-t border-gray-200 bg-background-secondary">
+    <div class="container py-8">
+      <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
+        <div class="text-sm muted">
+          <p class="font-semibold">Resto Modern</p>
+          <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
         </div>
-
-        <!-- Detail card -->
-        <article id="menu-detail" class="rounded-xl border border-gray-200 bg-background-light shadow-sm overflow-hidden">
-          <div id="detail-media" class="w-full h-64 bg-gray-100 flex items-center justify-center">
-            <!-- image inserted by JS -->
-            <img id="detail-img" alt="Gambar menu" class="w-full h-full object-cover hidden" />
-            <div id="detail-img-fallback" class="text-sm text-gray-400">Gambar tidak tersedia</div>
-          </div>
-
-          <div class="p-6">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <h2 id="detail-title" class="text-2xl font-bold text-text-primary">Nama Menu</h2>
-                <p id="detail-category" class="mt-1 text-sm text-text-secondary">Kategori</p>
-              </div>
-              <div class="text-right">
-                <div id="detail-price" class="text-2xl font-bold text-text-primary">Rp 0</div>
-                <div id="detail-old-price" class="text-sm text-gray-400 line-through hidden"></div>
-              </div>
-            </div>
-
-            <p id="detail-desc" class="mt-4 text-text-secondary">Deskripsi menu akan muncul di sini.</p>
-
-            <!-- Actions -->
-            <div class="mt-6 flex items-center gap-4">
-              <div>
-                <label class="inline-flex items-center gap-2 text-sm text-text-secondary">
-                  <span>Jumlah</span>
-                  <input id="qty" type="number" min="1" value="1" class="w-20 form-input px-3 py-2 rounded-lg border border-gray-200" />
-                </label>
-              </div>
-
-              <button id="add-to-cart" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cta text-white font-semibold hover:bg-orange-600 transition">
-                <span class="material-symbols-outlined">add_shopping_cart</span>
-                Tambah ke Keranjang
-              </button>
-
-              <button id="add-to-fav" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 text-sm hover:bg-gray-50 transition">
-                <span class="material-symbols-outlined text-primary">favorite</span>
-                Favorit
-              </button>
-
-              <div id="locked-note" class="ml-2 text-sm text-red-600 hidden">Fitur terkunci. Masukkan kode meja terlebih dahulu.</div>
-            </div>
-          </div>
-        </article>
-
-        <!-- Back link -->
-        <div class="mt-6">
-          <a href="Menu.html" class="inline-flex items-center gap-2 text-sm text-text-primary hover:text-primary">
-            <span class="material-symbols-outlined">arrow_back</span>
-            Kembali ke Daftar Menu
-          </a>
+        <div class="flex gap-6 text-sm">
+          <a class="muted hover:text-primary" href="Bantuan.html">Bantuan</a>
+          <a class="muted hover:text-primary" href="FAQ.html">FAQ</a>
         </div>
+        <p class="text-sm muted">© 2025 Smart Ordering System. All rights reserved.</p>
       </div>
-    </main>
+    </div>
+  </footer>
 
-    <!-- Footer -->
-    <footer class="mt-16 w-full border-t border-gray-200 bg-background-secondary">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-xs text-text-secondary">
-        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-2">
-          <div>
-            <p class="font-semibold text-text-primary">Resto Modern</p>
-            <p class="mt-1">Jl. Teknologi No. 1, Jakarta, Indonesia</p>
-          </div>
-          <div class="flex gap-4">
-            <a class="hover:text-primary" href="Bantuan.html">Bantuan</a>
-            <a class="hover:text-primary" href="FAQ.html">FAQ</a>
-          </div>
-          <p>© 2025 Smart Ordering System</p>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <!-- config.js dan utils.js di root -->
-  <script src="config.js"></script>
-  <script src="utils.js"></script>
-
-  <!-- data.js harus tersedia dan mendefinisikan window.MENU_DATA -->
+  <!-- Pastikan data.js ada di root dan mendefinisikan window.MENU_DATA -->
   <script src="data.js"></script>
 
   <script>
-  (function(){
-    'use strict';
-
-    /* Helpers */
-    function qs(id){ return document.getElementById(id); }
+    // Helpers
     function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
-    function computePromoPrice(item){
-      let price = Number(item.price || 0);
-      if (item.isPromo && item.promo){
-        if (item.promo.type === 'percent') {
-          price = Math.round(price * (100 - Number(item.promo.value || 0)) / 100);
-        } else if (item.promo.type === 'fixed') {
-          price = Math.max(0, price - Number(item.promo.value || 0));
-        }
-      }
-      return price;
-    }
-    function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
-    function writeCart(c){ localStorage.setItem('cart', JSON.stringify(c)); }
-    function readFavorites(){ try { return JSON.parse(localStorage.getItem('favorites') || '[]'); } catch { return []; } }
-    function writeFavorites(a){ localStorage.setItem('favorites', JSON.stringify(a)); }
+    function getQueryParam(name){ return new URLSearchParams(window.location.search).get(name); }
+    function safeSrc(src){ if(!src) return ''; try { return encodeURI(src.replace(/\\/g,'')); } catch { return src; } }
 
-    /* Read id from querystring */
-    function getQueryParam(name){
-      const params = new URLSearchParams(window.location.search);
-      return params.get(name);
-    }
+    (function(){
+      const root = document.getElementById('root');
+      const id = getQueryParam('id');
 
-    /* Render detail */
-    function renderDetail(item){
-      if (!item) {
-        qs('menu-detail').innerHTML = '<div class="p-6 text-center text-text-secondary">Item tidak ditemukan.</div>';
-        return;
-      }
-
-      // Image
-      const img = qs('detail-img');
-      const fallback = qs('detail-img-fallback');
-      if (item.img){
-        img.src = item.img;
-        img.classList.remove('hidden');
-        fallback.classList.add('hidden');
-      } else {
-        img.classList.add('hidden');
-        fallback.classList.remove('hidden');
-      }
-
-      qs('detail-title').textContent = item.title || '';
-      qs('detail-category').textContent = item.category ? item.category.charAt(0).toUpperCase() + item.category.slice(1) : '';
-      qs('detail-desc').textContent = item.desc || '';
-
-      const promoPrice = computePromoPrice(item);
-      const hasPromo = item.isPromo && promoPrice < Number(item.price || 0);
-
-      if (hasPromo){
-        qs('detail-price').textContent = formatRp(promoPrice);
-        qs('detail-old-price').textContent = formatRp(item.price);
-        qs('detail-old-price').classList.remove('hidden');
-      } else {
-        qs('detail-price').textContent = formatRp(item.price);
-        qs('detail-old-price').classList.add('hidden');
-      }
-
-      // update add button dataset
-      qs('add-to-cart').dataset.id = item.id;
-      qs('add-to-cart').dataset.price = String(hasPromo ? promoPrice : Number(item.price || 0));
-    }
-
-    /* Add to cart handler (respects lock) */
-    function attachAddToCart(){
-      const btn = qs('add-to-cart');
-      btn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        if (!window.utilsTable.isCodeValid()){
-          showLockedNote();
+      // Wait until window.MENU_DATA is available
+      function initWhenReady(){
+        if (typeof window.MENU_DATA === 'undefined'){
+          setTimeout(initWhenReady, 50);
           return;
         }
-        const id = btn.dataset.id;
-        const qty = Math.max(1, Number(qs('qty').value || 1));
-        const price = Number(btn.dataset.price || 0);
-        const menuItem = (Object.values(window.MENU_DATA || {}) || []).find(x => x && x.id === id);
-        if (!menuItem) return;
+        render();
+      }
 
-        try {
-          const cart = readCart();
-          const key = menuItem.id || menuItem.title;
-          let found = false;
-          for (const it of cart){
-            if ((it.id && it.id === key) || (it.title && it.title === menuItem.title)){
-              it.qty = (Number(it.qty) || 0) + qty;
-              it.price = price;
-              found = true;
-              break;
+      function normalizeFieldToArray(obj, fieldNames){
+        fieldNames.forEach(fn => {
+          if (!obj[fn]) { obj[fn] = []; return; }
+          if (Array.isArray(obj[fn])) return;
+          if (typeof obj[fn] === 'string') {
+            // comma separated or single string
+            obj[fn] = obj[fn].split(',').map(s => s.trim()).filter(Boolean).map(s => ({ label: s, key: s, price: 0 }));
+          } else {
+            // convert object to array
+            obj[fn] = [obj[fn]];
+          }
+        });
+      }
+
+      function render(){
+        const data = window.MENU_DATA || {};
+        if (!id || !data[id]){
+          root.innerHTML = `
+            <div class="card p-6 text-center">
+              <h2 class="text-xl font-semibold mb-2">Item tidak ditemukan</h2>
+              <p class="muted mb-4">ID: ${id ?? '—'}</p>
+              <a href="Menu.html" class="inline-block px-4 py-2 rounded-lg bg-primary text-white">Kembali ke Menu</a>
+            </div>`;
+          return;
+        }
+
+        // Use the item from MENU_DATA
+        const item = JSON.parse(JSON.stringify(data[id])); // clone to avoid mutating global
+
+        // Support multiple field names and normalize to arrays of objects { key, label, price, desc? }
+        if (!item.sauces && item.sauce) item.sauces = item.sauce;
+        if (!item.toppings && item.topping) item.toppings = item.topping;
+        if (!item.additions && item.extras) item.additions = item.extras;
+        if (!item.additions && item.addons) item.additions = item.addons;
+
+        // Normalize: if array of strings -> convert to objects; if array of objects keep as is
+        function normalizeList(list){
+          if (!list) return [];
+          return list.map((it, idx) => {
+            if (typeof it === 'string') return { key: it.replace(/\s+/g,'-').toLowerCase(), label: it, price: 0 };
+            if (typeof it === 'number') return { key: 'opt-'+idx, label: String(it), price: 0 };
+            // object: try to map common keys
+            return {
+              key: it.key || it.id || (it.label ? it.label.replace(/\s+/g,'-').toLowerCase() : ('opt-'+idx)),
+              label: it.label || it.name || it.title || it.key || it.id || ('Option '+(idx+1)),
+              price: Number(it.price || it.cost || 0),
+              desc: it.desc || it.description || ''
+            };
+          });
+        }
+
+        const sauces = normalizeList(item.sauces || item.toppings || []);
+        const additions = normalizeList(item.additions || []);
+
+        // Determine label for primary options: for drinks use "Topping", otherwise "Pilihan Saus"
+        const category = (item.category || '').toString().toLowerCase();
+        const isDrink = category.includes('minum') || category.includes('drink') || category.includes('beverage');
+        const primaryLabel = isDrink ? 'Topping' : 'Pilihan Saus';
+        const primaryOptions = sauces;
+
+        // Build HTML
+        root.innerHTML = `
+          <div class="card overflow-hidden">
+            <div class="md:flex">
+              <div class="md:w-1/2 w-full">
+                <img id="product-image" src="${safeSrc(item.img || '')}" alt="${item.title || ''}" class="w-full h-56 md:h-full object-cover" />
+              </div>
+
+              <div class="md:w-1/2 w-full p-6">
+                <h1 class="text-2xl font-bold">${item.title || ''}</h1>
+                <p id="base-price" class="mt-2 text-xl font-extrabold">${formatRp(item.price)}</p>
+                <p class="mt-3 muted">${item.desc || ''}</p>
+
+                <div class="mt-6">
+                  <h4 class="font-medium">${primaryLabel}</h4>
+                  <div id="primary-options" class="mt-2 space-y-2"></div>
+                </div>
+
+                <div class="mt-5">
+                  <h4 class="font-medium">Tambahan</h4>
+                  <div id="addition-options" class="mt-2 space-y-2"></div>
+                </div>
+
+                <div class="mt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div class="flex items-center gap-3">
+                    <button id="qty-decrease" class="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center text-xl">−</button>
+                    <input id="qty" type="number" value="1" min="1" class="w-16 text-center rounded-lg border border-gray-200 px-2 py-2" />
+                    <button id="qty-increase" class="h-10 w-10 rounded-lg bg-gray-100 flex items-center justify-center text-xl">+</button>
+                  </div>
+
+                  <div class="flex-1 flex items-center justify-between gap-4">
+                    <div>
+                      <p class="text-sm muted">Total</p>
+                      <p id="total-price" class="text-lg font-bold">${formatRp(item.price)}</p>
+                    </div>
+
+                    <button id="add-to-cart" class="flex items-center gap-2 bg-cta text-white px-4 py-3 rounded-lg font-semibold hover:bg-orange-600">
+                      <span class="material-symbols-outlined">add_shopping_cart</span>
+                      <span>Tambah Ke Keranjang</span>
+                    </button>
+                  </div>
+                </div>
+
+                <p id="feedback" class="mt-3 text-sm text-green-600 hidden"></p>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Populate primary options (radio)
+        const primaryContainer = document.getElementById('primary-options');
+        if (!primaryOptions || primaryOptions.length === 0){
+          primaryContainer.innerHTML = '<div class="muted">Tidak ada pilihan</div>';
+        } else {
+          primaryContainer.innerHTML = '';
+          primaryOptions.forEach((opt, idx) => {
+            const idRadio = `primary-${opt.key}`;
+            const row = document.createElement('label');
+            row.className = 'option-row';
+            row.innerHTML = `
+              <input type="radio" name="primary-opt" value="${opt.key}" id="${idRadio}" ${idx===0 ? 'checked' : ''} class="h-4 w-4" />
+              <div class="flex-1 min-w-0">
+                <div class="truncate">${opt.label}</div>
+                ${opt.desc ? `<div class="muted text-xs">${opt.desc}</div>` : ''}
+              </div>
+              ${opt.price ? `<div class="price-tag">${formatRp(opt.price)}</div>` : ''}
+            `;
+            primaryContainer.appendChild(row);
+          });
+        }
+
+        // Populate additions (checkbox)
+        const additionContainer = document.getElementById('addition-options');
+        if (!additions || additions.length === 0){
+          additionContainer.innerHTML = '<div class="muted">Tidak ada tambahan</div>';
+        } else {
+          additionContainer.innerHTML = '';
+          additions.forEach((a, idx) => {
+            const idChk = `add-${a.key}`;
+            const row = document.createElement('label');
+            row.className = 'option-row';
+            row.innerHTML = `
+              <input type="checkbox" name="addition" value="${a.key}" id="${idChk}" data-price="${a.price || 0}" class="h-4 w-4" />
+              <div class="flex-1 min-w-0">
+                <div class="truncate">${a.label}</div>
+                ${a.desc ? `<div class="muted text-xs">${a.desc}</div>` : ''}
+              </div>
+              <div class="price-tag">${formatRp(a.price || 0)}</div>
+            `;
+            additionContainer.appendChild(row);
+          });
+        }
+
+        // Interaction logic
+        const qtyInput = document.getElementById('qty');
+        const qtyInc = document.getElementById('qty-increase');
+        const qtyDec = document.getElementById('qty-decrease');
+        const totalEl = document.getElementById('total-price');
+        const addToCartBtn = document.getElementById('add-to-cart');
+        const feedback = document.getElementById('feedback');
+        const productImage = document.getElementById('product-image');
+
+        productImage.addEventListener('error', () => {
+          productImage.style.display = 'none';
+          const wrap = productImage.parentElement;
+          if (wrap) wrap.innerHTML = '<div class="w-full h-56 md:h-full bg-gray-100 flex items-center justify-center text-sm text-gray-400">Gambar tidak ditemukan</div>';
+        });
+
+        function computeTotal(){
+          const base = Number(item.price || 0);
+          const qty = Math.max(1, parseInt(qtyInput.value || '1', 10));
+          // primary option price
+          let primaryPrice = 0;
+          const sel = document.querySelector('input[name="primary-opt"]:checked');
+          if (sel){
+            const val = sel.value;
+            const found = primaryOptions.find(o => o.key === val);
+            if (found) primaryPrice = Number(found.price || 0);
+          }
+          // additions sum
+          const additionsSum = Array.from(document.querySelectorAll('input[name="addition"]'))
+            .filter(ch => ch.checked)
+            .map(ch => Number(ch.dataset.price || 0))
+            .reduce((s,v) => s+v, 0);
+
+          const unitPrice = base + primaryPrice + additionsSum;
+          const total = unitPrice * qty;
+          totalEl.textContent = formatRp(total);
+          return { total, qty, unitPrice, additionsSum, primaryPrice };
+        }
+
+        qtyInc.addEventListener('click', () => { qtyInput.value = String(Math.max(1, parseInt(qtyInput.value||'1',10)+1)); computeTotal(); });
+        qtyDec.addEventListener('click', () => { qtyInput.value = String(Math.max(1, parseInt(qtyInput.value||'1',10)-1)); computeTotal(); });
+        qtyInput.addEventListener('change', () => { if (!qtyInput.value || parseInt(qtyInput.value,10) < 1) qtyInput.value = '1'; computeTotal(); });
+
+        document.querySelectorAll('input[name="addition"]').forEach(ch => ch.addEventListener('change', computeTotal));
+        document.querySelectorAll('input[name="primary-opt"]').forEach(r => r.addEventListener('change', computeTotal));
+
+        computeTotal();
+
+        addToCartBtn.addEventListener('click', () => {
+          const { total, qty, unitPrice } = computeTotal();
+          const selectedPrimary = document.querySelector('input[name="primary-opt"]:checked');
+          const selectedPrimaryVal = selectedPrimary ? selectedPrimary.value : null;
+          const selectedAdditions = Array.from(document.querySelectorAll('input[name="addition"]')).filter(ch => ch.checked).map(ch => ch.value);
+
+          const cartItem = {
+            id: item.id,
+            title: item.title,
+            price: unitPrice,
+            qty: qty,
+            img: item.img || '',
+            primary: selectedPrimaryVal,
+            additions: selectedAdditions
+          };
+
+          try {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            // merge if same id + same options
+            let merged = false;
+            for (let i=0;i<cart.length;i++){
+              const it = cart[i];
+              if (it.id === cartItem.id && JSON.stringify(it.additions||[]) === JSON.stringify(cartItem.additions||[]) && (it.primary||null) === (cartItem.primary||null)){
+                it.qty = (Number(it.qty)||0) + cartItem.qty;
+                it.price = cartItem.price;
+                merged = true;
+                break;
+              }
             }
+            if (!merged) cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+          } catch(e){
+            localStorage.setItem('cart', JSON.stringify([cartItem]));
           }
-          if (!found){
-            cart.push({ id: key, title: menuItem.title, price: price, qty: qty, img: menuItem.img || '' });
-          }
-          writeCart(cart);
-          updateCartBadge();
+
+          feedback.textContent = 'Berhasil ditambahkan ke keranjang';
+          feedback.classList.remove('hidden');
+          setTimeout(()=> feedback.classList.add('hidden'), 1600);
+
           const toast = document.createElement('div');
-          toast.textContent = `${menuItem.title} ditambahkan ke keranjang`;
+          toast.textContent = `${item.title} ditambahkan (${qty})`;
           toast.className = 'fixed bottom-6 right-6 rounded-lg bg-black/80 text-white px-4 py-2 shadow-lg';
           document.body.appendChild(toast);
-          setTimeout(()=> toast.remove(), 1400);
-        } catch(e){
-          console.error(e);
-        }
-      });
-    }
+          setTimeout(()=> toast.remove(), 1600);
 
-    /* Favorite toggle */
-    function attachFavToggle(){
-      const btn = qs('add-to-fav');
-      btn?.addEventListener('click', (e) => {
-        e.preventDefault();
-        const id = qs('add-to-cart').dataset.id;
-        if (!id) return;
-        const favs = new Set(readFavorites());
-        if (favs.has(id)){
-          favs.delete(id);
-          btn.classList.remove('bg-primary','text-white');
-          btn.classList.add('border','border-gray-200');
-        } else {
-          favs.add(id);
-          btn.classList.add('bg-primary','text-white');
-          btn.classList.remove('border','border-gray-200');
-        }
-        writeFavorites(Array.from(favs));
-        // trigger storage event for other tabs
-        try { localStorage.setItem('favorites_updated_at', String(Date.now())); } catch(e){}
-      });
-    }
-
-    /* Update cart badge */
-    function updateCartBadge(){
-      try {
-        const cart = readCart();
-        const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
-        const badge = qs('header-cart-badge');
-        if (!badge) return;
-        if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
-        else { badge.textContent = ''; badge.classList.add('hidden'); }
-      } catch(e){}
-    }
-
-    /* Locked UI helpers */
-    function showLockedNote(){
-      qs('locked-note').classList.remove('hidden');
-      setTimeout(()=> qs('locked-note').classList.add('hidden'), 2200);
-    }
-
-    function updateLockState(){
-      const locked = !window.utilsTable.isCodeValid();
-      const addBtn = qs('add-to-cart');
-      const favBtn = qs('add-to-fav');
-      const qty = qs('qty');
-      const status = qs('table-status');
-      const remain = qs('table-remaining');
-      const codeLbl = qs('table-code-label');
-
-      if (locked){
-        addBtn.classList.add('bg-gray-300','cursor-not-allowed','opacity-70');
-        addBtn.classList.remove('bg-cta');
-        favBtn.disabled = true;
-        qty.disabled = true;
-        status.classList.add('hidden');
-      } else {
-        addBtn.classList.remove('bg-gray-300','cursor-not-allowed','opacity-70');
-        addBtn.classList.add('bg-cta');
-        favBtn.disabled = false;
-        qty.disabled = false;
-        status.classList.remove('hidden');
-        codeLbl.textContent = window.utilsTable.getTableCode();
-        remain.textContent = (function(ms){
-          if (ms <= 0) return '0m';
-          const m = Math.floor(ms / 60000);
-          const h = Math.floor(m / 60);
-          const mm = m % 60;
-          return (h ? `${h}j ${mm}m` : `${mm}m`);
-        })(window.utilsTable.remainingMs());
-      }
-    }
-
-    /* Attach start/reset handlers using utilsTable */
-    function attachGateHandlers(){
-      window.utilsTable.attachTableStartHandler({
-        startBtnId: 'start-order', // not present on this page, but utils tolerates missing
-        inputId: 'manual-table',
-        onSuccess: () => { updateLockState(); },
-        onFail: () => {}
-      });
-      window.utilsTable.attachTableResetHandler('table-clear', () => { updateLockState(); });
-      window.utilsTable.startAutoExpire(() => { updateLockState(); }, 30000);
-    }
-
-    /* Init */
-    function initWhenReady(){
-      if (!window.MENU_DATA || !window.utilsTable){
-        setTimeout(initWhenReady, 50);
-        return;
+          try { localStorage.setItem('cart_updated_at', String(Date.now())); } catch(e){}
+        });
       }
 
-      const id = getQueryParam('id');
-      const item = (Object.values(window.MENU_DATA || {}) || []).find(x => x && String(x.id) === String(id));
-      renderDetail(item);
-      updateCartBadge();
-      attachAddToCart();
-      attachFavToggle();
-      attachGateHandlers();
-      updateLockState();
-
-      // reflect favorite state
-      const favs = new Set(readFavorites());
-      if (favs.has(item?.id)){
-        qs('add-to-fav').classList.add('bg-primary','text-white');
-        qs('add-to-fav').classList.remove('border','border-gray-200');
-      }
-
-      // sync across tabs
-      window.addEventListener('storage', (e) => {
-        if (!e.key) return;
-        if (e.key === 'cart') updateCartBadge();
-        if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
-          updateLockState();
-        }
-        if (e.key === 'favorites' || e.key === 'favorites_updated_at') {
-          // update fav button state
-          const favs2 = new Set(readFavorites());
-          if (favs2.has(item?.id)){
-            qs('add-to-fav').classList.add('bg-primary','text-white');
-            qs('add-to-fav').classList.remove('border','border-gray-200');
-          } else {
-            qs('add-to-fav').classList.remove('bg-primary','text-white');
-            qs('add-to-fav').classList.add('border','border-gray-200');
-          }
-        }
-      });
-    }
-
-    initWhenReady();
-
-  })();
+      initWhenReady();
+    })();
   </script>
 </body>
 </html>
