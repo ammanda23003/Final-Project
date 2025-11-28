@@ -3,20 +3,20 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Checkout - Resto Modern</title>
+  <title>Pembayaran - Resto Modern</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com" rel="preconnect" />
-  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-  <script>
+  <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
       theme: {
         extend: {
           colors: {
             "primary": "#4CAF50",
-            "cta": "#FF9800",
+            "accent": "#FF9800",
             "background-light": "#FFFFFF",
             "background-secondary": "#F5F5F5",
             "text-primary": "#1F2937",
@@ -30,10 +30,13 @@
   </script>
   <style>
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-    body { min-height: max(700px, 100dvh); }
+    body { min-height: 100dvh; }
+    .card { background: theme('colors.background-light'); border: 1px solid rgba(0,0,0,0.04); border-radius: .75rem; }
+    /* Modal styles */
+    .modal-backdrop { background: rgba(0,0,0,0.45); }
   </style>
 </head>
-<body class="bg-background-light font-display text-text-primary">
+<body class="bg-background-secondary font-display text-text-primary">
   <div class="min-h-screen flex flex-col">
     <!-- Header -->
     <header class="sticky top-0 z-20 w-full border-b border-gray-200 bg-background-light">
@@ -60,101 +63,180 @@
 
     <!-- Main -->
     <main class="container mx-auto flex-grow px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Gate status -->
-      <section class="mb-6">
-        <div id="table-status" class="hidden inline-flex items-center gap-3 rounded-lg bg-background-secondary border border-gray-200 px-4 py-2 text-sm">
-          <span class="material-symbols-outlined text-primary">qr_code_2</span>
-          <div>
-            <div>Kode meja aktif: <strong id="table-code-label" class="font-semibold"></strong></div>
-            <div class="text-text-secondary text-xs">Sisa waktu: <span id="table-remaining" class="font-medium"></span></div>
-          </div>
-          <button id="table-clear" class="ml-4 inline-flex items-center gap-1 px-3 py-1 rounded-md border border-gray-200 hover:bg-gray-50">
-            <span class="material-symbols-outlined text-sm">close</span> Reset
-          </button>
-        </div>
-
-        <div id="table-form" class="mt-2">
-          <p class="text-sm text-text-secondary">Belum memasukkan kode meja? Kembali ke <a href="index.html" class="text-primary underline">Beranda</a> untuk memasukkan kode.</p>
-        </div>
-      </section>
-
-      <!-- Checkout layout -->
-      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <!-- Left: Order summary -->
-        <div class="lg:col-span-2">
-          <h2 class="text-2xl font-bold mb-4">Ringkasan Pesanan</h2>
+        <section class="lg:col-span-2">
+          <div class="card p-6">
+            <h2 class="text-2xl font-bold mb-4">Ringkasan Pesanan</h2>
 
-          <div id="order-items" class="space-y-4">
-            <!-- item rows -->
+            <div id="order-list" class="space-y-4">
+              <!-- Items will be rendered here -->
+            </div>
+
+            <div class="mt-6 border-t border-gray-200 pt-4 space-y-3 text-sm text-text-secondary">
+              <div class="flex justify-between">
+                <span>Subtotal</span>
+                <span id="subtotal">Rp 0</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Pajak (11%)</span>
+                <span id="tax">Rp 0</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Layanan</span>
+                <span id="service">Rp 0</span>
+              </div>
+              <div class="flex justify-between">
+                <span>Diskon</span>
+                <span id="discount">Rp 0</span>
+              </div>
+            </div>
+
+            <div class="mt-4 border-t border-gray-200 pt-4 flex items-center justify-between">
+              <div>
+                <div class="text-sm text-text-secondary">Total Pembayaran</div>
+                <div id="total" class="text-2xl font-bold text-text-primary">Rp 0</div>
+              </div>
+              <div class="w-48">
+                <label class="block text-sm text-text-secondary mb-2">Punya Kode Promo?</label>
+                <div class="flex gap-2">
+                  <input id="promo-code" class="form-input w-full rounded border border-gray-200 px-3 py-2" placeholder="Masukkan kode promo" />
+                  <button id="apply-promo" class="inline-flex items-center gap-2 px-4 py-2 rounded bg-primary text-white font-semibold hover:opacity-95">Apply</button>
+                </div>
+                <p id="promo-msg" class="mt-2 text-xs text-red-600 hidden"></p>
+              </div>
+            </div>
           </div>
 
-          <div id="empty-note" class="text-text-secondary py-12 text-center hidden">
-            Keranjang kosong. Kembali ke <a href="Menu.html" class="text-primary underline">Menu</a> untuk menambahkan item.
+          <!-- Payment methods -->
+          <div class="card p-6 mt-6">
+            <h3 class="text-lg font-semibold mb-3">Pilih Metode Pembayaran</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <!-- Virtual Accounts -->
+              <div>
+                <div class="text-sm font-medium mb-2">Virtual Account</div>
+                <div class="space-y-2">
+                  <label class="flex items-center gap-3 p-3 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="payment" value="va_bca" class="payment-radio" />
+                    <div class="flex-1">
+                      <div class="font-semibold">BCA Virtual Account</div>
+                      <div class="text-xs text-text-secondary">Transfer via BCA VA</div>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 p-3 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="payment" value="va_bri" class="payment-radio" />
+                    <div class="flex-1">
+                      <div class="font-semibold">BRI Virtual Account</div>
+                      <div class="text-xs text-text-secondary">Transfer via BRI VA</div>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 p-3 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="payment" value="va_mandiri" class="payment-radio" />
+                    <div class="flex-1">
+                      <div class="font-semibold">Mandiri Virtual Account</div>
+                      <div class="text-xs text-text-secondary">Transfer via Mandiri VA</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+
+              <!-- E-Wallets -->
+              <div>
+                <div class="text-sm font-medium mb-2">E-Wallet</div>
+                <div class="space-y-2">
+                  <label class="flex items-center gap-3 p-3 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="payment" value="ew_ovo" class="payment-radio" />
+                    <div class="flex-1">
+                      <div class="font-semibold">OVO</div>
+                      <div class="text-xs text-text-secondary">Bayar dengan OVO</div>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 p-3 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="payment" value="ew_gopay" class="payment-radio" />
+                    <div class="flex-1">
+                      <div class="font-semibold">GoPay</div>
+                      <div class="text-xs text-text-secondary">Bayar dengan GoPay</div>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 p-3 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="payment" value="ew_dana" class="payment-radio" />
+                    <div class="flex-1">
+                      <div class="font-semibold">Dana</div>
+                      <div class="text-xs text-text-secondary">Bayar dengan Dana</div>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 p-3 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="payment" value="ew_linkaja" class="payment-radio" />
+                    <div class="flex-1">
+                      <div class="font-semibold">LinkAja</div>
+                      <div class="text-xs text-text-secondary">Bayar dengan LinkAja</div>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
 
-        <!-- Right: Payment & customer info -->
-        <aside class="rounded-xl border border-gray-200 bg-background-light p-6 shadow-sm">
-          <h3 class="text-lg font-semibold mb-3">Detail Pembayaran</h3>
+        </section>
 
-          <div class="mb-3 flex items-center justify-between">
-            <div class="text-sm text-text-secondary">Subtotal</div>
-            <div id="subtotal" class="font-semibold">Rp 0</div>
+        <!-- Right: Confirm & summary box -->
+        <aside class="card p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <div class="text-sm text-text-secondary">Total Pembayaran</div>
+              <div id="side-total" class="text-2xl font-bold">Rp 0</div>
+            </div>
+            <div class="text-sm text-text-secondary">
+              <div id="side-sub" class="">Subtotal: Rp 0</div>
+              <div id="side-tax" class="">Pajak: Rp 0</div>
+            </div>
           </div>
 
-          <div class="mb-3 flex items-center justify-between">
-            <div class="text-sm text-text-secondary">Biaya layanan</div>
-            <div id="service-fee" class="font-semibold">Rp 0</div>
-          </div>
+          <div id="payment-warning" class="text-sm text-red-600 mb-3 hidden">Masukkan kode meja terlebih dahulu atau tambahkan item ke keranjang.</div>
 
-          <div class="mb-4 flex items-center justify-between">
-            <div class="text-sm text-text-secondary">Total</div>
-            <div id="grand-total" class="text-2xl font-bold">Rp 0</div>
-          </div>
-
-          <hr class="my-4" />
-
-          <h4 class="text-sm font-semibold mb-2">Informasi Pelanggan</h4>
-          <label class="block text-sm text-text-secondary mb-2">
-            Nama (opsional)
-            <input id="cust-name" class="form-input mt-1 w-full rounded border border-gray-200 px-3 py-2" placeholder="Nama Anda" />
-          </label>
-
-          <label class="block text-sm text-text-secondary mb-2">
-            Catatan (opsional)
-            <textarea id="cust-note" class="form-input mt-1 w-full rounded border border-gray-200 px-3 py-2" rows="3" placeholder="Contoh: tanpa bawang"></textarea>
-          </label>
-
-          <div id="checkout-warning" class="text-sm text-red-600 mb-3 hidden">Masukkan kode meja terlebih dahulu untuk melanjutkan checkout.</div>
-
-          <button id="pay-btn" class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg bg-cta text-white font-semibold hover:bg-orange-600 transition">
+          <button id="confirm-payment" class="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-accent text-white font-semibold hover:opacity-95 disabled:opacity-60 disabled:cursor-not-allowed">
             <span class="material-symbols-outlined">payment</span>
-            Bayar Sekarang
+            Konfirmasi Pembayaran
           </button>
 
-          <button id="cancel-btn" class="mt-3 w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-sm hover:bg-gray-50">
-            Batal
+          <button id="back-to-menu" class="mt-3 w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg border border-gray-200 text-sm hover:bg-gray-50">
+            Kembali ke Menu
           </button>
+
+          <div class="mt-6 text-xs text-text-secondary">
+            <p class="font-semibold">Resto Modern</p>
+            <p>Jl. Teknologi No. 1, Jakarta, Indonesia</p>
+            <div class="mt-2 flex gap-4">
+              <a href="Bantuan.html" class="hover:text-primary">Bantuan</a>
+              <a href="FAQ.html" class="hover:text-primary">FAQ</a>
+            </div>
+            <p class="mt-3">© 2025 Smart Ordering System. All rights reserved.</p>
+          </div>
         </aside>
-      </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="w-full border-t border-gray-200 bg-background-secondary">
-      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-xs text-text-secondary">
-        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-2">
-          <div>
-            <p class="font-semibold text-text-primary">Resto Modern</p>
-            <p class="mt-1">Jl. Teknologi No. 1, Jakarta</p>
-          </div>
-          <div class="flex gap-4">
-            <a class="hover:text-primary" href="Bantuan.html">Bantuan</a>
-            <a class="hover:text-primary" href="FAQ.html">FAQ</a>
-          </div>
-          <p>© 2025 Smart Ordering System</p>
-        </div>
       </div>
-    </footer>
+    </main>
+  </div>
+
+  <!-- Modal sukses pembayaran -->
+  <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center">
+    <div class="absolute inset-0 modal-backdrop"></div>
+    <div class="relative bg-white rounded-lg shadow-lg w-[90%] max-w-md p-6 text-center">
+      <div class="flex flex-col items-center gap-4">
+        <div class="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
+          <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold">Pembayaran Berhasil</h3>
+        <p class="text-sm text-text-secondary">Terima kasih. Anda akan diarahkan ke halaman konfirmasi pesanan.</p>
+      </div>
+    </div>
   </div>
 
   <!-- config.js dan utils.js -->
@@ -165,55 +247,76 @@
   (function(){
     'use strict';
 
-    /* Helpers */
-    function formatRp(n){ return 'Rp ' + Number(n || 0).toLocaleString('id-ID'); }
+    // Pricing constants
+    const TAX_RATE = 0.11;
+    const SERVICE_FEE = 2500;
+
+    // DOM refs
+    const orderListEl = document.getElementById('order-list');
+    const subtotalEl = document.getElementById('subtotal');
+    const taxEl = document.getElementById('tax');
+    const serviceEl = document.getElementById('service');
+    const discountEl = document.getElementById('discount');
+    const totalEl = document.getElementById('total');
+    const sideTotalEl = document.getElementById('side-total');
+    const sideSubEl = document.getElementById('side-sub');
+    const sideTaxEl = document.getElementById('side-tax');
+    const confirmBtn = document.getElementById('confirm-payment');
+    const backToMenuBtn = document.getElementById('back-to-menu');
+    const paymentWarning = document.getElementById('payment-warning');
+    const headerCartBadge = document.getElementById('header-cart-badge');
+
+    const promoInput = document.getElementById('promo-code');
+    const applyPromoBtn = document.getElementById('apply-promo');
+    const promoMsg = document.getElementById('promo-msg');
+
+    const successModal = document.getElementById('success-modal');
+
+    // Helpers
+    function formatRp(n){ return 'Rp ' + (Number(n || 0)).toLocaleString('id-ID'); }
     function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
     function writeCart(arr){ localStorage.setItem('cart', JSON.stringify(arr)); }
-    function readOrders(){ try { return JSON.parse(localStorage.getItem('orders') || '[]'); } catch { return []; } }
-    function writeOrders(a){ localStorage.setItem('orders', JSON.stringify(a)); }
 
-    /* DOM refs */
-    const orderItemsEl = document.getElementById('order-items');
-    const emptyNoteEl = document.getElementById('empty-note');
-    const subtotalEl = document.getElementById('subtotal');
-    const serviceFeeEl = document.getElementById('service-fee');
-    const grandTotalEl = document.getElementById('grand-total');
-    const payBtn = document.getElementById('pay-btn');
-    const cancelBtn = document.getElementById('cancel-btn');
-    const checkoutWarning = document.getElementById('checkout-warning');
+    // Promo logic (example: simple promo codes)
+    const PROMOS = {
+      'DISCOUNT10': { type: 'percent', value: 10 }, // 10% off subtotal
+      'FLAT5000': { type: 'fixed', value: 5000 }    // Rp 5.000 off
+    };
 
-    const tableStatusEl = document.getElementById('table-status');
-    const tableFormEl = document.getElementById('table-form');
-    const tableCodeLabel = document.getElementById('table-code-label');
-    const tableRemaining = document.getElementById('table-remaining');
-    const tableClearBtn = document.getElementById('table-clear');
+    let appliedPromo = null;
 
-    const custNameInput = document.getElementById('cust-name');
-    const custNoteInput = document.getElementById('cust-note');
+    function applyPromo(code, subtotal){
+      if (!code) return { ok: false, msg: 'Masukkan kode promo.' };
+      const key = String(code || '').trim().toUpperCase();
+      const p = PROMOS[key];
+      if (!p) return { ok: false, msg: 'Kode promo tidak valid.' };
+      let discount = 0;
+      if (p.type === 'percent') discount = Math.round(subtotal * (p.value/100));
+      else if (p.type === 'fixed') discount = Number(p.value || 0);
+      return { ok: true, discount, promoKey: key, msg: `Promo diterapkan: ${key}` };
+    }
 
-    /* Pricing policy */
-    const SERVICE_FEE_PERCENT = 0; // set 0 or small percent if needed
-
-    /* Render order items */
+    // Render order list and totals
     function renderOrder(){
-      const cart = readCart();
-      orderItemsEl.innerHTML = '';
+      const cart = readCart() || [];
+      orderListEl.innerHTML = '';
 
-      if (!cart || !cart.length){
-        emptyNoteEl.classList.remove('hidden');
-        subtotalEl.textContent = formatRp(0);
-        serviceFeeEl.textContent = formatRp(0);
-        grandTotalEl.textContent = formatRp(0);
-        payBtn.disabled = true;
-        payBtn.classList.add('opacity-60','cursor-not-allowed');
+      // update header badge
+      const count = cart.reduce((s,it) => s + (Number(it.qty)||0), 0);
+      if (headerCartBadge){
+        if (count > 0){ headerCartBadge.textContent = count > 99 ? '99+' : String(count); headerCartBadge.classList.remove('hidden'); }
+        else { headerCartBadge.textContent = ''; headerCartBadge.classList.add('hidden'); }
+      }
+
+      if (!cart.length){
+        orderListEl.innerHTML = '<div class="text-center text-text-secondary py-8">Keranjang kosong. Kembali ke Menu untuk menambahkan item.</div>';
+        updateTotals();
         return;
       }
 
-      emptyNoteEl.classList.add('hidden');
-
-      cart.forEach((it, idx) => {
+      cart.forEach(it => {
         const row = document.createElement('div');
-        row.className = 'flex items-center gap-4 rounded-lg border border-gray-200 bg-background-light p-4';
+        row.className = 'flex items-center gap-4';
 
         const imgWrap = document.createElement('div');
         imgWrap.className = 'w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center';
@@ -230,7 +333,7 @@
           <div class="flex items-start justify-between gap-3">
             <div class="truncate">
               <div class="font-semibold">${it.title || ''}</div>
-              <div class="text-sm text-text-secondary">${it.subtitle || ''}</div>
+              <div class="text-sm text-text-secondary">${(it.subtitle || '')}</div>
             </div>
             <div class="text-right">
               <div class="font-semibold">${formatRp(it.price)}</div>
@@ -241,166 +344,176 @@
 
         row.appendChild(imgWrap);
         row.appendChild(info);
-        orderItemsEl.appendChild(row);
+        orderListEl.appendChild(row);
       });
 
-      const subtotal = cart.reduce((s, it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
-      const serviceFee = Math.round(subtotal * SERVICE_FEE_PERCENT);
-      const grand = subtotal + serviceFee;
+      updateTotals();
+    }
+
+    function updateTotals(){
+      const cart = readCart() || [];
+      const subtotal = cart.reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
+      const tax = Math.round(subtotal * TAX_RATE);
+      const service = cart.length ? SERVICE_FEE : 0;
+      let discount = 0;
+      if (appliedPromo && appliedPromo.discount) discount = appliedPromo.discount;
+
+      const total = Math.max(0, subtotal + tax + service - discount);
 
       subtotalEl.textContent = formatRp(subtotal);
-      serviceFeeEl.textContent = formatRp(serviceFee);
-      grandTotalEl.textContent = formatRp(grand);
+      taxEl.textContent = formatRp(tax);
+      serviceEl.textContent = formatRp(service);
+      discountEl.textContent = formatRp(discount);
+      totalEl.textContent = formatRp(total);
 
-      // enable pay button only if cart not empty and table code valid
-      updatePayButtonState();
-    }
+      sideTotalEl.textContent = formatRp(total);
+      sideSubEl.textContent = `Subtotal: ${formatRp(subtotal)}`;
+      sideTaxEl.textContent = `Pajak: ${formatRp(tax)}`;
 
-    function updatePayButtonState(){
-      const cart = readCart();
-      const locked = !window.utilsTable.isCodeValid();
-      if (!cart.length){
-        payBtn.disabled = true;
-        payBtn.classList.add('opacity-60','cursor-not-allowed');
-      } else if (locked){
-        payBtn.disabled = true;
-        payBtn.classList.add('opacity-60','cursor-not-allowed');
+      // enable/disable confirm button
+      const locked = (window.utilsTable && typeof window.utilsTable.isCodeValid === 'function') ? !window.utilsTable.isCodeValid() : false;
+      if (!cart.length || locked){
+        confirmBtn.disabled = true;
+        confirmBtn.classList.add('opacity-60','cursor-not-allowed');
+        paymentWarning.classList.toggle('hidden', !(locked || !cart.length));
       } else {
-        payBtn.disabled = false;
-        payBtn.classList.remove('opacity-60','cursor-not-allowed');
+        confirmBtn.disabled = false;
+        confirmBtn.classList.remove('opacity-60','cursor-not-allowed');
+        paymentWarning.classList.add('hidden');
       }
-
-      // show/hide warning
-      checkoutWarning.classList.toggle('hidden', !locked);
     }
 
-    /* Simulate payment / checkout */
-    function doCheckout(){
-      if (!window.utilsTable.isCodeValid()){
-        checkoutWarning.classList.remove('hidden');
-        return;
+    // Payment selection helper
+    function getSelectedPayment(){
+      const radios = document.querySelectorAll('.payment-radio');
+      for (const r of radios){
+        if (r.checked) return r.value;
       }
-      const cart = readCart();
+      return null;
+    }
+
+    // Show success modal and redirect
+    function showSuccessAndRedirect(redirectUrl = 'Konfirmasi_Pesanan.html', delay = 1500){
+      // show modal
+      successModal.classList.remove('hidden');
+      successModal.classList.add('flex');
+      // disable confirm button to prevent double clicks
+      confirmBtn.disabled = true;
+      confirmBtn.classList.add('opacity-60','cursor-not-allowed');
+
+      setTimeout(() => {
+        // redirect after delay
+        window.location.href = redirectUrl;
+      }, delay);
+    }
+
+    // Confirm payment handler (simulated)
+    function onConfirmPayment(){
+      const cart = readCart() || [];
       if (!cart.length){
         alert('Keranjang kosong.');
         return;
       }
+      if (window.utilsTable && typeof window.utilsTable.isCodeValid === 'function' && !window.utilsTable.isCodeValid()){
+        alert('Masukkan kode meja yang valid terlebih dahulu.');
+        return;
+      }
+      const paymentMethod = getSelectedPayment();
+      if (!paymentMethod){
+        alert('Pilih metode pembayaran terlebih dahulu.');
+        return;
+      }
 
-      const subtotal = cart.reduce((s, it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
-      const serviceFee = Math.round(subtotal * SERVICE_FEE_PERCENT);
-      const grand = subtotal + serviceFee;
+      // Build order object (simulate)
+      const subtotal = cart.reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
+      const tax = Math.round(subtotal * TAX_RATE);
+      const service = cart.length ? SERVICE_FEE : 0;
+      const discount = appliedPromo ? appliedPromo.discount || 0 : 0;
+      const total = Math.max(0, subtotal + tax + service - discount);
 
       const order = {
         id: 'ORD-' + Date.now(),
-        table: window.utilsTable.getTableCode(),
+        table: (window.utilsTable && typeof window.utilsTable.getTableCode === 'function') ? window.utilsTable.getTableCode() : null,
         time: Date.now(),
         items: cart,
-        subtotal,
-        serviceFee,
-        total: grand,
-        customer: {
-          name: (custNameInput.value || '').trim(),
-          note: (custNoteInput.value || '').trim()
-        },
-        status: 'local_pending' // since no backend
+        subtotal, tax, service, discount, total,
+        paymentMethod,
+        promo: appliedPromo ? appliedPromo.promoKey : null
       };
 
-      // save to orders history (local)
-      const orders = readOrders();
-      orders.push(order);
-      writeOrders(orders);
+      // Save locally
+      try {
+        const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+        orders.push(order);
+        localStorage.setItem('orders', JSON.stringify(orders));
+        localStorage.setItem('last_order', JSON.stringify(order));
+      } catch(e){}
 
-      // save last_order for receipt page
-      try { localStorage.setItem('last_order', JSON.stringify(order)); } catch(e){}
-
-      // clear cart
+      // Clear cart
       writeCart([]);
       try { localStorage.setItem('cart_cleared_at', String(Date.now())); } catch(e){}
 
-      // UI feedback
       renderOrder();
-      updateCartBadge();
-      updatePayButtonState();
+      updateTotals();
 
-      // show success and redirect to receipt or index
-      alert('Pembayaran berhasil (simulasi). Terima kasih. Anda akan diarahkan ke halaman struk.');
-      window.location.href = 'receipt.html'; // receipt.html can read last_order from localStorage
+      // Show success popup and redirect to Konfirmasi_Pesanan.html
+      showSuccessAndRedirect('Konfirmasi_Pesanan.html', 1500);
     }
 
-    /* Cancel handler */
-    function onCancel(){
-      if (!confirm('Batal checkout dan kembali ke keranjang?')) return;
-      window.location.href = 'cart.html';
-    }
-
-    /* Update table UI and lock state */
-    function renderTableStatus(){
-      if (window.utilsTable.isCodeValid()){
-        tableStatusEl.classList.remove('hidden');
-        tableFormEl.classList.add('hidden');
-        tableCodeLabel.textContent = window.utilsTable.getTableCode();
-        tableRemaining.textContent = (function(ms){
-          if (ms <= 0) return '0m';
-          const m = Math.floor(ms / 60000);
-          const h = Math.floor(m / 60);
-          const mm = m % 60;
-          return (h ? `${h}j ${mm}m` : `${mm}m`);
-        })(window.utilsTable.remainingMs());
+    // Apply promo
+    applyPromoBtn.addEventListener('click', () => {
+      const code = promoInput.value || '';
+      const cart = readCart() || [];
+      const subtotal = cart.reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
+      const res = applyPromo(code, subtotal);
+      if (!res.ok){
+        promoMsg.textContent = res.msg;
+        promoMsg.classList.remove('hidden');
+        appliedPromo = null;
       } else {
-        tableStatusEl.classList.add('hidden');
-        tableFormEl.classList.remove('hidden');
+        appliedPromo = { discount: res.discount, promoKey: res.promoKey };
+        promoMsg.textContent = res.msg;
+        promoMsg.classList.remove('hidden');
       }
-      updatePayButtonState();
-    }
-
-    /* Update cart badge (header) */
-    function updateCartBadge(){
-      try {
-        const cart = readCart();
-        const count = cart.reduce((s,it)=> s + (Number(it.qty)||0), 0);
-        const badge = document.getElementById('header-cart-badge');
-        if (!badge) return;
-        if (count > 0){ badge.textContent = count > 99 ? '99+' : String(count); badge.classList.remove('hidden'); }
-        else { badge.textContent = ''; badge.classList.add('hidden'); }
-      } catch(e){}
-    }
-
-    /* Attach handlers */
-    payBtn.addEventListener('click', doCheckout);
-    cancelBtn.addEventListener('click', onCancel);
-    tableClearBtn.addEventListener('click', () => {
-      window.utilsTable.clearTableCode?.();
-      renderTableStatus();
+      updateTotals();
+      setTimeout(()=> promoMsg.classList.add('hidden'), 3000);
     });
 
-    /* Init */
-    function init(){
-      renderOrder();
-      renderTableStatus();
-      updateCartBadge();
+    // Back to menu
+    backToMenuBtn.addEventListener('click', () => { window.location.href = 'Menu.html'; });
 
-      // auto-expire watcher
-      window.utilsTable.startAutoExpire(() => {
-        renderTableStatus();
-      }, 30000);
+    // Confirm payment
+    confirmBtn.addEventListener('click', onConfirmPayment);
 
-      // attach start handler if page has manual-table input (some pages only)
-      window.utilsTable.attachTableStartHandler({ startBtnId: 'start-order', inputId: 'manual-table', onSuccess: () => { renderTableStatus(); }, onFail: () => {} });
+    // React to storage changes (cart updates from other tabs)
+    window.addEventListener('storage', (e) => {
+      if (!e.key) return;
+      if (['cart','cart_cleared_at','cart_updated_at'].includes(e.key)){
+        renderOrder();
+        updateTotals();
+      }
+      if (['table_code','table_code_time','table_code_cleared_at'].includes(e.key)){
+        updateTotals();
+      }
+    });
 
-      // sync across tabs
-      window.addEventListener('storage', (e) => {
-        if (!e.key) return;
-        if (e.key === 'cart' || e.key === 'cart_cleared_at' || e.key === 'cart_updated_at'){
-          renderOrder();
-          updateCartBadge();
-        }
-        if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
-          renderTableStatus();
-        }
-      });
+    // utilsTable integration: update UI when table code changes
+    function initWhenReady(){
+      if (!window.utilsTable){
+        setTimeout(initWhenReady, 50);
+        return;
+      }
+      // update totals initially and when table expires
+      updateTotals();
+      window.utilsTable.startAutoExpire(() => updateTotals(), 30000);
+      window.utilsTable.attachTableStartHandler({ startBtnId: 'start-order', inputId: 'manual-table', onSuccess: () => updateTotals(), onFail: () => {} });
+      window.utilsTable.attachTableResetHandler && window.utilsTable.attachTableResetHandler('table-clear', () => updateTotals());
     }
+    initWhenReady();
 
-    init();
+    // Initial render
+    renderOrder();
+    updateTotals();
 
   })();
   </script>
