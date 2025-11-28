@@ -260,7 +260,7 @@
       }
     }
 
-    /* ---------- Menu rendering (ensure "Semua" truly shows all items) ---------- */
+    /* ---------- Menu rendering (ensure each category shows ALL its items) ---------- */
 
     // Category normalization and helpers
     const CATEGORY_ALIASES = {
@@ -380,13 +380,21 @@
       return cats.includes(categoryKey);
     }
 
-    function renderCards({ q = '', category = 'all', maxCount = 12 } = {}){
+    /**
+     * renderCards
+     * - When category === 'all' show all items (filtered by search if any)
+     * - When a specific category is selected, show ALL items that belong to that category (no artificial 12-item cap)
+     * - This ensures each category displays every item present in MENU_DATA for that category
+     */
+    function renderCards({ q = '', category = 'all' } = {}){
       const ql = (q || '').trim().toLowerCase();
 
       // Get all items
       const allItems = getMenuArray().filter(Boolean);
 
-      // When category === 'all' we include ALL items (only filtered by search)
+      // Filter logic:
+      // - category === 'all' => include all items (optionally filtered by search)
+      // - specific category => include all items that match that category (optionally filtered by search)
       let filtered;
       if (category === 'all') {
         if (!ql) {
@@ -414,8 +422,8 @@
       const cart = readCart();
       const locked = !window.utilsTable.isCodeValid();
 
-      // If category === 'all' show all filtered items (no artificial cap)
-      const itemsToShow = (category === 'all') ? filtered : filtered.slice(0, maxCount);
+      // IMPORTANT: show all filtered items (no slice limit)
+      const itemsToShow = filtered;
 
       itemsToShow.forEach(item => {
         const url = safeEncodeUrl(item.img || '');
