@@ -6,8 +6,10 @@
   <title>Pembayaran - Resto Modern</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-  <!-- Optional: jika kamu punya MENU_DATA di data.js, pastikan file ini ada di root -->
+  <!-- Data menu (opsional) -->
   <script src="data.js"></script>
+  <!-- Voucher pool: 600 voucher dengan percent + dailyLimit -->
+  <script src="voucher.js"></script>
 
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
@@ -40,16 +42,16 @@
     .card { background: theme('colors.background-light'); border: 1px solid rgba(0,0,0,0.04); border-radius: .75rem; }
     .modal-backdrop { background: rgba(0,0,0,0.45); }
 
-    /* Diskon hijau: hanya ubah warna teks diskon, layout tetap */
-    .discount-amount { color: #16A34A; } /* hijau emerald */
+    /* Diskon hijau */
+    .discount-amount { color: #16A34A; }
     .promo-desc { color: #16A34A; font-size: 0.875rem; margin-top: 2px; display: block; }
     .promo-bonus { color: #065f46; font-size: 0.9rem; margin-top: 4px; display:block; }
     .promo-quota { color: #374151; font-size: 0.8rem; margin-top: 6px; display:block; }
 
-    /* fallback small image styling */
+    /* Fallback image */
     .img-fallback { display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#9CA3AF; font-size:12px; }
 
-    /* kecil, non-invasif styling untuk input e-wallet */
+    /* E-wallet phone */
     .ew-phone-wrap { margin-top: 8px; }
     .ew-phone-label { font-size: 0.875rem; color: #374151; display:block; margin-bottom:4px; }
     .ew-phone-input { width:100%; padding:8px 10px; border:1px solid #E5E7EB; border-radius:6px; font-size:0.95rem; }
@@ -360,54 +362,43 @@
     function writeCart(arr){ localStorage.setItem('cart', JSON.stringify(arr)); }
 
     // -----------------------------
-    // ROTATING PROMOS: auto-generate 300 vouchers and distribute into sets
+    // Rotasi 3 hari: pemilihan voucher aktif dari pool (acak stabil di semua perangkat)
     // -----------------------------
-    const TOTAL_VOUCHERS = 300;   // jumlah voucher
-    const SETS_COUNT = 15;        // jumlah set rotasi
-    const ROTATION_INTERVAL_DAYS = 3; // rotasi setiap 3 hari
-    const ROTATION_START = new Date('2025-01-01T00:00:00Z'); // titik awal rotasi
+    const ROTATION_INTERVAL_DAYS = 3;
+    const ROTATION_START = new Date('2025-01-01T00:00:00Z');
 
-    // Persentase pool (bisa disesuaikan)
-    const PERCENT_POOL = [
-      5,5,5,5,5,5,5,5,5,5,
-      10,10,10,10,10,
-      12,12,15,15,15,
-      20,20,22,22,25,25,30,30,35,
-      40,40,45,45,50,50,55,60,65,70,75
-    ];
+    // Konfigurasi pemilihan aktif dari VOUCHER_POOL
+    const VOUCHER_CONFIG = {
+      version: 'pool-v1',                 // ubah jika isi voucher.js berubah besar
+      rotationIntervalDays: ROTATION_INTERVAL_DAYS,
+      rotationStartISO: ROTATION_START.toISOString(),
+      activeCountPerCycle: 60             // jumlah voucher aktif per siklus
+    };
 
-    function genCode(prefix, idx) {
-      const rnd = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
-      return `${prefix}${String(idx).padStart(4,'0')}-${rnd}`;
+    // PRNG deterministik + util seed
+    function mulberry32(seed) {
+      return function() {
+        let t = seed += 0x6D2B79F5;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
     }
-
-    function buildVoucherPool(total) {
-      const pool = [];
-      for (let i = 0; i < total; i++) {
-        const pct = PERCENT_POOL[i % PERCENT_POOL.length];
-        const prefix = pct >= 50 ? 'BIG' : (pct >= 20 ? 'MID' : 'SM');
-        pool.push({ code: genCode(prefix, i+1), percent: pct });
+    function hashSeed(str){
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < str.length; i++) {
+        h ^= str.charCodeAt(i);
+        h = Math.imul(h, 16777619);
       }
-      return pool;
+      return h >>> 0;
     }
-
-    function shuffleArray(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
+    function seededShuffle(arr, rng){
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(rng() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
       }
-      return arr;
-    }
-
-    function distributeToSets(vouchers, setsCount) {
-      const sets = Array.from({length: setsCount}, () => ({}));
-      shuffleArray(vouchers);
-      for (let i = 0; i < vouchers.length; i++) {
-        const setIndex = i % setsCount;
-        const v = vouchers[i];
-        sets[setIndex][v.code] = v.percent;
-      }
-      return sets;
+      return a;
     }
 
     function daysSinceStart() {
@@ -417,60 +408,69 @@
     }
     function getActivePromoIndex() {
       const days = daysSinceStart();
-      const idx = Math.floor(days / ROTATION_INTERVAL_DAYS) % SETS_COUNT;
-      return (idx + SETS_COUNT) % SETS_COUNT;
-    }
-    function getActivePromos() {
-      return PROMO_SETS[getActivePromoIndex()] || {};
+      return Math.floor(days / ROTATION_INTERVAL_DAYS); // siklus berjalan, tidak modulo
     }
     function getNextRotationDate() {
       const idx = getActivePromoIndex();
-      const startDay = ROTATION_START.getTime() + idx * ROTATION_INTERVAL_DAYS * 24*60*60*1000;
-      const next = new Date(startDay + ROTATION_INTERVAL_DAYS * 24*60*60*1000);
-      return next;
+      const startMs = ROTATION_START.getTime() + idx * ROTATION_INTERVAL_DAYS * 24*60*60*1000;
+      return new Date(startMs + ROTATION_INTERVAL_DAYS * 24*60*60*1000);
     }
 
-    // Build PROMO_SETS dynamically
-    let PROMO_SETS = (function initPromoSets() {
-      const vouchers = buildVoucherPool(TOTAL_VOUCHERS);
-      const sets = distributeToSets(vouchers, SETS_COUNT);
-      return sets;
-    })();
+    // Voucher pool dari voucher.js
+    const VOUCHER_POOL = Array.isArray(window.VOUCHER_POOL) ? window.VOUCHER_POOL.slice() : [];
+
+    // Util: dailyLimit dari pool atau fallback kebijakan
+    function getDailyLimit(code, percent){
+      const v = VOUCHER_POOL.find(x => x.code.toUpperCase() === String(code||'').toUpperCase());
+      if (v && typeof v.dailyLimit === 'number') return v.dailyLimit;
+      return (Number(percent) < 20) ? 10 : (Number(percent) < 35 ? 8 : (Number(percent) < 50 ? 6 : 5));
+    }
+
+    // Ambil subset aktif (acak stabil berdasarkan siklus)
+    function getActiveVoucherSubset() {
+      const cycleIndex = getActivePromoIndex();
+      const seedStr = `${VOUCHER_CONFIG.version}|${VOUCHER_CONFIG.rotationStartISO}|${VOUCHER_POOL.length}|${cycleIndex}`;
+      const seed = hashSeed(seedStr);
+      const rng = mulberry32(seed);
+      const shuffled = seededShuffle(VOUCHER_POOL, rng);
+      const take = Math.min(VOUCHER_CONFIG.activeCountPerCycle, shuffled.length);
+      return shuffled.slice(0, take);
+    }
+
+    // Map code -> percent untuk kompatibilitas UI
+    function toPercentMap(subset){
+      const m = {};
+      subset.forEach(v => { m[v.code.toUpperCase()] = Number(v.percent); });
+      return m;
+    }
+    function getActivePromos() {
+      return toPercentMap(getActiveVoucherSubset());
+    }
 
     // -----------------------------
-    // Promo usage per-day (client-side)
+    // Promo usage per-day (client-side, stabil reset harian)
     // -----------------------------
     function todayKey() {
       const d = new Date();
       return d.toISOString().slice(0,10); // YYYY-MM-DD
     }
-
     function getPromoUsageMap(dateKey) {
       try {
         const raw = localStorage.getItem('promoUsage_' + dateKey) || '{}';
         return JSON.parse(raw);
       } catch { return {}; }
     }
-
     function savePromoUsageMap(dateKey, map) {
-      try {
-        localStorage.setItem('promoUsage_' + dateKey, JSON.stringify(map));
-      } catch {}
+      try { localStorage.setItem('promoUsage_' + dateKey, JSON.stringify(map)); } catch {}
     }
-
-    function getPromoLimitByPercent(percent) {
-      return (Number(percent) < 20) ? 15 : 5;
-    }
-
     function canUsePromoToday(promoKey, percent) {
       if (!promoKey) return false;
       const key = todayKey();
       const map = getPromoUsageMap(key);
       const used = Number(map[promoKey] || 0);
-      const limit = getPromoLimitByPercent(percent);
+      const limit = getDailyLimit(promoKey, percent);
       return used < limit;
     }
-
     function incrementPromoUsage(promoKey, percent) {
       if (!promoKey) return 0;
       const key = todayKey();
@@ -479,13 +479,12 @@
       savePromoUsageMap(key, map);
       return map[promoKey];
     }
-
     function getPromoRemaining(promoKey, percent) {
       if (!promoKey) return { used: 0, limit: 0, remaining: 0 };
       const key = todayKey();
       const map = getPromoUsageMap(key);
       const used = Number(map[promoKey] || 0);
-      const limit = getPromoLimitByPercent(percent);
+      const limit = getDailyLimit(promoKey, percent);
       return { used, limit, remaining: Math.max(0, limit - used) };
     }
 
@@ -498,7 +497,7 @@
         if (it.title && it.title.toLowerCase().includes('sate ayam')) {
           autoDiscount += 5000 * (Number(it.qty) || 1);
         }
-        // Tambahkan aturan lain di sini jika diperlukan
+        // Tambahkan aturan lain di sini jika perlu:
         // if (it.title && it.title.toLowerCase().includes('nasi goreng')) autoDiscount += 3000 * (Number(it.qty)||1);
       });
       return autoDiscount;
@@ -675,13 +674,11 @@
         ewPhoneError.style.display = 'none';
       }
     }
-
     function validateEwPhone(value){
       if (!value) return false;
       const digits = String(value).replace(/\D/g,'');
       return digits.length >= 8 && digits.length <= 15;
     }
-
     function onPaymentChange(){
       const radios = document.querySelectorAll('.payment-radio');
       let selected = null;
@@ -695,14 +692,10 @@
         showEwPhone(false, '');
       }
     }
-
     function attachPaymentListeners(){
       const radios = document.querySelectorAll('.payment-radio');
-      for (const r of radios) {
-        r.addEventListener('change', onPaymentChange);
-      }
+      for (const r of radios) { r.addEventListener('change', onPaymentChange); }
     }
-
     function getSelectedPayment(){
       const radios = document.querySelectorAll('.payment-radio');
       for (const r of radios) if (r.checked) return r.value;
@@ -755,7 +748,7 @@
         incrementPromoUsage(appliedPromo.promoKey, appliedPromo.percent);
       }
 
-      // Hitung totals dengan diskon otomatis dan promo dari totalBeforePromo (untuk order record)
+      // Hitung totals untuk order record (auto + promo dari totalBeforePromo)
       const subtotal = readCart().reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
       const autoDiscount = getAutomaticDiscount(readCart());
       const subtotalAfterAuto = Math.max(0, subtotal - autoDiscount);
@@ -819,7 +812,7 @@
       renderOrder();
       updateTotals();
 
-      // show success and redirect
+      // Show success and redirect
       successModal.classList.remove('hidden');
       successModal.classList.add('flex');
       confirmBtn.disabled = true;
@@ -828,7 +821,7 @@
     }
 
     // -----------------------------
-    // Apply promo button with quota & rotation check (promo dihitung dari totalBeforePromo)
+    // Apply promo button with quota & rotation check (promo dari totalBeforePromo)
     // -----------------------------
     applyPromoBtn.addEventListener('click', () => {
       const code = promoInput.value || '';
@@ -937,8 +930,9 @@
       }
       if (e.key && e.key.startsWith('promoUsage_')) {
         const code = (promoInput.value || '').trim().toUpperCase();
-        if (code && getActivePromos()[code]) {
-          const remaining = getPromoRemaining(code, getActivePromos()[code]);
+        const ACTIVE = getActivePromos();
+        if (code && ACTIVE[code]) {
+          const remaining = getPromoRemaining(code, ACTIVE[code]);
           if (promoQuotaEl) {
             promoQuotaEl.style.display = '';
             promoQuotaEl.textContent = `Sisa kuota hari ini: ${remaining.remaining}/${remaining.limit} • Rotasi berikut: ${getNextRotationDate().toLocaleDateString()}`;
@@ -960,14 +954,15 @@
     // -----------------------------
     function openAdminPreview() {
       try {
-        const active = getActivePromos();
+        const activeMap = getActivePromos();
+        const codes = Object.keys(activeMap || {}).sort();
         adminActiveList.innerHTML = '';
-        const codes = Object.keys(active || {}).sort();
+
         if (!codes.length) {
           adminActiveList.innerHTML = '<div class="text-sm text-text-secondary">Tidak ada kode aktif saat ini.</div>';
         } else {
           codes.forEach(code => {
-            const pct = active[code];
+            const pct = activeMap[code];
             const usedInfo = getPromoRemaining(code, pct);
             const card = document.createElement('div');
             card.className = 'p-3 border rounded bg-gray-50';
@@ -975,20 +970,21 @@
               <div class="flex items-center justify-between">
                 <div>
                   <div class="font-semibold text-sm">${code}</div>
-                  <div class="text-xs text-text-secondary">Diskon: ${pct}%</div>
+                  <div class="text-xs text-text-secondary">Diskon: ${pct}% • Kuota: ${usedInfo.limit}</div>
                 </div>
                 <div class="text-right text-xs text-text-secondary">
-                  <div>Kuota: ${usedInfo.limit}</div>
                   <div>Terpakai: ${usedInfo.used}</div>
+                  <div>Sisa: ${usedInfo.remaining}</div>
                 </div>
               </div>
             `;
             adminActiveList.appendChild(card);
           });
         }
+
         const idx = getActivePromoIndex();
         const next = getNextRotationDate();
-        adminRotationInfo.textContent = `Set aktif: ${idx + 1}/${PROMO_SETS.length} • Rotasi berikut: ${next.toLocaleDateString()}`;
+        adminRotationInfo.textContent = `Siklus aktif: #${idx} • Voucher aktif: ${codes.length} • Rotasi berikut: ${next.toLocaleDateString()}`;
         adminModal.classList.remove('hidden');
         adminModal.classList.add('flex');
       } catch(e){
@@ -1004,11 +1000,12 @@
 
     // expose small helper for debugging in console (optional)
     window.__promoDebug = {
-      PROMO_SETS,
       getActivePromos,
       getActivePromoIndex,
       getNextRotationDate,
-      getPromoRemaining
+      getPromoRemaining,
+      getDailyLimit,
+      VOUCHER_CONFIG
     };
 
   })();
