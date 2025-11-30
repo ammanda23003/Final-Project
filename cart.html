@@ -36,6 +36,13 @@
     .thumb { width: 100px; height: 100px; border-radius: 0.75rem; overflow: hidden; background: #f3f4f6; }
     .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .img-fallback { display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#9CA3AF; font-size:12px; }
+
+    /* Catatan per item (inline editor) */
+    .note-preview { font-size: 0.9rem; color: #374151; margin-top: 6px; white-space: pre-wrap; }
+    .note-editor { margin-top: 8px; }
+    .note-textarea { width:100%; min-height:64px; padding:8px; border:1px solid #E5E7EB; border-radius:6px; resize:vertical; }
+    .note-actions { margin-top:6px; display:flex; gap:8px; }
+    .note-small { font-size:0.85rem; color:#6B7280; margin-top:4px; }
   </style>
 </head>
 <body class="font-display bg-background-light dark:bg-background-dark text-text-primary dark:text-gray-200">
@@ -51,7 +58,6 @@
           <h1 class="text-2xl font-bold">Resto Modern</h1>
         </div>
 
-        <!-- Desktop nav -->
         <nav id="desktop-nav" class="hidden items-center gap-8 md:flex">
           <a class="text-base font-medium hover:text-primary transition-colors" href="index.html">Home</a>
           <a class="text-base font-medium hover:text-primary transition-colors" href="Promo.html">Promo</a>
@@ -63,7 +69,6 @@
           </a>
         </nav>
 
-        <!-- Mobile controls -->
         <div class="flex items-center gap-2 md:hidden">
           <a href="index.html" class="inline-flex items-center justify-center h-10 w-10 rounded-md text-gray-700 hover:bg-gray-100" aria-label="Home">
             <span class="material-symbols-outlined">home</span>
@@ -85,7 +90,6 @@
         </div>
       </div>
 
-      <!-- Mobile menu (hidden by default) -->
       <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200 bg-background-light">
         <div class="px-4 pt-3 pb-4 space-y-1">
           <a href="index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-800 hover:bg-gray-100">Home</a>
@@ -102,18 +106,14 @@
       <h1 class="text-3xl md:text-4xl font-bold leading-tight tracking-tight pb-6 md:pb-8">Keranjang Pesanan Anda</h1>
 
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-12">
-        <!-- Items list -->
         <div class="lg:col-span-2">
-          <div id="cart-list" class="flex flex-col gap-4">
-            <!-- Items rendered here -->
-          </div>
+          <div id="cart-list" class="flex flex-col gap-4"></div>
           <a class="inline-flex items-center gap-2 text-primary font-semibold mt-6 hover:underline" href="Menu.html">
             <span class="material-symbols-outlined">arrow_back</span>
             Tambah menu lain
           </a>
         </div>
 
-        <!-- Summary -->
         <div class="lg:col-span-1">
           <div class="bg-white dark:bg-gray-800/50 rounded-lg shadow-sm p-6 sticky top-24">
             <h3 class="text-xl font-bold mb-4">Ringkasan Pesanan</h3>
@@ -161,7 +161,10 @@
     </footer>
   </div>
 
-  <!-- Integrate config.js and utils.js (no visual changes) -->
+  <!-- Load MENU data first from root -->
+  <script src="data.js"></script>
+
+  <!-- Integrate config.js and utils.js -->
   <script src="config.js"></script>
   <script src="utils.js"></script>
 
@@ -189,13 +192,93 @@
     const SERVICE_FEE = 2500;
     const TAX_RATE = 0.11;
 
-    function readCart() {
-      try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; }
-    }
-    function writeCart(items) {
-      localStorage.setItem('cart', JSON.stringify(items));
+    // ---------- Centralized normalization and write ----------
+    function computePromoPriceFromMenu(menu) {
+      if (!menu) return 0;
+      let price = Number(menu.price || 0);
+      if (menu.isPromo && menu.promo) {
+        const type = menu.promo.type;
+        const val = Number(menu.promo.value || 0);
+        if (type === 'percent') price = Math.round(price * (100 - val) / 100);
+        else if (type === 'fixed') price = Math.max(0, price - val);
+      }
+      return price;
     }
 
+    function normalizeAndDedupeCartArray(arr) {
+      const map = new Map();
+      (arr || []).forEach(rawItem => {
+        if (!rawItem) return;
+        const it = (typeof rawItem === 'string') ? { id: rawItem, qty: 1 } : rawItem;
+        const rawId = String(it.id || it.title || '').trim();
+        if (!rawId) return;
+
+        // lookup menu
+        let menu = null;
+        if (window.MENU_DATA) {
+          if (window.MENU_DATA[rawId]) menu = window.MENU_DATA[rawId];
+          else if (window.MENU_DATA[rawId.toLowerCase()]) menu = window.MENU_DATA[rawId.toLowerCase()];
+          else {
+            const vals = Object.values(window.MENU_DATA || {});
+            menu = vals.find(m => m && (String(m.id) === rawId || String(m.title) === rawId || String(m.id).toLowerCase() === rawId.toLowerCase()));
+          }
+        }
+
+        const menuPrice = menu ? Number(menu.price || 0) : undefined;
+        const originalFromCart = (typeof it.originalPrice !== 'undefined') ? Number(it.originalPrice) : undefined;
+        const original = (typeof menuPrice !== 'undefined' && menuPrice) ? menuPrice : (typeof originalFromCart !== 'undefined' ? originalFromCart : Number(it.price || 0));
+
+        // compute promo price (prefer MENU_DATA)
+        let promo = (typeof it.price !== 'undefined') ? Number(it.price) : 0;
+        if (menu) promo = computePromoPriceFromMenu(menu);
+
+        const finalOriginal = (original && original >= promo) ? original : (menu ? Number(menu.price || promo) : promo);
+
+        const key = menu && menu.id ? String(menu.id) : rawId;
+        if (map.has(key)) {
+          const cur = map.get(key);
+          cur.qty = Number(cur.qty || 0) + Number(it.qty || 1);
+          cur.price = promo;
+          cur.originalPrice = finalOriginal;
+          // preserve or update note: prefer new note if provided, otherwise keep existing
+          if (typeof it.note !== 'undefined' && it.note !== null) cur.note = String(it.note);
+        } else {
+          map.set(key, {
+            id: key,
+            title: it.title || (menu && menu.title) || rawId,
+            img: it.img || (menu && menu.img) || '',
+            qty: Number(it.qty || 1),
+            price: Number(promo || 0),
+            originalPrice: Number(finalOriginal || promo || 0),
+            note: (typeof it.note !== 'undefined' && it.note !== null) ? String(it.note) : '' // <-- per-item note
+          });
+        }
+      });
+      return Array.from(map.values());
+    }
+
+    function writeCartNormalized(items) {
+      try {
+        const normalized = normalizeAndDedupeCartArray(items || []);
+        localStorage.setItem('cart', JSON.stringify(normalized));
+        if (typeof render === 'function') render();
+        return normalized;
+      } catch (e) {
+        console.error('writeCartNormalized error', e);
+        return items || [];
+      }
+    }
+
+    function readCart() {
+      try {
+        const raw = JSON.parse(localStorage.getItem('cart') || '[]');
+        return normalizeAndDedupeCartArray(raw);
+      } catch {
+        return [];
+      }
+    }
+
+    // ---------- IMAGE MAP ----------
     const IMAGE_MAP = {
       "nasi-goreng-spesial": "Img/Nasi Goreng Spesial.png",
       "mie-ayam-bakso": "Img/Mie Ayam Bakso.png",
@@ -272,9 +355,27 @@
             <div class="flex flex-1 flex-col justify-center gap-1">
               <p class="text-lg font-semibold leading-normal">${item.title || 'Item'}</p>
               <p class="text-primary text-base font-medium leading-normal">${formatRp(price)}</p>
-              <button class="remove-btn text-red-500 hover:text-red-700 dark:hover:text-red-400 text-sm font-medium leading-normal flex items-center gap-1 mt-1 w-fit">
-                <span class="material-symbols-outlined text-base">delete</span> Remove
-              </button>
+              <div class="flex items-center gap-3 mt-1">
+                <button class="remove-btn text-red-500 hover:text-red-700 dark:hover:text-red-400 text-sm font-medium leading-normal flex items-center gap-1 w-fit">
+                  <span class="material-symbols-outlined text-base">delete</span> Remove
+                </button>
+                <button class="note-btn text-sm text-gray-600 hover:text-primary flex items-center gap-1">
+                  <span class="material-symbols-outlined text-base">note</span> Catatan
+                </button>
+              </div>
+              <!-- preview of note -->
+              <div class="note-preview" style="${item.note ? '' : 'display:none;'}">${escapeHtml(item.note || '')}</div>
+
+              <!-- inline note editor (hidden by default) -->
+              <div class="note-editor" style="display:none;">
+                <textarea class="note-textarea" placeholder="Tulis catatan untuk menu ini...">${escapeHtml(item.note || '')}</textarea>
+                <div class="note-actions">
+                  <button class="save-note inline-flex items-center gap-2 px-3 py-1 rounded bg-primary text-white text-sm">Simpan</button>
+                  <button class="cancel-note inline-flex items-center gap-2 px-3 py-1 rounded border text-sm">Batal</button>
+                  <button class="clear-note inline-flex items-center gap-2 px-3 py-1 rounded border text-sm text-red-600">Hapus</button>
+                </div>
+                <div class="note-small">Catatan akan tersimpan untuk item ini dan muncul di ringkasan.</div>
+              </div>
             </div>
           </div>
           <div class="shrink-0 ml-auto sm:ml-0">
@@ -288,6 +389,7 @@
         `;
         listEl.appendChild(article);
 
+        // set image
         const imgEl = article.querySelector('img');
         const src = item.img || IMAGE_MAP[item.id] || IMAGE_MAP[(item.title || '').toLowerCase().replace(/\s+/g, '-')] || '';
         const finalSrc = safeUrl(src);
@@ -304,6 +406,7 @@
           imgEl.outerHTML = '<div class="img-fallback">Gambar tidak ditemukan</div>';
         });
 
+        // controls
         const decBtn = article.querySelector('.dec-btn');
         const incBtn = article.querySelector('.inc-btn');
         const removeBtn = article.querySelector('.remove-btn');
@@ -313,22 +416,72 @@
           const current = Number(qtyInput.value) || 1;
           const next = Math.max(1, current - 1);
           if (next !== current) {
-            cart[idx].qty = next;
-            writeCart(cart);
-            render();
+            const raw = readCart();
+            raw[idx].qty = next;
+            writeCartNormalized(raw);
           }
         });
         incBtn.addEventListener('click', () => {
           const current = Number(qtyInput.value) || 1;
           const next = current + 1;
-          cart[idx].qty = next;
-          writeCart(cart);
-          render();
+          const raw = readCart();
+          raw[idx].qty = next;
+          writeCartNormalized(raw);
         });
         removeBtn.addEventListener('click', () => {
-          const updated = cart.filter((_, i) => i !== idx);
-          writeCart(updated);
-          render();
+          const raw = readCart();
+          const updated = raw.filter((_, i) => i !== idx);
+          writeCartNormalized(updated);
+        });
+
+        // note UI
+        const noteBtn = article.querySelector('.note-btn');
+        const noteEditor = article.querySelector('.note-editor');
+        const noteTextarea = article.querySelector('.note-textarea');
+        const saveNoteBtn = article.querySelector('.save-note');
+        const cancelNoteBtn = article.querySelector('.cancel-note');
+        const clearNoteBtn = article.querySelector('.clear-note');
+        const notePreview = article.querySelector('.note-preview');
+
+        // toggle editor
+        noteBtn.addEventListener('click', () => {
+          const visible = noteEditor.style.display !== 'none';
+          if (visible) {
+            noteEditor.style.display = 'none';
+          } else {
+            noteEditor.style.display = '';
+            noteTextarea.focus();
+          }
+        });
+
+        saveNoteBtn.addEventListener('click', () => {
+          const val = noteTextarea.value || '';
+          const raw = readCart();
+          if (!raw[idx]) return;
+          raw[idx].note = val;
+          writeCartNormalized(raw);
+          // update preview immediately
+          notePreview.textContent = val;
+          notePreview.style.display = val ? '' : 'none';
+          noteEditor.style.display = 'none';
+        });
+
+        cancelNoteBtn.addEventListener('click', () => {
+          // reset textarea to current stored note
+          const raw = readCart();
+          noteTextarea.value = (raw[idx] && raw[idx].note) ? raw[idx].note : '';
+          noteEditor.style.display = 'none';
+        });
+
+        clearNoteBtn.addEventListener('click', () => {
+          const raw = readCart();
+          if (!raw[idx]) return;
+          raw[idx].note = '';
+          writeCartNormalized(raw);
+          noteTextarea.value = '';
+          notePreview.textContent = '';
+          notePreview.style.display = 'none';
+          noteEditor.style.display = 'none';
         });
       });
 
@@ -340,6 +493,17 @@
       taxEl.textContent = formatRp(tax);
       serviceEl.textContent = formatRp(service);
       totalEl.textContent = formatRp(total);
+    }
+
+    // escape helper for safe insertion into HTML (used above)
+    function escapeHtml(s) {
+      if (!s) return '';
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
     // Mobile menu toggle
@@ -364,7 +528,6 @@
         }
       });
 
-      // Close mobile menu on Escape
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && mobileMenu && !mobileMenu.classList.contains('hidden')) {
           mobileMenu.classList.add('hidden');
@@ -377,7 +540,12 @@
     })();
 
     // Initialize
-    render();
+    (function init(){
+      // normalize existing cart once
+      const raw = JSON.parse(localStorage.getItem('cart') || '[]');
+      writeCartNormalized(raw);
+      render();
+    })();
 
     // React to storage changes (cart updates from other tabs)
     window.addEventListener('storage', (e) => {
@@ -386,74 +554,69 @@
         render();
       }
     });
+
+    // ---------- Add-to-cart helper to use across pages ----------
+    function addToCart(menuId, qty = 1) {
+      if (!window.MENU_DATA || !window.MENU_DATA[menuId]) {
+        console.warn('Menu tidak ditemukan:', menuId);
+        return;
+      }
+      const menuItem = window.MENU_DATA[menuId];
+      const promo = computePromoPriceFromMenu(menuItem);
+      const original = Number(menuItem.price || 0);
+      const current = JSON.parse(localStorage.getItem('cart') || '[]');
+      current.push({ id: menuItem.id, title: menuItem.title, img: menuItem.img || '', qty: qty, price: promo, originalPrice: original, note: '' });
+      writeCartNormalized(current);
+    }
+
+    const addToCartLock = {};
+    function addToCartOnce(menuId, qty = 1) {
+      if (addToCartLock[menuId]) return;
+      addToCartLock[menuId] = true;
+      try { addToCart(menuId, qty); } finally { setTimeout(()=> addToCartLock[menuId] = false, 300); }
+    }
   </script>
 
   <!-- Integration script for utilsTable (no layout changes) -->
   <script>
     (function(){
-      // Wait for utilsTable to be available, then wire behaviors that do not change layout:
       function waitForUtils(){
         if (!window.utilsTable){
           setTimeout(waitForUtils, 50);
           return;
         }
-
-        // Prevent checkout navigation if table code is not valid.
         const checkoutBtn = document.getElementById('checkout');
         if (checkoutBtn){
           checkoutBtn.addEventListener('click', function(e){
-            // If button contains an anchor, intercept click and prevent navigation when invalid
             if (!window.utilsTable.isCodeValid()){
               e.preventDefault();
               e.stopPropagation();
-              // show a simple alert to inform user (no UI changes)
               alert('Masukkan kode meja yang valid terlebih dahulu untuk melanjutkan checkout.');
               return false;
             }
-            // allow default behavior when valid
             return true;
           }, { capture: true });
         }
 
-        // Disable checkout button visually/semantically when no valid table code
         function updateCheckoutLock(){
           const locked = !window.utilsTable.isCodeValid();
           const btn = document.getElementById('checkout');
           if (!btn) return;
           btn.disabled = locked;
-          if (locked){
-            btn.classList.add('disabled','opacity-60','cursor-not-allowed');
-          } else {
-            btn.classList.remove('disabled','opacity-60','cursor-not-allowed');
-          }
+          if (locked) btn.classList.add('disabled','opacity-60','cursor-not-allowed');
+          else btn.classList.remove('disabled','opacity-60','cursor-not-allowed');
         }
 
-        // Start auto-expire watcher so UI state updates when code expires (no layout changes)
-        window.utilsTable.startAutoExpire(() => {
-          updateCheckoutLock();
-        }, 30000);
-
-        // Attach start/reset handlers if manual-table exists on other pages and user interacts across tabs
-        window.utilsTable.attachTableStartHandler({
-          startBtnId: 'start-order',
-          inputId: 'manual-table',
-          onSuccess: () => { updateCheckoutLock(); },
-          onFail: () => {}
-        });
+        window.utilsTable.startAutoExpire(() => { updateCheckoutLock(); }, 30000);
+        window.utilsTable.attachTableStartHandler({ startBtnId: 'start-order', inputId: 'manual-table', onSuccess: () => updateCheckoutLock(), onFail: () => {} });
         window.utilsTable.attachTableResetHandler('table-clear', () => { updateCheckoutLock(); });
-
-        // Sync initial state
         updateCheckoutLock();
 
-        // Listen storage events for table_code changes to update lock state
         window.addEventListener('storage', (e) => {
           if (!e.key) return;
-          if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
-            updateCheckoutLock();
-          }
+          if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at') updateCheckoutLock();
         });
       }
-
       waitForUtils();
     })();
   </script>
@@ -462,7 +625,6 @@
   <script>
   (function(){
     'use strict';
-
     const checkoutBtn = document.getElementById('checkout');
     const checkoutAnchor = checkoutBtn?.querySelector('a');
 
@@ -501,25 +663,17 @@
       }, { capture: true });
     }
 
-    // Initial state
     updateCheckoutState();
 
-    // React to storage changes
     window.addEventListener('storage', (e) => {
       if (!e.key) return;
-      if (e.key === 'cart' || e.key === 'cart_cleared_at' || e.key === 'cart_updated_at'){
-        updateCheckoutState();
-      }
-      if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at'){
-        updateCheckoutState();
-      }
+      if (e.key === 'cart' || e.key === 'cart_cleared_at' || e.key === 'cart_updated_at') updateCheckoutState();
+      if (e.key === 'table_code' || e.key === 'table_code_time' || e.key === 'table_code_cleared_at') updateCheckoutState();
     });
 
-    // Fallback: update after user interactions on page
     document.addEventListener('click', () => { setTimeout(updateCheckoutState, 50); });
     document.addEventListener('input', () => { setTimeout(updateCheckoutState, 50); });
 
-    // Sync with utilsTable lifecycle if available
     function waitForUtils(){
       if (!window.utilsTable){
         setTimeout(waitForUtils, 50);
@@ -530,7 +684,6 @@
       window.utilsTable.attachTableResetHandler('table-clear', updateCheckoutState);
     }
     waitForUtils();
-
   })();
   </script>
 </body>

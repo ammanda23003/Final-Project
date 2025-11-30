@@ -22,13 +22,17 @@
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 
-  <!-- Optional: MENU_DATA (scripts/data.js) -->
+  <!-- MENU_DATA -->
   <script src="data.js" defer></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" crossorigin href="https://fonts.gstatic.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <style> html,body{height:100%} </style>
+  <style>
+    html,body{height:100%}
+    /* Tambahan: kelas untuk menampilkan angka diskon berwarna hijau tanpa mengubah tata letak */
+    .discount-amount { color: #16A34A; } /* hijau emerald */
+  </style>
 </head>
 
 <body class="font-display bg-background-light text-gray-900">
@@ -104,6 +108,8 @@
 
             <div class="border-t border-gray-200 pt-4 space-y-2 text-sm text-gray-600">
               <div class="flex justify-between"><span>Subtotal</span><span id="subtotal">Rp 0</span></div>
+              <!-- Tambahan: baris diskon (warna hijau sekarang via kelas .discount-amount) -->
+              <div class="flex justify-between"><span>Diskon</span><span id="discount" class="font-semibold discount-amount">Rp 0</span></div>
               <div class="flex justify-between"><span>Pajak (11%)</span><span id="tax">Rp 0</span></div>
               <div class="flex justify-between"><span>Biaya layanan</span><span id="service-fee">Rp 2.500</span></div>
             </div>
@@ -141,7 +147,7 @@
     </footer>
   </div>
 
-  <!-- Script utama: dedupe kuat, urutan sesuai cart, gambar disembunyikan saat kosong -->
+  <!-- Script utama -->
   <script>
   (function(){
     'use strict';
@@ -167,6 +173,7 @@
 
     const cartFullEl = byId('cart-full');
     const subtotalEl = byId('subtotal');
+    const discountEl = byId('discount');
     const taxEl = byId('tax');
     const serviceFeeEl = byId('service-fee');
     const totalEl = byId('total');
@@ -191,44 +198,60 @@
       } catch { return String(s).trim().replace(/\s+/g,' ').toLowerCase(); }
     }
 
-    // build lookups from MENU_DATA if present
+    // Compute promo price from MENU_DATA item (fallback)
+    function computePromoPriceFromMenu(menu){
+      if (!menu) return 0;
+      let price = Number(menu.price || 0);
+      if (menu.isPromo && menu.promo){
+        const type = menu.promo.type;
+        const val = Number(menu.promo.value || 0);
+        if (type === 'percent') price = Math.round(price * (100 - val) / 100);
+        else if (type === 'fixed') price = Math.max(0, price - val);
+      }
+      return price;
+    }
+
+    // Build lookups from MENU_DATA (object or array)
     function buildMenuLookups(){
       const byIdMap = new Map();
       const byTitleMap = new Map();
       try {
-        if (!window.MENU_DATA || !Array.isArray(window.MENU_DATA)) return { byIdMap, byTitleMap };
-        for (const m of window.MENU_DATA){
+        const md = window.MENU_DATA || {};
+        const arr = Array.isArray(md) ? md : Object.values(md);
+        for (const m of arr){
+          if (!m) continue;
           if (m.id) byIdMap.set(normalizeString(String(m.id)), m);
           if (m.title) byTitleMap.set(normalizeString(String(m.title)), m);
         }
       } catch {}
       return { byIdMap, byTitleMap };
     }
-    const MENU_LOOKUPS = buildMenuLookups();
+    let MENU_LOOKUPS = buildMenuLookups();
 
-    // Strong canonical resolution (prefer MENU_DATA.id when possible)
+    // Rebuild lookups if MENU_DATA changes later
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'MENU_DATA') {
+        try { MENU_LOOKUPS = buildMenuLookups(); } catch {}
+      }
+    });
+
+    // Canonical id
     function canonicalIdForEntry(it){
       if (!it) return '__unknown__';
-
-      // if string id or title
       if (typeof it === 'string') {
         const s = normalizeString(it);
-        if (MENU_LOOKUPS.byIdMap.has(s)) return s;                     // exact id
-        if (MENU_LOOKUPS.byTitleMap.has(s)) {                          // title match -> use menu.id
+        if (MENU_LOOKUPS.byIdMap.has(s)) return s;
+        if (MENU_LOOKUPS.byTitleMap.has(s)) {
           const menu = MENU_LOOKUPS.byTitleMap.get(s);
           return normalizeString(String(menu.id || s));
         }
-        return s;                                                       // fallback: normalized string
+        return s;
       }
-
-      // object with explicit id
       if (it.id || it.productId) {
         const idNorm = normalizeString(String(it.id || it.productId));
-        if (MENU_LOOKUPS.byIdMap.has(idNorm)) return idNorm;           // known id
-        return idNorm;                                                 // unknown id but stable
+        if (MENU_LOOKUPS.byIdMap.has(idNorm)) return idNorm;
+        return idNorm;
       }
-
-      // object with title only
       if (it.title || it.name) {
         const t = normalizeString(String(it.title || it.name));
         if (MENU_LOOKUPS.byTitleMap.has(t)) {
@@ -237,11 +260,10 @@
         }
         return t;
       }
-
       return '__unknown__';
     }
 
-    // read cart and merge duplicates, preserving first-seen order from raw cart
+    // Read cart and merge duplicates; attach originalPrice from MENU_DATA when available
     function readCartNormalized(){
       const raw = safeParse('cart') || [];
       const input = Array.isArray(raw) && raw.length && typeof raw[0] === 'string' ? raw.map(id => ({ id, qty: 1 })) : raw;
@@ -257,24 +279,49 @@
 
         const canonical = canonicalIdForEntry(it);
 
-        // find menu data by canonical id or title
+        // Menu data
         let menu = null;
         if (MENU_LOOKUPS.byIdMap.has(canonical)) menu = MENU_LOOKUPS.byIdMap.get(canonical);
-        else if (MENU_LOOKUPS.byTitleMap.has(canonical)) menu = MENU_LOOKUPS.byTitleMap.get(canonical);
 
-        // prefer MENU_DATA values when available
         const title = (menu && menu.title) || it.title || it.name || (menu && menu.id) || 'Item';
-        const price = (menu && Number(menu.price)) || Number(it.price) || 0;
         const img = (menu && menu.img) || it.img || it.image || null;
+
+        // Determine originalUnitPrice and promoUnitPrice with robust fallback:
+        let promoUnitPrice = 0;
+        let originalUnitPrice = 0;
+
+        if (menu) {
+          // original price should reflect menu.price unless cart explicitly provided originalPrice
+          originalUnitPrice = Number(it.originalPrice ?? menu.price) || 0;
+
+          // If cart has a price that differs from menu.price, assume it's already promo price
+          if (typeof it.price !== 'undefined' && Number(it.price) !== 0 && Number(it.price) !== menu.price) {
+            promoUnitPrice = Number(it.price);
+          } else {
+            // fallback: compute promo from MENU_DATA (handles isPromo)
+            promoUnitPrice = computePromoPriceFromMenu(menu);
+          }
+        } else {
+          // No menu found: use cart values
+          promoUnitPrice = Number(it.price || 0);
+          originalUnitPrice = Number(it.originalPrice || promoUnitPrice);
+        }
+
+        // Ensure originalUnitPrice is at least promoUnitPrice
+        if (!originalUnitPrice || originalUnitPrice < promoUnitPrice) {
+          // if menu exists, prefer menu.price; otherwise set equal to promo
+          originalUnitPrice = menu ? Number(menu.price || promoUnitPrice) : promoUnitPrice;
+        }
 
         if (map.has(canonical)) {
           const cur = map.get(canonical);
           cur.qty += qty;
           if ((!cur.img || cur.img === null) && img) cur.img = img;
-          if ((!cur.price || cur.price === 0) && price) cur.price = price;
+          if ((!cur.price || cur.price === 0) && promoUnitPrice) cur.price = promoUnitPrice;
+          if ((!cur.originalPrice || cur.originalPrice === 0) && originalUnitPrice) cur.originalPrice = originalUnitPrice;
           if ((!cur.title || cur.title === 'Item') && title) cur.title = title;
         } else {
-          map.set(canonical, { id: canonical, title, price, img, qty });
+          map.set(canonical, { id: canonical, title, price: promoUnitPrice, originalPrice: originalUnitPrice, img, qty });
           order.push(canonical);
         }
       }
@@ -301,30 +348,42 @@
         imgEl.src = src;
         imgEl.alt = alt || '';
         imgEl.onerror = function(){
-          try {
-            const fallback = (window.MENU_DATA && window.MENU_DATA[0] && window.MENU_DATA[0].img) || null;
-            imgEl.onerror = null;
-            imgEl.src = fallback || PLACEHOLDER_DATA_URI;
-          } catch {
-            imgEl.onerror = null;
-            imgEl.src = PLACEHOLDER_DATA_URI;
-          }
+          imgEl.onerror = null;
+          imgEl.src = PLACEHOLDER_DATA_URI;
         };
       } catch(e){ if (imgEl) imgEl.src = PLACEHOLDER_DATA_URI; }
     }
 
+    // Update totals (with discount summary)
     function updateTotalsFromCart(cart){
-      let subtotal = 0;
-      cart.forEach(i => subtotal += i.price * i.qty);
-      const tax = Math.round(subtotal * TAX_RATE);
-      const total = subtotal + tax + SERVICE_FEE;
-      safeSetText(subtotalEl, formatRp(subtotal));
+      let subtotalPromo = 0;
+      let subtotalOriginal = 0;
+
+      cart.forEach(i => {
+        const unitPromo = Number(i.price || 0);
+        const unitOriginal = Number(i.originalPrice || i.price || 0);
+        const q = Number(i.qty || 1);
+        subtotalPromo += unitPromo * q;
+        subtotalOriginal += unitOriginal * q;
+      });
+
+      const discount = Math.max(0, subtotalOriginal - subtotalPromo);
+      const tax = Math.round(subtotalPromo * TAX_RATE);
+      const total = subtotalPromo + tax + SERVICE_FEE;
+
+      safeSetText(subtotalEl, formatRp(subtotalPromo));
+      safeSetText(discountEl, (discount > 0 ? '-' : '') + formatRp(discount));
       safeSetText(taxEl, formatRp(tax));
       safeSetText(serviceFeeEl, formatRp(SERVICE_FEE));
       safeSetText(totalEl, formatRp(total));
+
+      // Pastikan kelas hijau tetap ada (jika ada skrip lain yang menimpa kelas)
+      if (discountEl && !discountEl.classList.contains('discount-amount')) {
+        discountEl.classList.add('discount-amount');
+      }
     }
 
-    // Compact: hide image when empty; show only first normalized item when present
+    // Compact render
     function renderCompact(){
       const cart = readCartNormalized();
       if (!cart.length){
@@ -335,6 +394,7 @@
         safeSetText(compactQtyEl, '');
         safeSetText(compactLineEl, '');
         safeSetText(subtotalEl, formatRp(0));
+        safeSetText(discountEl, formatRp(0));
         safeSetText(taxEl, formatRp(0));
         safeSetText(totalEl, formatRp(0));
         if (toPaymentBtn) toPaymentBtn.disabled = true;
@@ -354,7 +414,7 @@
       if (toPaymentBtn) toPaymentBtn.disabled = !validateCustomer();
     }
 
-    // Full list: one row per normalized item, ordered by first appearance
+    // Full list
     function renderFull(){
       if (!cartFullEl) return;
       try {
@@ -412,10 +472,26 @@
     function saveOrderAndGo(){
       try {
         const cart = readCartNormalized();
-        let subtotal = 0; cart.forEach(i => subtotal += i.price * i.qty);
-        const tax = Math.round(subtotal * TAX_RATE);
-        const total = subtotal + tax + SERVICE_FEE;
-        const order = { cart, subtotal, tax, service: SERVICE_FEE, total, customer: { nama: inputNama?.value.trim()||'', email: inputEmail?.value.trim()||'', phone: inputPhone?.value.trim()||'', note: inputNote?.value.trim()||'' }, createdAt: new Date().toISOString() };
+        let subtotalPromo = 0, subtotalOriginal = 0;
+        cart.forEach(i => { subtotalPromo += i.price * i.qty; subtotalOriginal += (i.originalPrice || i.price) * i.qty; });
+        const discount = Math.max(0, subtotalOriginal - subtotalPromo);
+        const tax = Math.round(subtotalPromo * TAX_RATE);
+        const total = subtotalPromo + tax + SERVICE_FEE;
+        const order = {
+          cart,
+          subtotal: subtotalPromo,
+          discount,
+          tax,
+          service: SERVICE_FEE,
+          total,
+          customer: {
+            nama: inputNama?.value.trim()||'',
+            email: inputEmail?.value.trim()||'',
+            phone: inputPhone?.value.trim()||'',
+            note: inputNote?.value.trim()||''
+          },
+          createdAt: new Date().toISOString()
+        };
         localStorage.setItem('orderDraft', JSON.stringify(order));
       } catch(e){}
       setTimeout(()=> { location.href = 'Pembayaran.html'; }, 80);
@@ -426,7 +502,16 @@
       if (expandBtn) expandBtn.addEventListener('click', onExpand);
       if (toPaymentBtn) toPaymentBtn.addEventListener('click', function(e){ e.preventDefault(); if (validateCustomer()) saveOrderAndGo(); });
       [inputNama, inputEmail, inputPhone, inputNote].forEach(i => { if(!i) return; i.addEventListener('input', ()=>{ saveDraft(); updateButtonState(); }); });
-      window.addEventListener('storage', function(e){ if (!e.key) return; if (['cart','orderDraft','customerDraft'].includes(e.key)) { renderCompact(); if (cartFullEl && !cartFullEl.classList.contains('hidden')) renderFull(); updateButtonState(); } });
+      window.addEventListener('storage', function(e){
+        if (!e.key) return;
+        if (['cart','orderDraft','customerDraft','MENU_DATA'].includes(e.key)) {
+          // rebuild lookups if MENU_DATA changed
+          if (e.key === 'MENU_DATA') MENU_LOOKUPS = buildMenuLookups();
+          renderCompact();
+          if (cartFullEl && !cartFullEl.classList.contains('hidden')) renderFull();
+          updateButtonState();
+        }
+      });
     } catch(e){ console.error('wire failed', e); }
 
     // load draft
@@ -440,6 +525,8 @@
 
     // init
     try {
+      // ensure lookups built (in case data.js loaded after)
+      MENU_LOOKUPS = buildMenuLookups();
       renderCompact();
       if (window.innerWidth >= 1024) renderFull();
       updateButtonState();

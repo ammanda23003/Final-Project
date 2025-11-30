@@ -5,10 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Pembayaran - Resto Modern</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Optional: jika kamu punya MENU_DATA di data.js, pastikan file ini ada di root -->
+  <script src="data.js"></script>
+
   <link href="https://fonts.googleapis.com" rel="preconnect" />
   <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -28,12 +33,43 @@
       }
     }
   </script>
+
   <style>
     .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
     body { min-height: 100dvh; }
     .card { background: theme('colors.background-light'); border: 1px solid rgba(0,0,0,0.04); border-radius: .75rem; }
-    /* Modal styles */
     .modal-backdrop { background: rgba(0,0,0,0.45); }
+
+    /* Diskon hijau: hanya ubah warna teks diskon, layout tetap */
+    .discount-amount { color: #16A34A; } /* hijau emerald */
+    .promo-desc { color: #16A34A; font-size: 0.875rem; margin-top: 2px; display: block; }
+    .promo-bonus { color: #065f46; font-size: 0.9rem; margin-top: 4px; display:block; }
+    .promo-quota { color: #374151; font-size: 0.8rem; margin-top: 6px; display:block; }
+
+    /* fallback small image styling */
+    .img-fallback { display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#9CA3AF; font-size:12px; }
+
+    /* kecil, non-invasif styling untuk input e-wallet */
+    .ew-phone-wrap { margin-top: 8px; }
+    .ew-phone-label { font-size: 0.875rem; color: #374151; display:block; margin-bottom:4px; }
+    .ew-phone-input { width:100%; padding:8px 10px; border:1px solid #E5E7EB; border-radius:6px; font-size:0.95rem; }
+    .ew-phone-note { font-size:0.8rem; color:#6B7280; margin-top:4px; }
+    .ew-phone-error { font-size:0.8rem; color:#DC2626; margin-top:4px; display:none; }
+
+    /* Admin preview floating button */
+    .admin-preview-btn {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 60;
+      background: #111827;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+      font-weight: 600;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body class="bg-background-secondary font-display text-text-primary">
@@ -69,14 +105,20 @@
           <div class="card p-6">
             <h2 class="text-2xl font-bold mb-4">Ringkasan Pesanan</h2>
 
-            <div id="order-list" class="space-y-4">
-              <!-- Items will be rendered here -->
-            </div>
+            <div id="order-list" class="space-y-4"></div>
 
             <div class="mt-6 border-t border-gray-200 pt-4 space-y-3 text-sm text-text-secondary">
               <div class="flex justify-between">
                 <span>Subtotal</span>
                 <span id="subtotal">Rp 0</span>
+              </div>
+              <div class="flex flex-col">
+                <div class="flex justify-between">
+                  <span>Diskon</span>
+                  <span id="discount" class="discount-amount">Rp 0</span>
+                </div>
+                <span id="promo-desc" class="promo-desc" aria-hidden="true" style="display:none;"></span>
+                <span id="promo-bonus" class="promo-bonus" aria-hidden="true" style="display:none;"></span>
               </div>
               <div class="flex justify-between">
                 <span>Pajak (11%)</span>
@@ -85,10 +127,6 @@
               <div class="flex justify-between">
                 <span>Layanan</span>
                 <span id="service">Rp 0</span>
-              </div>
-              <div class="flex justify-between">
-                <span>Diskon</span>
-                <span id="discount">Rp 0</span>
               </div>
             </div>
 
@@ -104,6 +142,7 @@
                   <button id="apply-promo" class="inline-flex items-center gap-2 px-4 py-2 rounded bg-primary text-white font-semibold hover:opacity-95">Apply</button>
                 </div>
                 <p id="promo-msg" class="mt-2 text-xs text-red-600 hidden"></p>
+                <p id="promo-quota" class="promo-quota" style="display:none;"></p>
               </div>
             </div>
           </div>
@@ -146,7 +185,7 @@
               <!-- E-Wallets -->
               <div>
                 <div class="text-sm font-medium mb-2">E-Wallet</div>
-                <div class="space-y-2">
+                <div class="space-y-2" id="ew-options">
                   <label class="flex items-center gap-3 p-3 rounded border border-gray-200 hover:bg-gray-50 cursor-pointer">
                     <input type="radio" name="payment" value="ew_ovo" class="payment-radio" />
                     <div class="flex-1">
@@ -178,6 +217,14 @@
                       <div class="text-xs text-text-secondary">Bayar dengan LinkAja</div>
                     </div>
                   </label>
+
+                  <!-- E-Wallet phone input (hidden by default) -->
+                  <div id="ew-phone-wrap" class="ew-phone-wrap" style="display:none;">
+                    <label for="ew-phone" class="ew-phone-label">Nomor HP terdaftar di E‑Wallet</label>
+                    <input id="ew-phone" class="ew-phone-input" type="tel" inputmode="numeric" placeholder="Contoh: 081234567890" />
+                    <div id="ew-phone-note" class="ew-phone-note">Masukkan nomor yang terdaftar di layanan E‑Wallet pilihan Anda.</div>
+                    <div id="ew-phone-error" class="ew-phone-error">Nomor tidak valid. Gunakan angka 8–15 digit tanpa spasi.</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -239,7 +286,28 @@
     </div>
   </div>
 
-  <!-- config.js dan utils.js -->
+  <!-- Admin preview modal (prototype) -->
+  <div id="admin-preview-modal" class="fixed inset-0 z-60 hidden items-center justify-center">
+    <div class="absolute inset-0 modal-backdrop"></div>
+    <div class="relative bg-white rounded-lg shadow-lg w-[95%] max-w-3xl p-6 overflow-auto">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold">Preview Kode Aktif (Admin)</h3>
+        <div class="flex items-center gap-2">
+          <div id="admin-rotation-info" class="text-sm text-text-secondary"></div>
+          <button id="admin-close" class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200">Tutup</button>
+        </div>
+      </div>
+      <div id="admin-active-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+      <div class="mt-4 text-xs text-text-secondary">
+        <p>Catatan: ini hanya prototype preview. Kuota dan rotasi dihitung berdasarkan konfigurasi client-side.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin floating button (visible jika ?admin=1 di URL) -->
+  <button id="admin-preview-btn" class="admin-preview-btn" style="display:none;">Preview Active Codes</button>
+
+  <!-- config.js dan utils.js (jika ada) -->
   <script src="config.js"></script>
   <script src="utils.js"></script>
 
@@ -247,7 +315,6 @@
   (function(){
     'use strict';
 
-    // Pricing constants
     const TAX_RATE = 0.11;
     const SERVICE_FEE = 2500;
 
@@ -257,6 +324,9 @@
     const taxEl = document.getElementById('tax');
     const serviceEl = document.getElementById('service');
     const discountEl = document.getElementById('discount');
+    const promoDescEl = document.getElementById('promo-desc');
+    const promoBonusEl = document.getElementById('promo-bonus');
+    const promoQuotaEl = document.getElementById('promo-quota');
     const totalEl = document.getElementById('total');
     const sideTotalEl = document.getElementById('side-total');
     const sideSubEl = document.getElementById('side-sub');
@@ -270,38 +340,181 @@
     const applyPromoBtn = document.getElementById('apply-promo');
     const promoMsg = document.getElementById('promo-msg');
 
+    // E-wallet elements
+    const ewPhoneWrap = document.getElementById('ew-phone-wrap');
+    const ewPhoneInput = document.getElementById('ew-phone');
+    const ewPhoneError = document.getElementById('ew-phone-error');
+
     const successModal = document.getElementById('success-modal');
+
+    // Admin elements
+    const adminBtn = document.getElementById('admin-preview-btn');
+    const adminModal = document.getElementById('admin-preview-modal');
+    const adminClose = document.getElementById('admin-close');
+    const adminActiveList = document.getElementById('admin-active-list');
+    const adminRotationInfo = document.getElementById('admin-rotation-info');
 
     // Helpers
     function formatRp(n){ return 'Rp ' + (Number(n || 0)).toLocaleString('id-ID'); }
     function readCart(){ try { return JSON.parse(localStorage.getItem('cart') || '[]'); } catch { return []; } }
     function writeCart(arr){ localStorage.setItem('cart', JSON.stringify(arr)); }
 
-    // Promo logic (example: simple promo codes)
-    const PROMOS = {
-      'DISCOUNT10': { type: 'percent', value: 10 }, // 10% off subtotal
-      'FLAT5000': { type: 'fixed', value: 5000 }    // Rp 5.000 off
-    };
+    // -----------------------------
+    // ROTATING PROMOS: auto-generate 300 vouchers and distribute into sets
+    // -----------------------------
+    const TOTAL_VOUCHERS = 300;   // jumlah voucher
+    const SETS_COUNT = 15;        // jumlah set rotasi
+    const ROTATION_INTERVAL_DAYS = 3; // rotasi setiap 3 hari
+    const ROTATION_START = new Date('2025-01-01T00:00:00Z'); // titik awal rotasi
 
-    let appliedPromo = null;
+    // Persentase pool (bisa disesuaikan)
+    const PERCENT_POOL = [
+      5,5,5,5,5,5,5,5,5,5,
+      10,10,10,10,10,
+      12,12,15,15,15,
+      20,20,22,22,25,25,30,30,35,
+      40,40,45,45,50,50,55,60,65,70,75
+    ];
 
+    function genCode(prefix, idx) {
+      const rnd = Math.random().toString(36).toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,6);
+      return `${prefix}${String(idx).padStart(4,'0')}-${rnd}`;
+    }
+
+    function buildVoucherPool(total) {
+      const pool = [];
+      for (let i = 0; i < total; i++) {
+        const pct = PERCENT_POOL[i % PERCENT_POOL.length];
+        const prefix = pct >= 50 ? 'BIG' : (pct >= 20 ? 'MID' : 'SM');
+        pool.push({ code: genCode(prefix, i+1), percent: pct });
+      }
+      return pool;
+    }
+
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function distributeToSets(vouchers, setsCount) {
+      const sets = Array.from({length: setsCount}, () => ({}));
+      shuffleArray(vouchers);
+      for (let i = 0; i < vouchers.length; i++) {
+        const setIndex = i % setsCount;
+        const v = vouchers[i];
+        sets[setIndex][v.code] = v.percent;
+      }
+      return sets;
+    }
+
+    function daysSinceStart() {
+      const now = new Date();
+      const diff = now.getTime() - ROTATION_START.getTime();
+      return Math.floor(diff / (24 * 60 * 60 * 1000));
+    }
+    function getActivePromoIndex() {
+      const days = daysSinceStart();
+      const idx = Math.floor(days / ROTATION_INTERVAL_DAYS) % SETS_COUNT;
+      return (idx + SETS_COUNT) % SETS_COUNT;
+    }
+    function getActivePromos() {
+      return PROMO_SETS[getActivePromoIndex()] || {};
+    }
+    function getNextRotationDate() {
+      const idx = getActivePromoIndex();
+      const startDay = ROTATION_START.getTime() + idx * ROTATION_INTERVAL_DAYS * 24*60*60*1000;
+      const next = new Date(startDay + ROTATION_INTERVAL_DAYS * 24*60*60*1000);
+      return next;
+    }
+
+    // Build PROMO_SETS dynamically
+    let PROMO_SETS = (function initPromoSets() {
+      const vouchers = buildVoucherPool(TOTAL_VOUCHERS);
+      const sets = distributeToSets(vouchers, SETS_COUNT);
+      return sets;
+    })();
+
+    // -----------------------------
+    // Promo usage per-day (client-side)
+    // -----------------------------
+    function todayKey() {
+      const d = new Date();
+      return d.toISOString().slice(0,10); // YYYY-MM-DD
+    }
+
+    function getPromoUsageMap(dateKey) {
+      try {
+        const raw = localStorage.getItem('promoUsage_' + dateKey) || '{}';
+        return JSON.parse(raw);
+      } catch { return {}; }
+    }
+
+    function savePromoUsageMap(dateKey, map) {
+      try {
+        localStorage.setItem('promoUsage_' + dateKey, JSON.stringify(map));
+      } catch {}
+    }
+
+    function getPromoLimitByPercent(percent) {
+      return (Number(percent) < 20) ? 15 : 5;
+    }
+
+    function canUsePromoToday(promoKey, percent) {
+      if (!promoKey) return false;
+      const key = todayKey();
+      const map = getPromoUsageMap(key);
+      const used = Number(map[promoKey] || 0);
+      const limit = getPromoLimitByPercent(percent);
+      return used < limit;
+    }
+
+    function incrementPromoUsage(promoKey, percent) {
+      if (!promoKey) return 0;
+      const key = todayKey();
+      const map = getPromoUsageMap(key);
+      map[promoKey] = (Number(map[promoKey] || 0) + 1);
+      savePromoUsageMap(key, map);
+      return map[promoKey];
+    }
+
+    function getPromoRemaining(promoKey, percent) {
+      if (!promoKey) return { used: 0, limit: 0, remaining: 0 };
+      const key = todayKey();
+      const map = getPromoUsageMap(key);
+      const used = Number(map[promoKey] || 0);
+      const limit = getPromoLimitByPercent(percent);
+      return { used, limit, remaining: Math.max(0, limit - used) };
+    }
+
+    // applyPromo uses active promos
     function applyPromo(code, subtotal){
       if (!code) return { ok: false, msg: 'Masukkan kode promo.' };
       const key = String(code || '').trim().toUpperCase();
-      const p = PROMOS[key];
-      if (!p) return { ok: false, msg: 'Kode promo tidak valid.' };
-      let discount = 0;
-      if (p.type === 'percent') discount = Math.round(subtotal * (p.value/100));
-      else if (p.type === 'fixed') discount = Number(p.value || 0);
-      return { ok: true, discount, promoKey: key, msg: `Promo diterapkan: ${key}` };
+      const ACTIVE = getActivePromos();
+      const pct = ACTIVE[key];
+      if (typeof pct === 'undefined') return { ok: false, msg: 'Kode promo tidak valid atau tidak aktif saat ini.' };
+      const pctSafe = Math.min(75, Math.max(5, Number(pct || 0)));
+      const discount = Math.round(subtotal * (pctSafe / 100));
+      const msg = `Promo diterapkan: ${key} (${pctSafe}% off) — berlaku sampai ${getNextRotationDate().toLocaleDateString()}`;
+      return { ok: true, discount, promoKey: key, percent: pctSafe, msg };
     }
 
-    // Render order list and totals
+    // -----------------------------
+    // Render order and totals
+    // -----------------------------
+    let appliedPromo = null;
+    try {
+      const stored = JSON.parse(localStorage.getItem('appliedPromo') || 'null');
+      if (stored && typeof stored === 'object') appliedPromo = stored;
+    } catch {}
+
     function renderOrder(){
       const cart = readCart() || [];
       orderListEl.innerHTML = '';
 
-      // update header badge
       const count = cart.reduce((s,it) => s + (Number(it.qty)||0), 0);
       if (headerCartBadge){
         if (count > 0){ headerCartBadge.textContent = count > 99 ? '99+' : String(count); headerCartBadge.classList.remove('hidden'); }
@@ -317,23 +530,32 @@
       cart.forEach(it => {
         const row = document.createElement('div');
         row.className = 'flex items-center gap-4';
-
         const imgWrap = document.createElement('div');
         imgWrap.className = 'w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center';
         const img = document.createElement('img');
         img.alt = it.title || '';
         img.className = 'w-full h-full object-cover';
-        img.src = it.img || '';
-        img.onerror = () => { imgWrap.innerHTML = '<div class="text-sm text-gray-400">Gambar tidak ditemukan</div>'; };
+
+        if (it.img && typeof it.img === 'string' && it.img.trim()) {
+          img.src = it.img;
+        } else if (window.MENU_DATA && window.MENU_DATA[it.id] && window.MENU_DATA[it.id].img) {
+          img.src = window.MENU_DATA[it.id].img;
+        } else {
+          img.src = '';
+        }
+
+        img.onerror = () => { imgWrap.innerHTML = '<div class="img-fallback">Gambar tidak ditemukan</div>'; };
         imgWrap.appendChild(img);
 
         const info = document.createElement('div');
         info.className = 'flex-1 min-w-0';
+        const noteHtml = it.note ? `<div class="text-sm text-text-secondary mt-1">Catatan: ${String(it.note)}</div>` : '';
         info.innerHTML = `
           <div class="flex items-start justify-between gap-3">
             <div class="truncate">
               <div class="font-semibold">${it.title || ''}</div>
               <div class="text-sm text-text-secondary">${(it.subtitle || '')}</div>
+              ${noteHtml}
             </div>
             <div class="text-right">
               <div class="font-semibold">${formatRp(it.price)}</div>
@@ -352,25 +574,68 @@
 
     function updateTotals(){
       const cart = readCart() || [];
-      const subtotal = cart.reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
+
+      const subtotal = cart.reduce((s, it) => {
+        const unit = Number(it.price || 0);
+        const qty = Number(it.qty || 1);
+        return s + unit * qty;
+      }, 0);
+
+      const subtotalOriginal = cart.reduce((s, it) => {
+        const originalUnit = Number(((it.originalPrice ?? it.price) || 0));
+        const qty = Number(it.qty || 1);
+        return s + originalUnit * qty;
+      }, 0);
+
       const tax = Math.round(subtotal * TAX_RATE);
       const service = cart.length ? SERVICE_FEE : 0;
+
       let discount = 0;
-      if (appliedPromo && appliedPromo.discount) discount = appliedPromo.discount;
+      let bonusText = '';
+
+      if (appliedPromo && typeof appliedPromo.discount === 'number') {
+        discount = Number(appliedPromo.discount || 0);
+        if (appliedPromo.percent) {
+          bonusText = `Bonus: Diskon ${appliedPromo.percent}% — Potongan ${formatRp(discount)}`;
+        } else {
+          bonusText = `Potongan ${formatRp(discount)}`;
+        }
+      } else {
+        discount = Math.max(0, subtotalOriginal - subtotal);
+        if (discount > 0) bonusText = `Potongan ${formatRp(discount)} (selisih harga asli vs promo)`;
+      }
 
       const total = Math.max(0, subtotal + tax + service - discount);
 
       subtotalEl.textContent = formatRp(subtotal);
       taxEl.textContent = formatRp(tax);
       serviceEl.textContent = formatRp(service);
-      discountEl.textContent = formatRp(discount);
-      totalEl.textContent = formatRp(total);
 
+      if (discount > 0) {
+        discountEl.textContent = '-' + formatRp(discount);
+        if (promoDescEl) {
+          promoDescEl.style.display = '';
+          promoDescEl.textContent = appliedPromo && appliedPromo.promoKey ? `Kode: ${appliedPromo.promoKey}` : `Diskon otomatis`;
+        }
+        if (promoBonusEl) {
+          promoBonusEl.style.display = '';
+          promoBonusEl.textContent = bonusText;
+        }
+      } else {
+        discountEl.textContent = formatRp(0);
+        if (promoDescEl) { promoDescEl.style.display = 'none'; promoDescEl.textContent = ''; }
+        if (promoBonusEl) { promoBonusEl.style.display = 'none'; promoBonusEl.textContent = ''; }
+      }
+
+      if (discountEl && !discountEl.classList.contains('discount-amount')) {
+        discountEl.classList.add('discount-amount');
+      }
+
+      totalEl.textContent = formatRp(total);
       sideTotalEl.textContent = formatRp(total);
       sideSubEl.textContent = `Subtotal: ${formatRp(subtotal)}`;
       sideTaxEl.textContent = `Pajak: ${formatRp(tax)}`;
 
-      // enable/disable confirm button
       const locked = (window.utilsTable && typeof window.utilsTable.isCodeValid === 'function') ? !window.utilsTable.isCodeValid() : false;
       if (!cart.length || locked){
         confirmBtn.disabled = true;
@@ -383,31 +648,54 @@
       }
     }
 
-    // Payment selection helper
+    // -----------------------------
+    // E-wallet phone helpers & payment listeners
+    // -----------------------------
+    function showEwPhone(show, prefill){
+      if (!ewPhoneWrap) return;
+      ewPhoneWrap.style.display = show ? '' : 'none';
+      if (show && prefill) ewPhoneInput.value = prefill;
+      if (!show) {
+        ewPhoneError.style.display = 'none';
+      }
+    }
+
+    function validateEwPhone(value){
+      if (!value) return false;
+      const digits = String(value).replace(/\D/g,'');
+      return digits.length >= 8 && digits.length <= 15;
+    }
+
+    function onPaymentChange(){
+      const radios = document.querySelectorAll('.payment-radio');
+      let selected = null;
+      for (const r of radios) if (r.checked) { selected = r.value; break; }
+
+      if (selected && selected.startsWith && selected.startsWith('ew_')) {
+        let stored = null;
+        try { stored = localStorage.getItem('ewPhone') || null; } catch {}
+        showEwPhone(true, stored);
+      } else {
+        showEwPhone(false, '');
+      }
+    }
+
+    function attachPaymentListeners(){
+      const radios = document.querySelectorAll('.payment-radio');
+      for (const r of radios) {
+        r.addEventListener('change', onPaymentChange);
+      }
+    }
+
     function getSelectedPayment(){
       const radios = document.querySelectorAll('.payment-radio');
-      for (const r of radios){
-        if (r.checked) return r.value;
-      }
+      for (const r of radios) if (r.checked) return r.value;
       return null;
     }
 
-    // Show success modal and redirect
-    function showSuccessAndRedirect(redirectUrl = 'Konfirmasi_Pesanan.html', delay = 1500){
-      // show modal
-      successModal.classList.remove('hidden');
-      successModal.classList.add('flex');
-      // disable confirm button to prevent double clicks
-      confirmBtn.disabled = true;
-      confirmBtn.classList.add('opacity-60','cursor-not-allowed');
-
-      setTimeout(() => {
-        // redirect after delay
-        window.location.href = redirectUrl;
-      }, delay);
-    }
-
-    // Confirm payment handler (simulated)
+    // -----------------------------
+    // Confirm payment
+    // -----------------------------
     function onConfirmPayment(){
       const cart = readCart() || [];
       if (!cart.length){
@@ -424,24 +712,60 @@
         return;
       }
 
-      // Build order object (simulate)
-      const subtotal = cart.reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
+      if (paymentMethod.startsWith('ew_')) {
+        const phoneVal = (ewPhoneInput && ewPhoneInput.value || '').trim();
+        if (!validateEwPhone(phoneVal)) {
+          ewPhoneError.style.display = '';
+          ewPhoneError.textContent = 'Nomor tidak valid. Gunakan 8–15 digit tanpa spasi.';
+          ewPhoneInput.focus();
+          return;
+        } else {
+          ewPhoneError.style.display = 'none';
+          try { localStorage.setItem('ewPhone', phoneVal); } catch {}
+        }
+      }
+
+      // If appliedPromo exists, re-check active set and quota, then reserve
+      if (appliedPromo && appliedPromo.promoKey) {
+        const ACTIVE = getActivePromos();
+        if (!ACTIVE[appliedPromo.promoKey]) {
+          alert(`Kode ${appliedPromo.promoKey} sudah tidak aktif (rotasi terjadi). Silakan apply kode aktif atau lanjut tanpa promo.`);
+          return;
+        }
+        if (!canUsePromoToday(appliedPromo.promoKey, appliedPromo.percent)) {
+          alert(`Maaf, kuota penggunaan untuk kode ${appliedPromo.promoKey} hari ini sudah penuh. Silakan gunakan kode lain atau lanjut tanpa promo.`);
+          return;
+        }
+        incrementPromoUsage(appliedPromo.promoKey, appliedPromo.percent);
+      }
+
+      const subtotal = readCart().reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
       const tax = Math.round(subtotal * TAX_RATE);
-      const service = cart.length ? SERVICE_FEE : 0;
-      const discount = appliedPromo ? appliedPromo.discount || 0 : 0;
+      const service = readCart().length ? SERVICE_FEE : 0;
+
+      const subtotalOriginal = readCart().reduce((s, it) => {
+        const originalUnit = Number(((it.originalPrice ?? it.price) || 0));
+        const qty = Number(it.qty || 1);
+        return s + originalUnit * qty;
+      }, 0);
+
+      const discount = appliedPromo && typeof appliedPromo.discount === 'number'
+        ? Number(appliedPromo.discount || 0)
+        : Math.max(0, subtotalOriginal - subtotal);
+
       const total = Math.max(0, subtotal + tax + service - discount);
 
       const order = {
         id: 'ORD-' + Date.now(),
         table: (window.utilsTable && typeof window.utilsTable.getTableCode === 'function') ? window.utilsTable.getTableCode() : null,
         time: Date.now(),
-        items: cart,
+        items: readCart(),
         subtotal, tax, service, discount, total,
         paymentMethod,
-        promo: appliedPromo ? appliedPromo.promoKey : null
+        promo: appliedPromo ? appliedPromo.promoKey : null,
+        ewPhone: paymentMethod.startsWith('ew_') ? (ewPhoneInput.value || null) : null
       };
 
-      // Save locally
       try {
         const orders = JSON.parse(localStorage.getItem('orders') || '[]');
         orders.push(order);
@@ -449,18 +773,42 @@
         localStorage.setItem('last_order', JSON.stringify(order));
       } catch(e){}
 
-      // Clear cart
+      // Clear cart and persist cart_cleared_at
       writeCart([]);
       try { localStorage.setItem('cart_cleared_at', String(Date.now())); } catch(e){}
+
+      // Clear stored ewPhone AFTER order is saved
+      try { localStorage.removeItem('ewPhone'); } catch(e){}
+      try { if (ewPhoneInput) ewPhoneInput.value = ''; } catch(e){}
+
+      // Clear applied promo AFTER order is saved
+      try { localStorage.removeItem('appliedPromo'); } catch(e){}
+      appliedPromo = null;
+
+      // clear promo input and messages in DOM
+      try {
+        if (promoInput) promoInput.value = '';
+        if (promoMsg) { promoMsg.textContent = ''; promoMsg.classList.add('hidden'); }
+        if (promoDescEl) { promoDescEl.style.display = 'none'; promoDescEl.textContent = ''; }
+        if (promoBonusEl) { promoBonusEl.style.display = 'none'; promoBonusEl.textContent = ''; }
+        if (promoQuotaEl) { promoQuotaEl.style.display = 'none'; promoQuotaEl.textContent = ''; }
+        if (discountEl) discountEl.textContent = formatRp(0);
+      } catch(e){}
 
       renderOrder();
       updateTotals();
 
-      // Show success popup and redirect to Konfirmasi_Pesanan.html
-      showSuccessAndRedirect('Konfirmasi_Pesanan.html', 1500);
+      // show success and redirect
+      successModal.classList.remove('hidden');
+      successModal.classList.add('flex');
+      confirmBtn.disabled = true;
+      confirmBtn.classList.add('opacity-60','cursor-not-allowed');
+      setTimeout(()=> { window.location.href = 'Konfirmasi_Pesanan.html'; }, 1400);
     }
 
-    // Apply promo
+    // -----------------------------
+    // Apply promo button with quota & rotation check
+    // -----------------------------
     applyPromoBtn.addEventListener('click', () => {
       const code = promoInput.value || '';
       const cart = readCart() || [];
@@ -470,50 +818,171 @@
         promoMsg.textContent = res.msg;
         promoMsg.classList.remove('hidden');
         appliedPromo = null;
+        try { localStorage.removeItem('appliedPromo'); } catch {}
+        if (promoQuotaEl) { promoQuotaEl.style.display = 'none'; promoQuotaEl.textContent = ''; }
       } else {
-        appliedPromo = { discount: res.discount, promoKey: res.promoKey };
+        const remaining = getPromoRemaining(res.promoKey, res.percent);
+        if (remaining.remaining <= 0) {
+          promoMsg.textContent = `Maaf, kuota penggunaan untuk kode ${res.promoKey} hari ini sudah penuh.`;
+          promoMsg.classList.remove('hidden');
+          appliedPromo = null;
+          try { localStorage.removeItem('appliedPromo'); } catch {}
+          if (promoQuotaEl) { promoQuotaEl.style.display = 'none'; promoQuotaEl.textContent = ''; }
+          updateTotals();
+          setTimeout(()=> promoMsg.classList.add('hidden'), 4000);
+          return;
+        }
+
+        appliedPromo = { discount: res.discount, promoKey: res.promoKey, percent: res.percent };
+        try { localStorage.setItem('appliedPromo', JSON.stringify(appliedPromo)); } catch {}
         promoMsg.textContent = res.msg;
         promoMsg.classList.remove('hidden');
+
+        if (promoQuotaEl) {
+          promoQuotaEl.style.display = '';
+          promoQuotaEl.textContent = `Sisa kuota hari ini: ${remaining.remaining}/${remaining.limit} • Rotasi berikut: ${getNextRotationDate().toLocaleDateString()}`;
+        }
       }
       updateTotals();
       setTimeout(()=> promoMsg.classList.add('hidden'), 3000);
     });
 
+    // Show quota info while typing
+    promoInput.addEventListener('input', () => {
+      const code = (promoInput.value || '').trim().toUpperCase();
+      if (!code) { if (promoQuotaEl) { promoQuotaEl.style.display = 'none'; promoQuotaEl.textContent = ''; } return; }
+      const ACTIVE = getActivePromos();
+      const pct = ACTIVE[code];
+      if (typeof pct === 'undefined') {
+        if (promoQuotaEl) { promoQuotaEl.style.display = 'none'; promoQuotaEl.textContent = ''; }
+        return;
+      }
+      const remaining = getPromoRemaining(code, pct);
+      if (promoQuotaEl) {
+        promoQuotaEl.style.display = '';
+        promoQuotaEl.textContent = `Sisa kuota hari ini: ${remaining.remaining}/${remaining.limit} • Rotasi berikut: ${getNextRotationDate().toLocaleDateString()}`;
+      }
+    });
+
     // Back to menu
     backToMenuBtn.addEventListener('click', () => { window.location.href = 'Menu.html'; });
 
-    // Confirm payment
+    // Attach confirm handler
     confirmBtn.addEventListener('click', onConfirmPayment);
 
-    // React to storage changes (cart updates from other tabs)
+    // Init on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
+      attachPaymentListeners();
+      try {
+        const storedPhone = localStorage.getItem('ewPhone') || '';
+        if (storedPhone) { ewPhoneInput.value = storedPhone; }
+      } catch {}
+      onPaymentChange();
+      renderOrder();
+      updateTotals();
+
+      // Admin preview: visible if URL contains ?admin=1
+      try {
+        const isAdmin = window.location.search && window.location.search.indexOf('admin=1') !== -1;
+        if (isAdmin && adminBtn) {
+          adminBtn.style.display = '';
+          adminBtn.addEventListener('click', openAdminPreview);
+        }
+      } catch(e){}
+    });
+
+    // React to storage changes (cart updates, promo usage from other tabs)
     window.addEventListener('storage', (e) => {
       if (!e.key) return;
       if (['cart','cart_cleared_at','cart_updated_at'].includes(e.key)){
         renderOrder();
         updateTotals();
       }
-      if (['table_code','table_code_time','table_code_cleared_at'].includes(e.key)){
+      if (e.key === 'appliedPromo') {
+        try { appliedPromo = JSON.parse(e.newValue || 'null'); } catch { appliedPromo = null; }
         updateTotals();
+      }
+      if (e.key === 'ewPhone') {
+        try {
+          const v = e.newValue || '';
+          if (v && ewPhoneInput) ewPhoneInput.value = v;
+        } catch {}
+      }
+      if (e.key && e.key.startsWith('promoUsage_')) {
+        const code = (promoInput.value || '').trim().toUpperCase();
+        if (code && getActivePromos()[code]) {
+          const remaining = getPromoRemaining(code, getActivePromos()[code]);
+          if (promoQuotaEl) {
+            promoQuotaEl.style.display = '';
+            promoQuotaEl.textContent = `Sisa kuota hari ini: ${remaining.remaining}/${remaining.limit} • Rotasi berikut: ${getNextRotationDate().toLocaleDateString()}`;
+          }
+        }
       }
     });
 
-    // utilsTable integration: update UI when table code changes
-    function initWhenReady(){
-      if (!window.utilsTable){
-        setTimeout(initWhenReady, 50);
-        return;
+    // Save ewPhone on blur
+    ewPhoneInput && ewPhoneInput.addEventListener('blur', () => {
+      const v = (ewPhoneInput.value || '').trim();
+      if (v) {
+        try { localStorage.setItem('ewPhone', v); } catch {}
       }
-      // update totals initially and when table expires
-      updateTotals();
-      window.utilsTable.startAutoExpire(() => updateTotals(), 30000);
-      window.utilsTable.attachTableStartHandler({ startBtnId: 'start-order', inputId: 'manual-table', onSuccess: () => updateTotals(), onFail: () => {} });
-      window.utilsTable.attachTableResetHandler && window.utilsTable.attachTableResetHandler('table-clear', () => updateTotals());
-    }
-    initWhenReady();
+    });
 
-    // Initial render
-    renderOrder();
-    updateTotals();
+    // -----------------------------
+    // Admin preview functions (prototype)
+    // -----------------------------
+    function openAdminPreview() {
+      try {
+        const active = getActivePromos();
+        adminActiveList.innerHTML = '';
+        const codes = Object.keys(active || {}).sort();
+        if (!codes.length) {
+          adminActiveList.innerHTML = '<div class="text-sm text-text-secondary">Tidak ada kode aktif saat ini.</div>';
+        } else {
+          codes.forEach(code => {
+            const pct = active[code];
+            const usedInfo = getPromoRemaining(code, pct);
+            const card = document.createElement('div');
+            card.className = 'p-3 border rounded bg-gray-50';
+            card.innerHTML = `
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-semibold text-sm">${code}</div>
+                  <div class="text-xs text-text-secondary">Diskon: ${pct}%</div>
+                </div>
+                <div class="text-right text-xs text-text-secondary">
+                  <div>Kuota: ${usedInfo.limit}</div>
+                  <div>Terpakai: ${usedInfo.used}</div>
+                </div>
+              </div>
+            `;
+            adminActiveList.appendChild(card);
+          });
+        }
+        const idx = getActivePromoIndex();
+        const next = getNextRotationDate();
+        adminRotationInfo.textContent = `Set aktif: ${idx + 1}/${PROMO_SETS.length} • Rotasi berikut: ${next.toLocaleDateString()}`;
+        adminModal.classList.remove('hidden');
+        adminModal.classList.add('flex');
+      } catch(e){
+        console.error('openAdminPreview error', e);
+        alert('Gagal membuka preview admin.');
+      }
+    }
+
+    if (adminClose) adminClose.addEventListener('click', () => {
+      adminModal.classList.add('hidden');
+      adminModal.classList.remove('flex');
+    });
+
+    // expose small helper for debugging in console (optional)
+    window.__promoDebug = {
+      PROMO_SETS,
+      getActivePromos,
+      getActivePromoIndex,
+      getNextRotationDate,
+      getPromoRemaining
+    };
 
   })();
   </script>
