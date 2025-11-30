@@ -489,15 +489,30 @@
       return { used, limit, remaining: Math.max(0, limit - used) };
     }
 
-    // applyPromo uses active promos
-    function applyPromo(code, subtotal){
+    // -----------------------------
+    // Diskon otomatis per item (contoh: Sate Ayam Rp 5.000 per unit)
+    // -----------------------------
+    function getAutomaticDiscount(cart){
+      let autoDiscount = 0;
+      cart.forEach(it=>{
+        if (it.title && it.title.toLowerCase().includes('sate ayam')) {
+          autoDiscount += 5000 * (Number(it.qty) || 1);
+        }
+        // Tambahkan aturan lain di sini jika diperlukan
+        // if (it.title && it.title.toLowerCase().includes('nasi goreng')) autoDiscount += 3000 * (Number(it.qty)||1);
+      });
+      return autoDiscount;
+    }
+
+    // applyPromo: dihitung dari totalBeforePromo (subtotal setelah auto + pajak + layanan)
+    function applyPromo(code, totalBeforePromo){
       if (!code) return { ok: false, msg: 'Masukkan kode promo.' };
       const key = String(code || '').trim().toUpperCase();
       const ACTIVE = getActivePromos();
       const pct = ACTIVE[key];
       if (typeof pct === 'undefined') return { ok: false, msg: 'Kode promo tidak valid atau tidak aktif saat ini.' };
       const pctSafe = Math.min(75, Math.max(5, Number(pct || 0)));
-      const discount = Math.round(subtotal * (pctSafe / 100));
+      const discount = Math.round(totalBeforePromo * (pctSafe / 100));
       const msg = `Promo diterapkan: ${key} (${pctSafe}% off) — berlaku sampai ${getNextRotationDate().toLocaleDateString()}`;
       return { ok: true, discount, promoKey: key, percent: pctSafe, msg };
     }
@@ -575,56 +590,57 @@
     function updateTotals(){
       const cart = readCart() || [];
 
+      // Subtotal awal
       const subtotal = cart.reduce((s, it) => {
         const unit = Number(it.price || 0);
         const qty = Number(it.qty || 1);
         return s + unit * qty;
       }, 0);
 
-      const subtotalOriginal = cart.reduce((s, it) => {
-        const originalUnit = Number(((it.originalPrice ?? it.price) || 0));
-        const qty = Number(it.qty || 1);
-        return s + originalUnit * qty;
-      }, 0);
+      // Diskon otomatis per item
+      const autoDiscount = getAutomaticDiscount(cart);
+      const subtotalAfterAuto = Math.max(0, subtotal - autoDiscount);
 
-      const tax = Math.round(subtotal * TAX_RATE);
+      // Pajak & layanan berdasarkan subtotal setelah diskon otomatis
+      const tax = Math.round(subtotalAfterAuto * TAX_RATE);
       const service = cart.length ? SERVICE_FEE : 0;
 
-      let discount = 0;
-      let bonusText = '';
+      // Total sebelum promo persentase
+      const totalBeforePromo = subtotalAfterAuto + tax + service;
 
-      if (appliedPromo && typeof appliedPromo.discount === 'number') {
-        discount = Number(appliedPromo.discount || 0);
-        if (appliedPromo.percent) {
-          bonusText = `Bonus: Diskon ${appliedPromo.percent}% — Potongan ${formatRp(discount)}`;
-        } else {
-          bonusText = `Potongan ${formatRp(discount)}`;
-        }
-      } else {
-        discount = Math.max(0, subtotalOriginal - subtotal);
-        if (discount > 0) bonusText = `Potongan ${formatRp(discount)} (selisih harga asli vs promo)`;
+      // Diskon promo persentase dari totalBeforePromo
+      let promoDiscount = 0;
+      let bonusText = '';
+      if (appliedPromo && typeof appliedPromo.percent === 'number') {
+        promoDiscount = Math.round(totalBeforePromo * (appliedPromo.percent / 100));
+        bonusText = `Bonus: Diskon ${appliedPromo.percent}% — Potongan ${formatRp(promoDiscount)}`;
       }
 
-      const total = Math.max(0, subtotal + tax + service - discount);
+      const totalDiscount = autoDiscount + promoDiscount;
+      const total = Math.max(0, totalBeforePromo - promoDiscount);
 
+      // UI updates
       subtotalEl.textContent = formatRp(subtotal);
       taxEl.textContent = formatRp(tax);
       serviceEl.textContent = formatRp(service);
 
-      if (discount > 0) {
-        discountEl.textContent = '-' + formatRp(discount);
-        if (promoDescEl) {
-          promoDescEl.style.display = '';
-          promoDescEl.textContent = appliedPromo && appliedPromo.promoKey ? `Kode: ${appliedPromo.promoKey}` : `Diskon otomatis`;
-        }
-        if (promoBonusEl) {
+      discountEl.textContent = totalDiscount > 0 ? '-' + formatRp(totalDiscount) : formatRp(0);
+
+      if (appliedPromo) {
+        promoDescEl.style.display = '';
+        promoDescEl.textContent = `Diskon otomatis ${formatRp(autoDiscount)} + Promo ${appliedPromo.percent}%`;
+        if (bonusText) {
           promoBonusEl.style.display = '';
           promoBonusEl.textContent = bonusText;
+        } else {
+          promoBonusEl.style.display = 'none';
+          promoBonusEl.textContent = '';
         }
       } else {
-        discountEl.textContent = formatRp(0);
-        if (promoDescEl) { promoDescEl.style.display = 'none'; promoDescEl.textContent = ''; }
-        if (promoBonusEl) { promoBonusEl.style.display = 'none'; promoBonusEl.textContent = ''; }
+        promoDescEl.style.display = 'none';
+        promoDescEl.textContent = '';
+        promoBonusEl.style.display = 'none';
+        promoBonusEl.textContent = '';
       }
 
       if (discountEl && !discountEl.classList.contains('discount-amount')) {
@@ -725,7 +741,7 @@
         }
       }
 
-      // If appliedPromo exists, re-check active set and quota, then reserve
+      // Re-check active set and quota, then reserve promo usage
       if (appliedPromo && appliedPromo.promoKey) {
         const ACTIVE = getActivePromos();
         if (!ACTIVE[appliedPromo.promoKey]) {
@@ -739,28 +755,33 @@
         incrementPromoUsage(appliedPromo.promoKey, appliedPromo.percent);
       }
 
+      // Hitung totals dengan diskon otomatis dan promo dari totalBeforePromo (untuk order record)
       const subtotal = readCart().reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
-      const tax = Math.round(subtotal * TAX_RATE);
+      const autoDiscount = getAutomaticDiscount(readCart());
+      const subtotalAfterAuto = Math.max(0, subtotal - autoDiscount);
+      const tax = Math.round(subtotalAfterAuto * TAX_RATE);
       const service = readCart().length ? SERVICE_FEE : 0;
+      const totalBeforePromo = subtotalAfterAuto + tax + service;
 
-      const subtotalOriginal = readCart().reduce((s, it) => {
-        const originalUnit = Number(((it.originalPrice ?? it.price) || 0));
-        const qty = Number(it.qty || 1);
-        return s + originalUnit * qty;
-      }, 0);
+      const promoDiscount = (appliedPromo && typeof appliedPromo.percent === 'number')
+        ? Math.round(totalBeforePromo * (appliedPromo.percent / 100))
+        : 0;
 
-      const discount = appliedPromo && typeof appliedPromo.discount === 'number'
-        ? Number(appliedPromo.discount || 0)
-        : Math.max(0, subtotalOriginal - subtotal);
-
-      const total = Math.max(0, subtotal + tax + service - discount);
+      const total = Math.max(0, totalBeforePromo - promoDiscount);
+      const totalDiscount = autoDiscount + promoDiscount;
 
       const order = {
         id: 'ORD-' + Date.now(),
         table: (window.utilsTable && typeof window.utilsTable.getTableCode === 'function') ? window.utilsTable.getTableCode() : null,
         time: Date.now(),
         items: readCart(),
-        subtotal, tax, service, discount, total,
+        subtotal,
+        autoDiscount,
+        promoDiscount,
+        tax,
+        service,
+        discount: totalDiscount,
+        total,
         paymentMethod,
         promo: appliedPromo ? appliedPromo.promoKey : null,
         ewPhone: paymentMethod.startsWith('ew_') ? (ewPhoneInput.value || null) : null
@@ -807,13 +828,19 @@
     }
 
     // -----------------------------
-    // Apply promo button with quota & rotation check
+    // Apply promo button with quota & rotation check (promo dihitung dari totalBeforePromo)
     // -----------------------------
     applyPromoBtn.addEventListener('click', () => {
       const code = promoInput.value || '';
       const cart = readCart() || [];
       const subtotal = cart.reduce((s,it) => s + (Number(it.price || 0) * Number(it.qty || 0)), 0);
-      const res = applyPromo(code, subtotal);
+      const autoDiscount = getAutomaticDiscount(cart);
+      const subtotalAfterAuto = Math.max(0, subtotal - autoDiscount);
+      const tax = Math.round(subtotalAfterAuto * TAX_RATE);
+      const service = cart.length ? SERVICE_FEE : 0;
+      const totalBeforePromo = subtotalAfterAuto + tax + service;
+
+      const res = applyPromo(code, totalBeforePromo);
       if (!res.ok){
         promoMsg.textContent = res.msg;
         promoMsg.classList.remove('hidden');
